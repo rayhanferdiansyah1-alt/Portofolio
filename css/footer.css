@@ -1,0 +1,41 @@
+/* RFM PORTFOLIO / footer.css */
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.site-footer {
+  background: #02050a;
+
+  border-top:
+    1px solid var(--line);
+}
+
+.footer-inner {
+  min-height: 100px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.site-footer p {
+  color: var(--dim);
+
+  font-size: 0.65rem;
+}
+
+.back-top {
+  color: var(--blue);
+
+  font-family: var(--mono);
+
+  font-size: 0.52rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.1em;
+}

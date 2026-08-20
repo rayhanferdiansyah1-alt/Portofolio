@@ -1,0 +1,113 @@
+/* RFM PORTFOLIO / skills.css */
+
+
+/* =========================================================
+   SKILLS
+   ========================================================= */
+
+.skills-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 12px;
+}
+
+.skill-card {
+  padding: 25px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.015);
+
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.skill-card:hover {
+  transform:
+    translateY(-4px);
+
+  border-color:
+    var(--line-blue);
+
+  box-shadow:
+    0 20px 60px
+    rgba(0, 0, 0, 0.25);
+}
+
+.skill-top {
+  display: flex;
+
+  justify-content: space-between;
+}
+
+.skill-name {
+  color: var(--white);
+
+  font-size: 0.8rem;
+
+  font-weight: 600;
+}
+
+.skill-level {
+  color: var(--blue);
+
+  font-family: var(--mono);
+
+  font-size: 0.5rem;
+
+  text-transform: uppercase;
+}
+
+.skill-track {
+  height: 3px;
+
+  margin-top: 17px;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  border-radius: 99px;
+
+  overflow: hidden;
+}
+
+.skill-progress {
+  width: var(--level);
+
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--blue-dark),
+      var(--blue-soft)
+    );
+
+  box-shadow:
+    0 0 12px
+    rgba(98, 217, 255, 0.5);
+
+  transform-origin: left;
+
+  animation:
+    skillGrow 1.4s ease both;
+}
+
+@keyframes skillGrow {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}

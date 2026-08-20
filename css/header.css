@@ -1,0 +1,197 @@
+/* RFM PORTFOLIO / header.css */
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.site-header {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+
+  z-index: 1000;
+
+  border-bottom: 1px solid transparent;
+
+  transition:
+    background 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.site-header.scrolled {
+  background:
+    rgba(3, 7, 13, 0.72);
+
+  backdrop-filter: blur(24px);
+
+  border-bottom-color: var(--line);
+}
+
+.header-inner {
+  height: 88px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.brand {
+  position: relative;
+
+  font-family: var(--heading);
+
+  font-size: 1.55rem;
+  font-weight: 700;
+
+  letter-spacing: -0.07em;
+}
+
+.brand::before {
+  content: "";
+
+  position: absolute;
+
+  left: -14px;
+  top: 50%;
+
+  width: 4px;
+  height: 4px;
+
+  transform: translateY(-50%);
+
+  background: var(--blue);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 12px var(--blue);
+}
+
+.brand-dot {
+  color: var(--blue);
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.nav-list {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+.nav-list a {
+  position: relative;
+
+  padding: 10px 16px;
+
+  color: var(--muted);
+
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  transition:
+    color 0.3s ease;
+}
+
+.nav-list a:hover,
+.nav-list a.active {
+  color: var(--white);
+}
+
+.nav-list a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 16px;
+  right: 16px;
+  bottom: 3px;
+
+  height: 1px;
+
+  background: var(--blue);
+
+  transform: scaleX(0);
+
+  transform-origin: center;
+
+  transition:
+    transform 0.3s ease;
+}
+
+.nav-list a:hover::after,
+.nav-list a.active::after {
+  transform: scaleX(1);
+}
+
+.nav-list .nav-cta {
+  margin-left: 18px;
+
+  border: 1px solid var(--line-blue);
+
+  border-radius: 50px;
+
+  color: var(--blue);
+
+  background:
+    rgba(98, 217, 255, 0.04);
+}
+
+.nav-list .nav-cta::after {
+  display: none;
+}
+
+.nav-list .nav-cta:hover {
+  background:
+    rgba(98, 217, 255, 0.10);
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+   ========================================================= */
+
+.nav-toggle {
+  display: none;
+
+  width: 44px;
+  height: 44px;
+
+  border: 1px solid var(--line);
+
+  background:
+    rgba(255, 255, 255, 0.02);
+
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+
+  width: 18px;
+  height: 1px;
+
+  margin: 4px auto;
+
+  background: var(--white);
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
