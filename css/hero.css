@@ -1,13 +1,24 @@
+/* =========================================================
+   RFM PORTFOLIO — HERO
+   Stable desktop composition
+   ========================================================= */
+
 .hero {
+  --hero-pad-top: 112px;
+  --hero-pad-bottom: 40px;
+  --hero-title-size: clamp(5.25rem, 9.15vw, 9.75rem);
+  --hero-title-width: 60%;
+  --hero-orbit-size: min(39vw, 600px);
+  --hero-orbit-right: -4vw;
+  --hero-orbit-top: 50.5%;
+
   position: relative;
   min-height: 100svh;
-  padding: 130px 0 58px;
-  display: flex;
-  align-items: flex-end;
+  padding: var(--hero-pad-top) 0 var(--hero-pad-bottom);
   overflow: hidden;
   background:
-    radial-gradient(circle at 75% 22%, rgba(92,183,219,.09), transparent 27%),
-    radial-gradient(circle at 25% 85%, rgba(255,255,255,.035), transparent 34%),
+    radial-gradient(circle at 75% 22%, rgba(92, 183, 219, .09), transparent 27%),
+    radial-gradient(circle at 25% 85%, rgba(255, 255, 255, .035), transparent 34%),
     var(--bg);
 }
 
@@ -21,16 +32,25 @@
   background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
 }
 
+/*
+  Three explicit rows keep the title independent from the bottom copy:
+  top label / centered name / bottom information.
+  This prevents MARDANI from colliding with the description.
+*/
 .hero-shell {
   position: relative;
   z-index: 3;
+  min-height: calc(100svh - var(--hero-pad-top) - var(--hero-pad-bottom));
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
 }
 
 .hero-topline {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 24px;
-  margin-bottom: clamp(42px, 6vh, 80px);
+  margin: 0;
   color: var(--dim);
   font-family: var(--font-mono);
   font-size: .6rem;
@@ -39,35 +59,50 @@
 }
 
 .hero-title {
+  position: relative;
+  z-index: 4;
+  align-self: center;
+  width: fit-content;
+  max-width: var(--hero-title-width);
+  margin: 0;
+  padding: clamp(24px, 3vh, 42px) 0 clamp(28px, 3.4vh, 48px);
   color: var(--text);
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(5rem, 11.2vw, 12rem);
-  line-height: .77;
-  letter-spacing: -.085em;
+  font-size: var(--hero-title-size);
+  line-height: .86;
+  letter-spacing: -.08em;
 }
 
-.hero-line { display: block; }
+.hero-line {
+  display: block;
+}
 
 .hero-line-outline {
   color: transparent;
-  -webkit-text-stroke: 1px rgba(245,245,247,.48);
+  -webkit-text-stroke: 1px rgba(245, 245, 247, .48);
 }
 
 .hero-bottom {
-  margin-top: clamp(54px, 7vh, 90px);
+  position: relative;
+  z-index: 5;
   display: grid;
-  grid-template-columns: minmax(0, 560px) auto;
+  grid-template-columns: minmax(0, 600px) auto;
   justify-content: space-between;
   align-items: end;
-  gap: 60px;
+  gap: clamp(44px, 6vw, 96px);
+  margin: 0;
+}
+
+.hero-intro {
+  max-width: 600px;
 }
 
 .hero-intro p {
-  max-width: 560px;
+  max-width: 580px;
   color: var(--muted);
-  font-size: clamp(.96rem, 1.2vw, 1.12rem);
-  line-height: 1.8;
+  font-size: clamp(.94rem, 1.05vw, 1.05rem);
+  line-height: 1.72;
 }
 
 .hero-intro strong {
@@ -76,7 +111,7 @@
 }
 
 .hero-intro .text-link {
-  margin-top: 30px;
+  margin-top: 24px;
   color: var(--text);
 }
 
@@ -85,7 +120,8 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding-bottom: 4px;
+  margin-right: clamp(56px, 6vw, 100px);
+  padding-bottom: 2px;
 }
 
 .status-dot {
@@ -95,8 +131,8 @@
   border-radius: 50%;
   background: var(--accent);
   box-shadow:
-    0 0 0 5px rgba(168,221,245,.05),
-    0 0 24px rgba(168,221,245,.45);
+    0 0 0 5px rgba(168, 221, 245, .05),
+    0 0 24px rgba(168, 221, 245, .45);
 }
 
 .hero-status > div {
@@ -120,7 +156,7 @@
 .hero-scroll {
   position: absolute;
   right: 28px;
-  bottom: 58px;
+  bottom: 48px;
   z-index: 3;
   display: grid;
   justify-items: center;
@@ -138,16 +174,20 @@
   background: linear-gradient(to bottom, var(--line-strong), transparent);
 }
 
+/*
+  Orbit position is independent from the title container.
+  Three.js only renders inside this mount; CSS controls its placement.
+*/
 .hero-orbit {
   position: absolute;
   z-index: 1;
-  width: min(42vw, 620px);
+  width: var(--hero-orbit-size);
   aspect-ratio: 1;
-  right: -8vw;
-  top: 50%;
-  transform: translateY(-48%);
+  right: var(--hero-orbit-right);
+  top: var(--hero-orbit-top);
+  transform: translateY(-50%);
   opacity: .86;
-  filter: drop-shadow(0 40px 100px rgba(0,0,0,.4));
+  filter: drop-shadow(0 40px 100px rgba(0, 0, 0, .4));
 }
 
 .hero-orbit-core {
@@ -155,13 +195,13 @@
   inset: 26%;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 35% 25%, rgba(255,255,255,.28), transparent 18%),
-    radial-gradient(circle at 45% 42%, rgba(168,221,245,.18), transparent 28%),
-    linear-gradient(145deg, rgba(255,255,255,.05), rgba(43,111,140,.03));
-  border: 1px solid rgba(255,255,255,.12);
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, .28), transparent 18%),
+    radial-gradient(circle at 45% 42%, rgba(168, 221, 245, .18), transparent 28%),
+    linear-gradient(145deg, rgba(255, 255, 255, .05), rgba(43, 111, 140, .03));
+  border: 1px solid rgba(255, 255, 255, .12);
   box-shadow:
-    inset 0 0 90px rgba(168,221,245,.05),
-    0 0 100px rgba(99,184,220,.05);
+    inset 0 0 90px rgba(168, 221, 245, .05),
+    0 0 100px rgba(99, 184, 220, .05);
   backdrop-filter: blur(16px);
 }
 
@@ -170,7 +210,7 @@
   position: absolute;
   inset: 12%;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,.06);
+  border: 1px solid rgba(255, 255, 255, .06);
 }
 
 .hero-orbit-ring {
@@ -178,7 +218,7 @@
   left: 50%;
   top: 50%;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, .08);
   transform: translate(-50%, -50%) rotate(-12deg);
 }
 
@@ -190,6 +230,6 @@
 .ring-two {
   width: 68%;
   height: 106%;
-  border-color: rgba(168,221,245,.08);
+  border-color: rgba(168, 221, 245, .08);
   transform: translate(-50%, -50%) rotate(34deg);
 }

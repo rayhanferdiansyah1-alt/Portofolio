@@ -168,48 +168,14 @@
 
   /*
   |--------------------------------------------------------------------------
-  | HERO PARALLAX
+  | HERO POSITIONING
   |--------------------------------------------------------------------------
+  |
+  | The hero title and the Three.js mount are intentionally NOT translated
+  | on scroll. Their alignment is owned only by CSS (hero.css/responsive.css).
+  | Three.js still animates the sculpture inside the orbit container.
+  |
   */
-
-  gsap.to(
-    ".hero-title",
-    {
-      yPercent: -5,
-
-      ease: "none",
-
-      scrollTrigger: {
-        trigger: ".hero",
-
-        start: "top top",
-        end: "bottom top",
-
-        scrub: 1.1
-      }
-    }
-  );
-
-  gsap.to(
-    ".hero-orbit",
-    {
-      yPercent: 12,
-      xPercent: -2,
-
-      scale: 1.035,
-
-      ease: "none",
-
-      scrollTrigger: {
-        trigger: ".hero",
-
-        start: "top top",
-        end: "bottom top",
-
-        scrub: 1.2
-      }
-    }
-  );
 
   /*
   |--------------------------------------------------------------------------

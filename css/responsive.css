@@ -1,54 +1,21 @@
 /* =========================================================
-   RFM PORTFOLIO — V3.8
-   FINAL RESPONSIVE SYSTEM / CLEAN CONSOLIDATION
+   RFM PORTFOLIO — V3.9
+   CLEAN RESPONSIVE SYSTEM
 
-   Catatan arsitektur:
-   - File ini hanya menangani breakpoint dan safety override.
-   - Styling Projects utama tetap di projects.css.
-   - Styling About/Education tetap di about.css.
-   - Styling Capabilities tetap di skills.css.
-   - Styling Contact tetap di contact.css.
+   Hero desktop structure lives in hero.css.
+   This file only changes values at clear, non-overlapping ranges.
    ========================================================= */
-
-
-/* =========================================================
-   DESKTOP BASELINE
-   Menjaga judul tetap stacked dan orb sejajar dengan blok nama.
-   ========================================================= */
-
-@media (min-width: 901px) {
-  .hero-title {
-    position: relative;
-    z-index: 4;
-    line-height: .80;
-  }
-
-  .hero-bottom {
-    position: relative;
-    z-index: 4;
-    margin-top: clamp(42px, 5.5vh, 68px);
-  }
-
-  .hero-orbit {
-    top: 56%;
-    transform: translateY(-50%);
-  }
-}
-
 
 /* =========================================================
    LARGE DESKTOP — 1600px+
    ========================================================= */
 
 @media (min-width: 1600px) {
-  .hero-title {
-    max-width: 1280px;
-  }
-
-  .hero-orbit {
-    width: min(38vw, 650px);
-    right: -2vw;
-    top: 55%;
+  .hero {
+    --hero-title-size: clamp(8.5rem, 9.1vw, 10rem);
+    --hero-title-width: 61%;
+    --hero-orbit-size: min(38vw, 630px);
+    --hero-orbit-right: -2vw;
   }
 
   .project-layout {
@@ -61,20 +28,15 @@
   }
 }
 
-
 /* =========================================================
-   STANDARD DESKTOP / LAPTOP — 1200px–1599px
+   STANDARD DESKTOP — 1400px–1599px
    ========================================================= */
 
-@media (min-width: 1200px) and (max-width: 1599px) {
-  .hero-title {
-    font-size: clamp(6rem, 10.2vw, 10.3rem);
-  }
-
-  .hero-orbit {
-    width: min(39vw, 590px);
-    right: -5vw;
-    top: 56%;
+@media (min-width: 1400px) and (max-width: 1599px) {
+  .hero {
+    --hero-title-size: clamp(7.5rem, 9vw, 9rem);
+    --hero-orbit-size: min(38vw, 580px);
+    --hero-orbit-right: -4vw;
   }
 
   .project-layout {
@@ -82,9 +44,8 @@
   }
 }
 
-
 /* =========================================================
-   COMMON LAPTOP — 1024px–1399px
+   LAPTOP — 1024px–1399px
    ========================================================= */
 
 @media (min-width: 1024px) and (max-width: 1399px) {
@@ -97,35 +58,26 @@
   }
 
   .hero {
-    padding-top: 102px;
-  }
-
-  .hero-topline {
-    margin-bottom: clamp(26px, 4vh, 42px);
+    --hero-pad-top: 102px;
+    --hero-pad-bottom: 32px;
+    --hero-title-size: clamp(5.25rem, 8.85vw, 7.8rem);
+    --hero-title-width: 62%;
+    --hero-orbit-size: min(36vw, 500px);
+    --hero-orbit-right: -5vw;
+    --hero-orbit-top: 50%;
   }
 
   .hero-title {
-    font-size: clamp(5.2rem, 9.4vw, 8.6rem);
-    line-height: .80;
-  }
-
-  .hero-bottom {
-    margin-top: clamp(36px, 4.6vh, 54px);
-  }
-
-  .hero-intro {
-    max-width: 540px;
+    line-height: .86;
   }
 
   .hero-intro p {
-    font-size: .94rem;
-    line-height: 1.7;
+    font-size: .93rem;
+    line-height: 1.66;
   }
 
-  .hero-orbit {
-    width: min(37vw, 510px);
-    right: -6vw;
-    top: 55.5%;
+  .hero-status {
+    margin-right: clamp(42px, 5vw, 72px);
   }
 
   .project {
@@ -170,34 +122,56 @@
   }
 }
 
+/* =========================================================
+   NARROW DESKTOP — 901px–1023px
+   ========================================================= */
+
+@media (min-width: 901px) and (max-width: 1023px) {
+  .shell {
+    width: min(calc(100% - 52px), var(--shell));
+  }
+
+  .desktop-nav {
+    gap: 20px;
+  }
+
+  .hero {
+    --hero-pad-top: 100px;
+    --hero-pad-bottom: 30px;
+    --hero-title-size: clamp(4.9rem, 9.2vw, 6.2rem);
+    --hero-title-width: 64%;
+    --hero-orbit-size: min(38vw, 410px);
+    --hero-orbit-right: -7vw;
+  }
+
+  .hero-status {
+    min-width: 230px;
+    margin-right: 38px;
+  }
+}
 
 /* =========================================================
    SHORT DESKTOP / LAPTOP HEIGHT
-   Contoh: 1366×768, browser dengan toolbar tinggi.
+   This intentionally overrides only vertical metrics.
    ========================================================= */
 
-@media (min-width: 901px) and (max-height: 800px) {
+@media (min-width: 901px) and (max-height: 820px) {
   .hero {
-    min-height: 100svh;
-    padding-top: 90px;
-    padding-bottom: 24px;
-  }
-
-  .hero-topline {
-    margin-bottom: 20px;
+    --hero-pad-top: 92px;
+    --hero-pad-bottom: 26px;
+    --hero-title-size: clamp(4.8rem, 8vw, 7.35rem);
+    --hero-orbit-size: min(34vw, 470px);
+    --hero-orbit-top: 49%;
   }
 
   .hero-title {
-    font-size: clamp(4.6rem, 8.6vw, 7.9rem);
-    line-height: .80;
-  }
-
-  .hero-bottom {
-    margin-top: 34px;
+    padding-top: 16px;
+    padding-bottom: 22px;
+    line-height: .86;
   }
 
   .hero-intro p {
-    max-width: 500px;
+    max-width: 520px;
     font-size: .88rem;
     line-height: 1.58;
   }
@@ -208,12 +182,6 @@
 
   .hero-scroll {
     bottom: 22px;
-  }
-
-  .hero-orbit {
-    width: min(34vw, 470px);
-    right: -5vw;
-    top: 55%;
   }
 
   .about,
@@ -233,7 +201,6 @@
     padding-bottom: 65px;
   }
 }
-
 
 /* =========================================================
    TABLET + MOBILE HEADER — <= 900px
@@ -270,10 +237,18 @@
   }
 
   .hero {
+    --hero-pad-top: 124px;
+    --hero-pad-bottom: 92px;
+    --hero-orbit-size: 470px;
+    --hero-orbit-right: -205px;
+    --hero-orbit-top: 36%;
+
     min-height: auto;
-    padding-top: 125px;
-    padding-bottom: 96px;
-    align-items: initial;
+  }
+
+  .hero-shell {
+    min-height: 0;
+    display: block;
   }
 
   .hero-topline {
@@ -281,15 +256,13 @@
   }
 
   .hero-title {
-    position: relative;
-    z-index: 4;
+    max-width: none;
+    padding: 0;
     font-size: clamp(5rem, 13vw, 7.4rem);
-    line-height: .81;
+    line-height: .86;
   }
 
   .hero-bottom {
-    position: relative;
-    z-index: 5;
     margin-top: 52px;
     grid-template-columns: 1fr;
     gap: 34px;
@@ -301,6 +274,7 @@
 
   .hero-status {
     min-width: 0;
+    margin-right: 0;
   }
 
   .hero-scroll {
@@ -308,11 +282,7 @@
   }
 
   .hero-orbit {
-    width: 480px;
-    right: -205px;
-    top: 39%;
-    transform: translateY(-50%);
-    opacity: .66;
+    opacity: .64;
     pointer-events: none;
   }
 
@@ -362,7 +332,6 @@
   }
 }
 
-
 /* =========================================================
    MOBILE — <= 700px
    ========================================================= */
@@ -377,8 +346,11 @@
   }
 
   .hero {
-    padding-top: 112px;
-    padding-bottom: 86px;
+    --hero-pad-top: 112px;
+    --hero-pad-bottom: 84px;
+    --hero-orbit-size: 400px;
+    --hero-orbit-right: -245px;
+    --hero-orbit-top: 30%;
   }
 
   .hero-topline {
@@ -391,7 +363,7 @@
 
   .hero-title {
     font-size: clamp(4rem, 16vw, 6.2rem);
-    line-height: .81;
+    line-height: .87;
     letter-spacing: -.075em;
   }
 
@@ -414,10 +386,7 @@
   }
 
   .hero-orbit {
-    width: 405px;
-    right: -245px;
-    top: 32%;
-    opacity: .52;
+    opacity: .50;
   }
 
   .projects {
@@ -487,7 +456,6 @@
   }
 }
 
-
 /* =========================================================
    SMALL MOBILE — <= 430px
    ========================================================= */
@@ -502,8 +470,11 @@
   }
 
   .hero {
-    padding-top: 102px;
-    padding-bottom: 76px;
+    --hero-pad-top: 102px;
+    --hero-pad-bottom: 74px;
+    --hero-orbit-size: 320px;
+    --hero-orbit-right: -205px;
+    --hero-orbit-top: 27%;
   }
 
   .hero-topline {
@@ -517,7 +488,7 @@
 
   .hero-title {
     font-size: clamp(3.55rem, 16.5vw, 4.65rem);
-    line-height: .82;
+    line-height: .88;
   }
 
   .hero-bottom {
@@ -534,10 +505,7 @@
   }
 
   .hero-orbit {
-    width: 325px;
-    right: -205px;
-    top: 29%;
-    opacity: .42;
+    opacity: .40;
   }
 
   .projects {
@@ -595,16 +563,17 @@
   }
 }
 
-
 /* =========================================================
    MOBILE LANDSCAPE / SHORT HEIGHT
    ========================================================= */
 
 @media (max-width: 900px) and (max-height: 560px) and (orientation: landscape) {
   .hero {
-    min-height: auto;
-    padding-top: 88px;
-    padding-bottom: 52px;
+    --hero-pad-top: 88px;
+    --hero-pad-bottom: 52px;
+    --hero-orbit-size: 330px;
+    --hero-orbit-right: -125px;
+    --hero-orbit-top: 45%;
   }
 
   .hero-topline {
@@ -623,18 +592,10 @@
   .hero-scroll {
     display: none;
   }
-
-  .hero-orbit {
-    width: 330px;
-    right: -125px;
-    top: 48%;
-  }
 }
-
 
 /* =========================================================
    TOUCH DEVICES
-   Desktop hover transforms tidak dipaksakan di touch screen.
    ========================================================= */
 
 @media (hover: none) {
@@ -649,9 +610,8 @@
   }
 }
 
-
 /* =========================================================
-   THREE.JS / MEDIA / OVERFLOW SAFETY
+   MEDIA / OVERFLOW SAFETY
    ========================================================= */
 
 .hero-orbit canvas {
@@ -681,7 +641,6 @@ video {
   overflow-wrap: normal;
   word-break: normal;
 }
-
 
 /* =========================================================
    REDUCED MOTION
