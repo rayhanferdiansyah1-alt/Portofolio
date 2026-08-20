@@ -1,0 +1,703 @@
+/* =========================================================
+   RFM PORTFOLIO — V3.8
+   FINAL RESPONSIVE SYSTEM / CLEAN CONSOLIDATION
+
+   Catatan arsitektur:
+   - File ini hanya menangani breakpoint dan safety override.
+   - Styling Projects utama tetap di projects.css.
+   - Styling About/Education tetap di about.css.
+   - Styling Capabilities tetap di skills.css.
+   - Styling Contact tetap di contact.css.
+   ========================================================= */
+
+
+/* =========================================================
+   DESKTOP BASELINE
+   Menjaga judul tetap stacked dan orb sejajar dengan blok nama.
+   ========================================================= */
+
+@media (min-width: 901px) {
+  .hero-title {
+    position: relative;
+    z-index: 4;
+    line-height: .80;
+  }
+
+  .hero-bottom {
+    position: relative;
+    z-index: 4;
+    margin-top: clamp(42px, 5.5vh, 68px);
+  }
+
+  .hero-orbit {
+    top: 56%;
+    transform: translateY(-50%);
+  }
+}
+
+
+/* =========================================================
+   LARGE DESKTOP — 1600px+
+   ========================================================= */
+
+@media (min-width: 1600px) {
+  .hero-title {
+    max-width: 1280px;
+  }
+
+  .hero-orbit {
+    width: min(38vw, 650px);
+    right: -2vw;
+    top: 55%;
+  }
+
+  .project-layout {
+    gap: clamp(90px, 8vw, 150px);
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height: 620px;
+  }
+}
+
+
+/* =========================================================
+   STANDARD DESKTOP / LAPTOP — 1200px–1599px
+   ========================================================= */
+
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .hero-title {
+    font-size: clamp(6rem, 10.2vw, 10.3rem);
+  }
+
+  .hero-orbit {
+    width: min(39vw, 590px);
+    right: -5vw;
+    top: 56%;
+  }
+
+  .project-layout {
+    gap: clamp(60px, 7vw, 105px);
+  }
+}
+
+
+/* =========================================================
+   COMMON LAPTOP — 1024px–1399px
+   ========================================================= */
+
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .shell {
+    width: min(calc(100% - 64px), var(--shell));
+  }
+
+  .desktop-nav {
+    gap: clamp(18px, 2.4vw, 34px);
+  }
+
+  .hero {
+    padding-top: 102px;
+  }
+
+  .hero-topline {
+    margin-bottom: clamp(26px, 4vh, 42px);
+  }
+
+  .hero-title {
+    font-size: clamp(5.2rem, 9.4vw, 8.6rem);
+    line-height: .80;
+  }
+
+  .hero-bottom {
+    margin-top: clamp(36px, 4.6vh, 54px);
+  }
+
+  .hero-intro {
+    max-width: 540px;
+  }
+
+  .hero-intro p {
+    font-size: .94rem;
+    line-height: 1.7;
+  }
+
+  .hero-orbit {
+    width: min(37vw, 510px);
+    right: -6vw;
+    top: 55.5%;
+  }
+
+  .project {
+    padding-bottom: 100px;
+  }
+
+  .project-layout {
+    gap: clamp(50px, 6vw, 80px);
+  }
+
+  .project-copy h3 {
+    font-size: clamp(3rem, 5.1vw, 5rem);
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height: clamp(400px, 39vw, 540px);
+  }
+
+  .about-grid {
+    gap: clamp(55px, 7vw, 90px);
+  }
+
+  .about-heading h2 {
+    font-size: clamp(3.8rem, 6.5vw, 6rem);
+  }
+
+  .skills-header h2 {
+    font-size: clamp(4rem, 7.5vw, 7rem);
+  }
+
+  .capability {
+    min-height: 175px;
+  }
+
+  .capability h3 {
+    font-size: clamp(2.8rem, 4.6vw, 4.8rem);
+  }
+
+  .contact-heading {
+    font-size: clamp(4.8rem, 9vw, 8.6rem);
+  }
+}
+
+
+/* =========================================================
+   SHORT DESKTOP / LAPTOP HEIGHT
+   Contoh: 1366×768, browser dengan toolbar tinggi.
+   ========================================================= */
+
+@media (min-width: 901px) and (max-height: 800px) {
+  .hero {
+    min-height: 100svh;
+    padding-top: 90px;
+    padding-bottom: 24px;
+  }
+
+  .hero-topline {
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size: clamp(4.6rem, 8.6vw, 7.9rem);
+    line-height: .80;
+  }
+
+  .hero-bottom {
+    margin-top: 34px;
+  }
+
+  .hero-intro p {
+    max-width: 500px;
+    font-size: .88rem;
+    line-height: 1.58;
+  }
+
+  .hero-intro .text-link {
+    margin-top: 16px;
+  }
+
+  .hero-scroll {
+    bottom: 22px;
+  }
+
+  .hero-orbit {
+    width: min(34vw, 470px);
+    right: -5vw;
+    top: 55%;
+  }
+
+  .about,
+  .skills,
+  .education {
+    padding-top: 110px;
+    padding-bottom: 110px;
+  }
+
+  .projects {
+    padding-top: 110px;
+  }
+
+  .contact {
+    min-height: auto;
+    padding-top: 105px;
+    padding-bottom: 65px;
+  }
+}
+
+
+/* =========================================================
+   TABLET + MOBILE HEADER — <= 900px
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .shell {
+    width: min(calc(100% - 52px), var(--shell));
+  }
+
+  .nav-shell {
+    min-height: 72px;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+  }
+
+  .desktop-nav,
+  .nav-contact {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: block;
+    grid-column: 3;
+  }
+
+  .mobile-nav {
+    inset: 72px 0 auto;
+    padding-inline: 26px;
+  }
+
+  .footer-shell {
+    min-height: 100px;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 125px;
+    padding-bottom: 96px;
+    align-items: initial;
+  }
+
+  .hero-topline {
+    margin-bottom: 44px;
+  }
+
+  .hero-title {
+    position: relative;
+    z-index: 4;
+    font-size: clamp(5rem, 13vw, 7.4rem);
+    line-height: .81;
+  }
+
+  .hero-bottom {
+    position: relative;
+    z-index: 5;
+    margin-top: 52px;
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .hero-intro {
+    max-width: 540px;
+  }
+
+  .hero-status {
+    min-width: 0;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+
+  .hero-orbit {
+    width: 480px;
+    right: -205px;
+    top: 39%;
+    transform: translateY(-50%);
+    opacity: .66;
+    pointer-events: none;
+  }
+
+  .projects-intro {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .projects-note {
+    max-width: 620px;
+  }
+
+  .project-list {
+    margin-top: 85px;
+  }
+
+  .project {
+    padding: 40px 0 88px;
+  }
+
+  .project-layout,
+  .project-layout.project-layout-reverse {
+    grid-template-columns: 1fr;
+    gap: 52px;
+  }
+
+  .project-layout-reverse .project-copy,
+  .project-layout-reverse .project-visual {
+    order: initial;
+  }
+
+  .project-copy {
+    max-width: 720px;
+  }
+
+  .project-copy h3 {
+    font-size: clamp(3.5rem, 9vw, 5.6rem);
+  }
+
+  .project-visual {
+    width: 100%;
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height: clamp(430px, 62vw, 600px);
+  }
+}
+
+
+/* =========================================================
+   MOBILE — <= 700px
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .shell {
+    width: calc(100% - 40px);
+  }
+
+  .mobile-nav {
+    padding-inline: 20px;
+  }
+
+  .hero {
+    padding-top: 112px;
+    padding-bottom: 86px;
+  }
+
+  .hero-topline {
+    margin-bottom: 36px;
+  }
+
+  .hero-topline span {
+    font-size: .5rem;
+  }
+
+  .hero-title {
+    font-size: clamp(4rem, 16vw, 6.2rem);
+    line-height: .81;
+    letter-spacing: -.075em;
+  }
+
+  .hero-bottom {
+    margin-top: 48px;
+    gap: 32px;
+  }
+
+  .hero-intro {
+    max-width: 430px;
+  }
+
+  .hero-intro p {
+    font-size: .9rem;
+    line-height: 1.72;
+  }
+
+  .hero-status {
+    margin-top: 8px;
+  }
+
+  .hero-orbit {
+    width: 405px;
+    right: -245px;
+    top: 32%;
+    opacity: .52;
+  }
+
+  .projects {
+    padding-top: 100px;
+  }
+
+  .projects-heading {
+    font-size: clamp(4rem, 17vw, 6.8rem);
+  }
+
+  .project-list {
+    margin-top: 72px;
+  }
+
+  .project {
+    padding: 34px 0 72px;
+  }
+
+  .project-meta {
+    grid-template-columns: 46px 1fr auto;
+    gap: 12px;
+    font-size: .49rem;
+  }
+
+  .project-layout,
+  .project-layout.project-layout-reverse {
+    margin-top: 38px;
+    gap: 40px;
+  }
+
+  .project-copy h3 {
+    font-size: clamp(3rem, 12vw, 4.8rem);
+    line-height: .92;
+  }
+
+  .project-copy p {
+    max-width: 100%;
+    font-size: .88rem;
+    line-height: 1.76;
+  }
+
+  .project-tech {
+    margin-top: 28px;
+  }
+
+  .project-link {
+    margin-top: 34px;
+  }
+
+  .browser-frame,
+  .project-layout-reverse .browser-frame,
+  .project-visual:hover .browser-frame {
+    transform: none;
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height: clamp(330px, 88vw, 500px);
+  }
+
+  .footer-shell {
+    min-height: 120px;
+    padding-block: 28px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE — <= 430px
+   ========================================================= */
+
+@media (max-width: 430px) {
+  .shell {
+    width: calc(100% - 32px);
+  }
+
+  .brand {
+    font-size: .9rem;
+  }
+
+  .hero {
+    padding-top: 102px;
+    padding-bottom: 76px;
+  }
+
+  .hero-topline {
+    margin-bottom: 30px;
+  }
+
+  .hero-topline span {
+    font-size: .46rem;
+    letter-spacing: .09em;
+  }
+
+  .hero-title {
+    font-size: clamp(3.55rem, 16.5vw, 4.65rem);
+    line-height: .82;
+  }
+
+  .hero-bottom {
+    margin-top: 42px;
+  }
+
+  .hero-intro p {
+    font-size: .85rem;
+    line-height: 1.68;
+  }
+
+  .hero-status {
+    gap: 12px;
+  }
+
+  .hero-orbit {
+    width: 325px;
+    right: -205px;
+    top: 29%;
+    opacity: .42;
+  }
+
+  .projects {
+    padding-top: 90px;
+  }
+
+  .projects-heading {
+    font-size: clamp(3.6rem, 17vw, 5rem);
+  }
+
+  .projects-note {
+    font-size: .86rem;
+  }
+
+  .project-list {
+    margin-top: 62px;
+  }
+
+  .project {
+    padding: 30px 0 64px;
+  }
+
+  .project-meta {
+    grid-template-columns: 36px 1fr auto;
+    font-size: .46rem;
+  }
+
+  .project-layout,
+  .project-layout.project-layout-reverse {
+    margin-top: 34px;
+    gap: 34px;
+  }
+
+  .project-copy h3 {
+    font-size: clamp(2.7rem, 13vw, 3.7rem);
+  }
+
+  .project-copy p {
+    font-size: .84rem;
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height: 300px;
+  }
+
+  .project-shot-overlay {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .project-shot-overlay strong {
+    font-size: 1.25rem;
+  }
+}
+
+
+/* =========================================================
+   MOBILE LANDSCAPE / SHORT HEIGHT
+   ========================================================= */
+
+@media (max-width: 900px) and (max-height: 560px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding-top: 88px;
+    padding-bottom: 52px;
+  }
+
+  .hero-topline {
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size: clamp(3.2rem, 10vw, 5.7rem);
+  }
+
+  .hero-bottom {
+    margin-top: 28px;
+  }
+
+  .hero-status,
+  .hero-scroll {
+    display: none;
+  }
+
+  .hero-orbit {
+    width: 330px;
+    right: -125px;
+    top: 48%;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   Desktop hover transforms tidak dipaksakan di touch screen.
+   ========================================================= */
+
+@media (hover: none) {
+  .project-visual:hover .browser-frame,
+  .project:hover .project-shot img,
+  .capability:hover h3 {
+    transform: none;
+  }
+
+  .project:hover .project-shot img {
+    filter: saturate(.95) contrast(1.03) brightness(.92);
+  }
+}
+
+
+/* =========================================================
+   THREE.JS / MEDIA / OVERFLOW SAFETY
+   ========================================================= */
+
+.hero-orbit canvas {
+  max-width: 100%;
+  max-height: 100%;
+  touch-action: none;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+img,
+canvas,
+svg,
+video {
+  max-width: 100%;
+}
+
+.project-copy h3,
+.contact-heading,
+.about-heading h2,
+.skills-header h2,
+.education-heading h2 {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

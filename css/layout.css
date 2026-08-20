@@ -1,0 +1,133 @@
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 1000;
+  border-bottom: 1px solid transparent;
+  transition:
+    background .35s ease,
+    border-color .35s ease,
+    backdrop-filter .35s ease;
+}
+
+.site-header.is-scrolled {
+  background: rgba(5,5,6,.72);
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(22px);
+}
+
+.nav-shell {
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 50px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -.04em;
+}
+
+.brand-dot { color: var(--accent); }
+
+.desktop-nav {
+  display: flex;
+  justify-content: center;
+  gap: 34px;
+}
+
+.desktop-nav a,
+.nav-contact {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: color .25s ease;
+}
+
+.desktop-nav a:hover,
+.nav-contact:hover { color: var(--text); }
+
+.nav-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mobile-toggle span {
+  display: block;
+  width: 22px;
+  height: 1px;
+  margin: 6px auto;
+  background: var(--text);
+  transition: transform .3s ease;
+}
+
+.mobile-toggle.is-open span:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.mobile-toggle.is-open span:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+.mobile-nav {
+  position: fixed;
+  inset: 82px 0 auto;
+  z-index: 999;
+  display: none;
+  padding: 24px 36px 36px;
+  background: rgba(5,5,6,.96);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(24px);
+}
+
+.mobile-nav.is-open {
+  display: grid;
+  gap: 4px;
+}
+
+.mobile-nav a {
+  padding: 18px 0;
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: -.04em;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.footer-shell {
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  color: var(--dim);
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.footer-shell a { color: var(--text-soft); }
