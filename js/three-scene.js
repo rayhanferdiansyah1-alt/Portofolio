@@ -18,16 +18,16 @@
     "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
   )
     .then((THREE) => {
-      initThreeScene(THREE);
+      initScene(THREE);
     })
     .catch((error) => {
       console.warn(
-        "Three.js gagal dimuat. CSS hero tetap digunakan sebagai fallback.",
+        "Three.js gagal dimuat. Hero CSS digunakan sebagai fallback.",
         error
       );
     });
 
-  function initThreeScene(THREE) {
+  function initScene(THREE) {
     /*
     |--------------------------------------------------------------------------
     | SCENE
@@ -43,7 +43,7 @@
     */
 
     const camera = new THREE.PerspectiveCamera(
-      36,
+      34,
       1,
       0.1,
       100
@@ -52,7 +52,7 @@
     camera.position.set(
       0,
       0,
-      6.4
+      6.8
     );
 
     /*
@@ -86,13 +86,7 @@
       THREE.ACESFilmicToneMapping;
 
     renderer.toneMappingExposure =
-      1.15;
-
-    /*
-    |--------------------------------------------------------------------------
-    | CANVAS
-    |--------------------------------------------------------------------------
-    */
+      1.05;
 
     const canvas =
       renderer.domElement;
@@ -106,22 +100,19 @@
       canvas.style,
       {
         position: "absolute",
-
         inset: "0",
 
         width: "100%",
         height: "100%",
 
-        display: "block",
-
         pointerEvents: "none",
-
-        zIndex: "5",
 
         opacity: "0",
 
+        zIndex: "5",
+
         transition:
-          "opacity 1.2s cubic-bezier(.16,1,.3,1)"
+          "opacity 1.3s cubic-bezier(.16,1,.3,1)"
       }
     );
 
@@ -131,7 +122,7 @@
 
     /*
     |--------------------------------------------------------------------------
-    | GROUP
+    | WORLD
     |--------------------------------------------------------------------------
     */
 
@@ -151,36 +142,43 @@
     const sphereGeometry =
       new THREE.SphereGeometry(
         1.28,
-        64,
-        64
+        96,
+        96
       );
 
     const sphereMaterial =
       new THREE.MeshPhysicalMaterial({
         color:
           new THREE.Color(
-            "#10171c"
+            "#0c1217"
           ),
 
-        metalness: 0.08,
+        roughness: 0.16,
 
-        roughness: 0.12,
+        metalness: 0.06,
 
-        transmission: 0.62,
+        transmission: 0.26,
 
-        thickness: 1.5,
+        thickness: 1.8,
 
-        ior: 1.34,
+        ior: 1.32,
 
         transparent: true,
 
-        opacity: 0.92,
+        opacity: 0.94,
 
         clearcoat: 1,
 
-        clearcoatRoughness: 0.08,
+        clearcoatRoughness: 0.10,
 
-        reflectivity: 0.7
+        reflectivity: 0.48,
+
+        sheen: 0.14,
+
+        sheenColor:
+          new THREE.Color(
+            "#8ed9f4"
+          )
       });
 
     const sphere =
@@ -195,30 +193,30 @@
 
     /*
     |--------------------------------------------------------------------------
-    | INNER CORE
+    | INNER DARK CORE
     |--------------------------------------------------------------------------
     */
 
     const coreGeometry =
       new THREE.IcosahedronGeometry(
-        0.62,
-        5
+        0.67,
+        6
       );
 
     const coreMaterial =
       new THREE.MeshStandardMaterial({
         color:
           new THREE.Color(
-            "#0d161d"
+            "#071017"
           ),
 
-        roughness: 0.24,
+        roughness: 0.38,
 
-        metalness: 0.42,
+        metalness: 0.28,
 
         transparent: true,
 
-        opacity: 0.78
+        opacity: 0.54
       });
 
     const core =
@@ -228,7 +226,7 @@
       );
 
     core.scale.setScalar(
-      0.92
+      0.96
     );
 
     world.add(
@@ -237,13 +235,13 @@
 
     /*
     |--------------------------------------------------------------------------
-    | SUBTLE WIREFRAME
+    | ULTRA SUBTLE WIREFRAME
     |--------------------------------------------------------------------------
     */
 
     const wireGeometry =
       new THREE.IcosahedronGeometry(
-        1.31,
+        1.305,
         2
       );
 
@@ -251,14 +249,16 @@
       new THREE.MeshBasicMaterial({
         color:
           new THREE.Color(
-            "#9ed9ef"
+            "#a9e4fa"
           ),
 
         wireframe: true,
 
         transparent: true,
 
-        opacity: 0.035
+        opacity: 0.022,
+
+        depthWrite: false
       });
 
     const wire =
@@ -273,34 +273,146 @@
 
     /*
     |--------------------------------------------------------------------------
-    | ORBIT RING 01
+    | FRESNEL-LIKE GLASS EDGE
+    |--------------------------------------------------------------------------
+    */
+
+    const fresnelGeometry =
+      new THREE.SphereGeometry(
+        1.32,
+        72,
+        72
+      );
+
+    const fresnelMaterial =
+      new THREE.ShaderMaterial({
+        transparent: true,
+
+        depthWrite: false,
+
+        blending:
+          THREE.AdditiveBlending,
+
+        uniforms: {
+          glowColor: {
+            value:
+              new THREE.Color(
+                "#8edbf7"
+              )
+          },
+
+          intensity: {
+            value: 0.18
+          }
+        },
+
+        vertexShader: `
+          varying vec3 vNormal;
+          varying vec3 vViewPosition;
+
+          void main() {
+
+            vec4 mvPosition =
+              modelViewMatrix *
+              vec4(position, 1.0);
+
+            vViewPosition =
+              -mvPosition.xyz;
+
+            vNormal =
+              normalize(
+                normalMatrix *
+                normal
+              );
+
+            gl_Position =
+              projectionMatrix *
+              mvPosition;
+          }
+        `,
+
+        fragmentShader: `
+          uniform vec3 glowColor;
+          uniform float intensity;
+
+          varying vec3 vNormal;
+          varying vec3 vViewPosition;
+
+          void main() {
+
+            vec3 viewDir =
+              normalize(
+                vViewPosition
+              );
+
+            float fresnel =
+              pow(
+                1.0 -
+                max(
+                  dot(
+                    normalize(vNormal),
+                    viewDir
+                  ),
+                  0.0
+                ),
+                3.4
+              );
+
+            float alpha =
+              fresnel *
+              intensity;
+
+            gl_FragColor =
+              vec4(
+                glowColor,
+                alpha
+              );
+          }
+        `
+      });
+
+    const fresnel =
+      new THREE.Mesh(
+        fresnelGeometry,
+        fresnelMaterial
+      );
+
+    world.add(
+      fresnel
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | ORBIT RING — PRIMARY
     |--------------------------------------------------------------------------
     */
 
     const ringOneGeometry =
       new THREE.TorusGeometry(
         1.92,
-        0.008,
-        10,
-        180
+        0.005,
+        8,
+        220
       );
 
-    const ringMaterial =
+    const ringOneMaterial =
       new THREE.MeshBasicMaterial({
         color:
           new THREE.Color(
-            "#b8e7f8"
+            "#b4e8fb"
           ),
 
         transparent: true,
 
-        opacity: 0.13
+        opacity: 0.09,
+
+        depthWrite: false
       });
 
     const ringOne =
       new THREE.Mesh(
         ringOneGeometry,
-        ringMaterial
+        ringOneMaterial
       );
 
     ringOne.rotation.x =
@@ -315,28 +427,30 @@
 
     /*
     |--------------------------------------------------------------------------
-    | ORBIT RING 02
+    | ORBIT RING — SECONDARY
     |--------------------------------------------------------------------------
     */
 
     const ringTwoGeometry =
       new THREE.TorusGeometry(
-        2.12,
-        0.006,
-        10,
-        180
+        2.15,
+        0.0035,
+        8,
+        220
       );
 
     const ringTwoMaterial =
       new THREE.MeshBasicMaterial({
         color:
           new THREE.Color(
-            "#ffffff"
+            "#e8f8ff"
           ),
 
         transparent: true,
 
-        opacity: 0.065
+        opacity: 0.042,
+
+        depthWrite: false
       });
 
     const ringTwo =
@@ -346,7 +460,7 @@
       );
 
     ringTwo.rotation.x =
-      Math.PI * 0.22;
+      Math.PI * 0.20;
 
     ringTwo.rotation.y =
       Math.PI * 0.52;
@@ -357,30 +471,76 @@
 
     /*
     |--------------------------------------------------------------------------
-    | OUTER HALO
+    | THIRD ARCH RING
+    |--------------------------------------------------------------------------
+    */
+
+    const ringThreeGeometry =
+      new THREE.TorusGeometry(
+        1.70,
+        0.0028,
+        8,
+        180
+      );
+
+    const ringThreeMaterial =
+      new THREE.MeshBasicMaterial({
+        color:
+          new THREE.Color(
+            "#ffffff"
+          ),
+
+        transparent: true,
+
+        opacity: 0.026,
+
+        depthWrite: false
+      });
+
+    const ringThree =
+      new THREE.Mesh(
+        ringThreeGeometry,
+        ringThreeMaterial
+      );
+
+    ringThree.rotation.x =
+      Math.PI * 0.82;
+
+    ringThree.rotation.z =
+      Math.PI * 0.24;
+
+    world.add(
+      ringThree
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | HALO
     |--------------------------------------------------------------------------
     */
 
     const haloGeometry =
       new THREE.SphereGeometry(
-        1.55,
-        48,
-        48
+        1.52,
+        64,
+        64
       );
 
     const haloMaterial =
       new THREE.MeshBasicMaterial({
         color:
           new THREE.Color(
-            "#79c6e5"
+            "#78cbe8"
           ),
 
         transparent: true,
 
-        opacity: 0.018,
+        opacity: 0.011,
 
         side:
-          THREE.BackSide
+          THREE.BackSide,
+
+        depthWrite: false
       });
 
     const halo =
@@ -395,14 +555,14 @@
 
     /*
     |--------------------------------------------------------------------------
-    | LIGHTING
+    | LIGHTING — SOFTER
     |--------------------------------------------------------------------------
     */
 
     const ambientLight =
       new THREE.AmbientLight(
-        0xffffff,
-        0.46
+        0xdcefff,
+        0.34
       );
 
     scene.add(
@@ -410,21 +570,21 @@
     );
 
     /*
-    | Ice blue key light
+    | Main icy light
     */
 
     const keyLight =
       new THREE.PointLight(
-        0xb6e9ff,
-        22,
-        15,
+        0xbbeeff,
+        7.5,
+        16,
         2
       );
 
     keyLight.position.set(
-      3.8,
-      3,
-      4
+      4.2,
+      3.4,
+      5
     );
 
     scene.add(
@@ -432,21 +592,21 @@
     );
 
     /*
-    | Cold rim light
+    | Lower blue rim
     */
 
     const rimLight =
       new THREE.PointLight(
-        0x5aaed3,
-        16,
-        12,
+        0x4da5cf,
+        5.2,
+        14,
         2
       );
 
     rimLight.position.set(
-      -4,
-      -2,
-      2
+      -4.5,
+      -2.8,
+      3.5
     );
 
     scene.add(
@@ -454,19 +614,19 @@
     );
 
     /*
-    | Soft white upper light
+    | White soft top light
     */
 
     const topLight =
       new THREE.DirectionalLight(
         0xffffff,
-        1.6
+        0.72
       );
 
     topLight.position.set(
       0,
       5,
-      3
+      5
     );
 
     scene.add(
@@ -474,8 +634,28 @@
     );
 
     /*
+    | Very subtle fill
+    */
+
+    const fillLight =
+      new THREE.DirectionalLight(
+        0x7cc7e3,
+        0.32
+      );
+
+    fillLight.position.set(
+      -3,
+      1,
+      3
+    );
+
+    scene.add(
+      fillLight
+    );
+
+    /*
     |--------------------------------------------------------------------------
-    | POINTER
+    | POINTER INTERACTION
     |--------------------------------------------------------------------------
     */
 
@@ -489,29 +669,38 @@
       y: 0
     };
 
-    const handlePointer =
-      (event) => {
+    const targetPosition = {
+      x: 0,
+      y: 0
+    };
 
-        const normalizedX =
-          event.clientX /
-          window.innerWidth;
+    function handlePointer(event) {
+      const nx =
+        event.clientX /
+        window.innerWidth;
 
-        const normalizedY =
-          event.clientY /
-          window.innerHeight;
+      const ny =
+        event.clientY /
+        window.innerHeight;
 
-        pointer.x =
-          normalizedX * 2 - 1;
+      pointer.x =
+        nx * 2 - 1;
 
-        pointer.y =
-          normalizedY * 2 - 1;
+      pointer.y =
+        ny * 2 - 1;
 
-        targetRotation.y =
-          pointer.x * 0.22;
+      targetRotation.y =
+        pointer.x * 0.16;
 
-        targetRotation.x =
-          pointer.y * 0.12;
-      };
+      targetRotation.x =
+        pointer.y * 0.085;
+
+      targetPosition.x =
+        pointer.x * 0.055;
+
+      targetPosition.y =
+        -pointer.y * 0.035;
+    }
 
     if (
       !reducedMotion &&
@@ -534,35 +723,33 @@
     |--------------------------------------------------------------------------
     */
 
-    const resize =
-      () => {
+    function resize() {
+      const rect =
+        container.getBoundingClientRect();
 
-        const rect =
-          container.getBoundingClientRect();
-
-        const width =
-          Math.max(
-            rect.width,
-            1
-          );
-
-        const height =
-          Math.max(
-            rect.height,
-            1
-          );
-
-        renderer.setSize(
-          width,
-          height,
-          false
+      const width =
+        Math.max(
+          rect.width,
+          1
         );
 
-        camera.aspect =
-          width / height;
+      const height =
+        Math.max(
+          rect.height,
+          1
+        );
 
-        camera.updateProjectionMatrix();
-      };
+      renderer.setSize(
+        width,
+        height,
+        false
+      );
+
+      camera.aspect =
+        width / height;
+
+      camera.updateProjectionMatrix();
+    }
 
     const resizeObserver =
       new ResizeObserver(
@@ -577,67 +764,57 @@
 
     /*
     |--------------------------------------------------------------------------
-    | HERO VISIBILITY
+    | VISIBILITY OPTIMIZATION
     |--------------------------------------------------------------------------
     */
 
-    let heroVisible =
-      true;
+    let heroVisible = true;
 
-    const visibilityObserver =
+    const heroObserver =
       new IntersectionObserver(
         (entries) => {
-
-          entries.forEach(
-            (entry) => {
-
-              heroVisible =
-                entry.isIntersecting;
-
-            }
-          );
-
+          heroVisible =
+            entries[0]
+              ?.isIntersecting ??
+            true;
         },
         {
           threshold: 0.02
         }
       );
 
-    visibilityObserver.observe(
+    heroObserver.observe(
       hero
     );
 
     /*
     |--------------------------------------------------------------------------
-    | SCROLL DEPTH
+    | SCROLL REACTION
     |--------------------------------------------------------------------------
     */
 
-    let scrollProgress =
-      0;
+    let scrollProgress = 0;
 
-    const updateScroll =
-      () => {
+    function updateScroll() {
+      const rect =
+        hero.getBoundingClientRect();
 
-        const rect =
-          hero.getBoundingClientRect();
+      const height =
+        Math.max(
+          hero.offsetHeight,
+          1
+        );
 
-        const heroHeight =
+      scrollProgress =
+        Math.min(
           Math.max(
-            hero.offsetHeight,
-            1
-          );
-
-        scrollProgress =
-          Math.min(
-            Math.max(
-              -rect.top /
-              heroHeight,
-              0
-            ),
-            1
-          );
-      };
+            -rect.top /
+            height,
+            0
+          ),
+          1
+        );
+    }
 
     window.addEventListener(
       "scroll",
@@ -660,12 +837,11 @@
 
     /*
     |--------------------------------------------------------------------------
-    | ANIMATION LOOP
+    | ANIMATION
     |--------------------------------------------------------------------------
     */
 
     function animate() {
-
       requestAnimationFrame(
         animate
       );
@@ -674,99 +850,101 @@
         return;
       }
 
-      const elapsed =
+      const time =
         clock.getElapsedTime();
 
       /*
-      | Smooth mouse follow
+      | Elegant mouse follow
       */
 
       world.rotation.y +=
         (
           targetRotation.y -
           world.rotation.y
-        ) * 0.035;
+        ) * 0.028;
 
       world.rotation.x +=
         (
           targetRotation.x -
           world.rotation.x
-        ) * 0.035;
+        ) * 0.028;
+
+      world.position.x +=
+        (
+          targetPosition.x -
+          world.position.x
+        ) * 0.025;
 
       /*
-      | Slow autonomous rotation
+      | Floating
+      */
+
+      const floating =
+        Math.sin(
+          time * 0.48
+        ) * 0.035;
+
+      world.position.y =
+        floating +
+        targetPosition.y -
+        scrollProgress * 0.18;
+
+      /*
+      | Very slow autonomous motion
       */
 
       if (!reducedMotion) {
-
         sphere.rotation.y +=
-          0.0015;
-
-        sphere.rotation.x =
-          Math.sin(
-            elapsed * 0.25
-          ) * 0.025;
-
-        core.rotation.x +=
-          0.001;
+          0.00075;
 
         core.rotation.y -=
-          0.0014;
+          0.00060;
+
+        core.rotation.x +=
+          0.00032;
 
         wire.rotation.y +=
-          0.0008;
-
-        wire.rotation.z -=
-          0.00045;
+          0.00030;
 
         ringOne.rotation.z +=
-          0.0009;
+          0.00034;
 
         ringTwo.rotation.z -=
-          0.00065;
+          0.00023;
 
+        ringThree.rotation.y +=
+          0.00018;
       }
 
       /*
-      | Subtle floating
+      | Scroll depth
       */
-
-      world.position.y =
-        Math.sin(
-          elapsed * 0.55
-        ) * 0.035;
-
-      /*
-      | Scroll reaction
-      */
-
-      world.position.y -=
-        scrollProgress * 0.22;
 
       world.rotation.z =
-        scrollProgress * 0.08;
+        scrollProgress *
+        0.045;
 
       /*
-      | Light follows mouse
+      | Interactive lighting
       */
 
       keyLight.position.x =
-        3.8 +
-        pointer.x * 1.15;
+        4.2 +
+        pointer.x * 0.75;
 
       keyLight.position.y =
-        3 -
-        pointer.y * 0.8;
+        3.4 -
+        pointer.y * 0.48;
 
       /*
-      | Tiny breathing effect
+      | Subtle breathing
       */
 
       const breathing =
         1 +
         Math.sin(
-          elapsed * 0.65
-        ) * 0.006;
+          time * 0.55
+        ) * 0.004;
 
       halo.scale.setScalar(
         breathing
@@ -780,45 +958,30 @@
 
     /*
     |--------------------------------------------------------------------------
-    | ACTIVATE WEBGL
+    | WEBGL READY
     |--------------------------------------------------------------------------
     */
 
     requestAnimationFrame(
       () => {
-
-        /*
-        Hide CSS fallback object only
-        after WebGL initializes successfully.
-        */
-
         container
           .querySelectorAll(
             ".hero-orbit-core, .hero-orbit-ring"
           )
           .forEach(
             (element) => {
+              element.style.transition =
+                "opacity .9s ease";
 
               element.style.opacity =
                 "0";
-
-              element.style.transition =
-                "opacity .8s ease";
-
             }
           );
 
         canvas.style.opacity =
           "1";
-
       }
     );
-
-    /*
-    |--------------------------------------------------------------------------
-    | START
-    |--------------------------------------------------------------------------
-    */
 
     animate();
 
@@ -831,43 +994,43 @@
     window.addEventListener(
       "pagehide",
       () => {
-
         resizeObserver.disconnect();
+        heroObserver.disconnect();
 
-        visibilityObserver.disconnect();
+        window.removeEventListener(
+          "pointermove",
+          handlePointer
+        );
 
         renderer.dispose();
 
         sphereGeometry.dispose();
-
         sphereMaterial.dispose();
 
         coreGeometry.dispose();
-
         coreMaterial.dispose();
 
         wireGeometry.dispose();
-
         wireMaterial.dispose();
 
-        ringOneGeometry.dispose();
+        fresnelGeometry.dispose();
+        fresnelMaterial.dispose();
 
-        ringMaterial.dispose();
+        ringOneGeometry.dispose();
+        ringOneMaterial.dispose();
 
         ringTwoGeometry.dispose();
-
         ringTwoMaterial.dispose();
 
+        ringThreeGeometry.dispose();
+        ringThreeMaterial.dispose();
+
         haloGeometry.dispose();
-
         haloMaterial.dispose();
-
       },
       {
         once: true
       }
     );
-
   }
-
 })();
