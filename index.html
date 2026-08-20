@@ -1,563 +1,388 @@
 <!doctype html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07111f">
-  <meta name="description" content="Portfolio Rayhan Ferdisnyah Mardani, A.Md.Kom. Junior Web Developer dengan fokus pada Laravel, PHP, MySQL, sistem informasi, dan UI/UX.">
+  <meta name="theme-color" content="#050506">
+  <meta name="description"
+    content="Portfolio Rayhan Ferdisnyah Mardani — Junior Web Developer dengan fokus Laravel, PHP, MySQL, dan sistem informasi.">
   <meta name="author" content="Rayhan Ferdisnyah Mardani">
   <title>Rayhan Ferdisnyah Mardani — Junior Web Developer</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/hero.css">
-  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/about.css">
   <link rel="stylesheet" href="css/projects.css">
   <link rel="stylesheet" href="css/skills.css">
   <link rel="stylesheet" href="css/contact.css">
-  <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/effects.css">
+  <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
 
 <body id="top">
   <a class="skip-link" href="#main">Lewati ke konten utama</a>
-  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <div class="page-noise" aria-hidden="true"></div>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
 
   <header class="site-header" id="siteHeader">
-    <div class="wrap header-inner">
-      <a href="#top" class="brand" aria-label="Kembali ke awal">
-        RFM<span class="brand-dot">.</span>
-      </a>
+    <div class="shell nav-shell">
+      <a class="brand" href="#top" aria-label="Kembali ke awal">RFM<span class="brand-dot">.</span></a>
 
-      <nav class="main-nav" aria-label="Navigasi utama">
-        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navList" aria-label="Buka menu">
-          <span></span><span></span><span></span>
-        </button>
-
-        <ul class="nav-list" id="navList">
-          <li><a href="#about">About</a></li>
-          <li><a href="#pendidikan">Pendidikan</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#skill">Skills</a></li>
-          <li><a href="#contact" class="nav-cta">Contact</a></li>
-        </ul>
+      <nav class="desktop-nav" aria-label="Navigasi utama">
+        <a href="#about">About</a>
+        <a href="#projects">Work</a>
+        <a href="#skills">Capabilities</a>
+        <a href="#education">Education</a>
       </nav>
+
+      <a class="nav-contact" href="#contact">Contact <span aria-hidden="true">↗</span></a>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Buka navigasi" aria-expanded="false"
+        aria-controls="mobileNav">
+        <span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#about">About</a>
+      <a href="#projects">Work</a>
+      <a href="#skills">Capabilities</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact ↗</a>
     </div>
   </header>
 
   <main id="main">
-
     <section class="hero" aria-labelledby="heroTitle">
-      <div class="wrap hero-inner">
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="hero-orbit-core"></div>
+        <div class="hero-orbit-ring ring-one"></div>
+        <div class="hero-orbit-ring ring-two"></div>
+      </div>
 
-        <div class="hero-copy reveal">
-          <p class="eyebrow">PORTFOLIO / JUNIOR WEB DEVELOPER / LARAVEL</p>
+      <div class="shell hero-shell">
+        <div class="hero-topline reveal">
+          <span>PORTFOLIO / 2026</span>
+          <span>JUNIOR WEB DEVELOPER</span>
+        </div>
 
-          <h1 id="heroTitle">
-            Rayhan<br>
-            <span>Ferdisnyah</span><br>
-            Mardani.
-          </h1>
+        <h1 class="hero-title" id="heroTitle">
+          <span class="hero-line reveal-text">RAYHAN</span>
+          <span class="hero-line hero-line-outline reveal-text">FERDISNYAH</span>
+          <span class="hero-line reveal-text">MARDANI</span>
+        </h1>
 
-          <p class="hero-desc">
-            Junior Web Developer dan lulusan D3 Manajemen Informatika yang
-            berfokus pada pengembangan aplikasi web menggunakan Laravel, PHP,
-            dan MySQL. Saya senang mengubah kebutuhan menjadi sistem yang
-            terstruktur, fungsional, dan mudah digunakan.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#projects" class="btn btn-primary">
-              Lihat Projects <span aria-hidden="true">↗</span>
-            </a>
-            <a href="#contact" class="btn btn-ghost">Hubungi Saya</a>
+        <div class="hero-bottom">
+          <div class="hero-intro reveal">
+            <p>Saya membangun aplikasi web yang terstruktur, fungsional, dan mudah digunakan dengan fokus pada
+              <strong>Laravel, PHP, dan MySQL.</strong>
+            </p>
+            <a class="text-link magnetic" href="#projects">Explore selected work <span aria-hidden="true">↓</span></a>
           </div>
 
-          <div class="hero-meta" aria-label="Ringkasan profil">
-            <div class="hero-meta-item">
-              <strong>A.Md.Kom</strong>
-              <span>Gelar akademik</span>
-            </div>
-            <div class="hero-meta-item">
-              <strong>Laravel · PHP</strong>
-              <span>Fokus utama</span>
-            </div>
-            <div class="hero-meta-item">
-              <strong>Indonesia</strong>
-              <span>Base</span>
+          <div class="hero-status reveal">
+            <span class="status-dot"></span>
+            <div>
+              <span class="status-label">AVAILABLE FOR OPPORTUNITIES</span>
+              <strong>Indonesia · 2026</strong>
             </div>
           </div>
         </div>
-
-        <aside class="profile-card reveal" aria-label="Profil singkat">
-          <div class="profile-top">
-            <span class="unit">UNIT / 01</span>
-            <span class="status"><i class="status-dot"></i>OPEN TO WORK</span>
-          </div>
-
-          <div class="avatar" aria-hidden="true">RF</div>
-
-          <h2 class="profile-name">Rayhan Ferdisnyah Mardani</h2>
-          <p class="profile-role">A.Md.Kom · Junior Web Developer</p>
-
-          <dl class="spec-list">
-            <div class="spec-row">
-              <dt>NAME</dt>
-              <dd>Rayhan Ferdisnyah Mardani</dd>
-            </div>
-            <div class="spec-row">
-              <dt>TITLE</dt>
-              <dd>Junior Web Developer</dd>
-            </div>
-            <div class="spec-row">
-              <dt>STACK</dt>
-              <dd>Laravel · PHP · MySQL</dd>
-            </div>
-            <div class="spec-row">
-              <dt>FIELD</dt>
-              <dd>Manajemen Informatika</dd>
-            </div>
-            <div class="spec-row">
-              <dt>CAMPUS</dt>
-              <dd>Universitas Bina Sarana Informatika</dd>
-            </div>
-          </dl>
-
-          <p class="serial">SN / RFM—WEBDEV—PORTFOLIO / 2026</p>
-        </aside>
-
       </div>
+
+      <div class="hero-scroll" aria-hidden="true"><span>SCROLL</span><i></i></div>
     </section>
 
-    <section class="section section-alt" id="about">
-      <div class="wrap">
-
-        <div class="section-head reveal">
-          <div>
-            <p class="section-kicker">§01 / PROFILE</p>
-            <h2 class="section-title">About me</h2>
-          </div>
-
-          <p class="section-note">
-            Membangun sistem bukan hanya tentang kode, tetapi tentang memahami
-            masalah, menyusun data, dan menghasilkan solusi yang berguna.
-          </p>
-        </div>
+    <section class="about" id="about">
+      <div class="shell">
+        <div class="section-index reveal">01 / PROFILE</div>
 
         <div class="about-grid">
-          <p class="about-lead reveal">
-            “Ide yang jelas harus bisa diterjemahkan menjadi sistem yang jelas.”
-          </p>
+          <div class="about-heading reveal">
+            <p class="eyebrow">ABOUT</p>
+            <h2>Building useful systems, <span>not just interfaces.</span></h2>
+          </div>
 
           <div class="about-copy reveal">
-            <p>
-              Saya <strong>Rayhan Ferdisnyah Mardani</strong>, bergelar
-              <strong>A.Md.Kom</strong> setelah menyelesaikan pendidikan Diploma
-              Tiga di bidang Manajemen Informatika. Saya tertarik pada
-              pengembangan aplikasi web dan sistem informasi yang membantu
-              proses kerja menjadi lebih terstruktur.
-            </p>
-
-            <p>
-              Fokus saya berada pada pengembangan web dari sisi antarmuka,
-              logika aplikasi, hingga basis data. Saya menggunakan
-              <strong>Laravel dan PHP</strong> untuk backend,
-              <strong>MySQL</strong> untuk pengelolaan data, serta HTML, CSS,
-              dan JavaScript untuk membangun tampilan web.
-            </p>
-
-            <ul class="about-points">
-              <li>Membangun aplikasi CRUD dan sistem informasi berbasis web.</li>
-              <li>Menggunakan Laravel, PHP, MySQL, HTML, CSS, dan JavaScript.</li>
-              <li>Memahami relasi database, autentikasi, role, dan alur data aplikasi.</li>
-              <li>Memperhatikan struktur UI agar sistem mudah digunakan.</li>
-              <li>Terus mengembangkan kemampuan melalui project dan praktik langsung.</li>
-            </ul>
+            <p class="about-lead">Saya Rayhan Ferdisnyah Mardani, A.Md.Kom — lulusan D3 Manajemen Informatika dengan
+              minat utama pada pengembangan aplikasi web dan sistem informasi.</p>
+            <p>Saya terbiasa memecah kebutuhan menjadi alur yang jelas, menyusun struktur data, lalu
+              mengimplementasikannya dengan Laravel, PHP, MySQL, HTML, CSS, dan JavaScript.</p>
+            <p>Fokus saya bukan hanya membuat halaman terlihat rapi, tetapi juga memastikan logika aplikasi, relasi
+              database, autentikasi, role, dan proses bisnis bekerja dengan baik.</p>
           </div>
         </div>
 
+        <div class="about-stats">
+          <div class="stat reveal"><span class="stat-number">04+</span><span class="stat-label">Selected Projects</span>
+          </div>
+          <div class="stat reveal"><span class="stat-number">Laravel</span><span class="stat-label">Primary
+              Framework</span></div>
+          <div class="stat reveal"><span class="stat-number">MySQL</span><span class="stat-label">Database Focus</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="pendidikan">
-      <div class="wrap">
-
-        <div class="section-head reveal">
+    <section class="projects" id="projects">
+      <div class="shell">
+        <div class="projects-intro">
           <div>
-            <p class="section-kicker">§02 / EDUCATION</p>
-            <h2 class="section-title">Education</h2>
+            <div class="section-index reveal">02 / SELECTED WORK</div>
+            <p class="eyebrow reveal">PROJECTS</p>
+            <h2 class="projects-heading reveal-text">Selected<br>work.</h2>
           </div>
-
-          <p class="section-note">
-            Pendidikan vokasi yang menjadi dasar dalam pemrograman,
-            basis data, sistem informasi, dan pengembangan perangkat lunak.
-          </p>
+          <p class="projects-note reveal">Project yang mewakili pengalaman saya dalam membangun aplikasi web, sistem
+            informasi, database, dan digitalisasi proses kerja.</p>
         </div>
 
-        <article class="edu-card reveal">
-          <div class="edu-card-top">
+        <div class="project-list">
+          <article class="project project-featured">
+            <div class="project-meta reveal"><span>01</span><span>WEB APPLICATION</span><span>2025</span></div>
+            <div class="project-layout">
+              <div class="project-copy reveal">
+                <h3>Sistem Absensi<br>Pegawai Klinik</h3>
+                <p>Aplikasi untuk pencatatan kehadiran pegawai, pengajuan cuti, pengelolaan lembur, rekap kehadiran,
+                  hingga informasi penggajian dan slip gaji.</p>
+                <ul class="project-tech">
+                  <li>Laravel</li>
+                  <li>PHP</li>
+                  <li>MySQL</li>
+                  <li>Blade</li>
+                </ul>
+                <a href="#contact" class="project-link magnetic">View project overview <span>↗</span></a>
+              </div>
+              <div class="project-visual reveal">
+                <div class="browser-frame">
+                  <div class="browser-bar">
+                    <span></span><span></span><span></span>
+                  </div>
+
+                  <div class="project-shot">
+                    <img src="assets/images/projects/project-01.png"
+                      alt="Preview project Sistem Absensi Pegawai Klinik">
+
+                    <div class="project-shot-overlay">
+                      <span>Dashboard Preview</span>
+                      <strong>Absensi Klinik</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-meta reveal"><span>02</span><span>INFORMATION SYSTEM</span><span>2025</span></div>
+            <div class="project-layout project-layout-reverse">
+              <div class="project-copy reveal">
+                <h3>Sistem Informasi<br>Sekolah</h3>
+                <p>Sistem multi-role untuk mengelola data siswa, guru, pembayaran, informasi sekolah, nilai, dan laporan
+                  berdasarkan hak akses pengguna.</p>
+                <ul class="project-tech">
+                  <li>Laravel</li>
+                  <li>PHP</li>
+                  <li>MySQL</li>
+                  <li>Bootstrap</li>
+                </ul>
+                <a href="#contact" class="project-link magnetic">View project overview <span>↗</span></a>
+              </div>
+              <div class="project-visual reveal">
+                <div class="browser-frame">
+                  <div class="browser-bar">
+                    <span></span><span></span><span></span>
+                  </div>
+
+                  <div class="project-shot">
+                    <img src="assets/images/projects/project-02.png" alt="Preview project Sistem Informasi Sekolah">
+
+                    <div class="project-shot-overlay">
+                      <span>System Preview</span>
+                      <strong>School System</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-meta reveal"><span>03</span><span>DIGITALIZATION</span><span>2025</span></div>
+            <div class="project-layout">
+              <div class="project-copy reveal">
+                <h3>Generator Sertifikat<br>Digital</h3>
+                <p>Sistem pengelolaan peserta dan generator sertifikat digital dengan QR Code untuk membantu
+                  digitalisasi proses administrasi dan validasi dokumen.</p>
+                <ul class="project-tech">
+                  <li>PHP</li>
+                  <li>MySQL</li>
+                  <li>QR Code</li>
+                  <li>PDF</li>
+                </ul>
+                <a href="#contact" class="project-link magnetic">View project overview <span>↗</span></a>
+              </div>
+              <div class="project-visual reveal">
+                <div class="browser-frame">
+                  <div class="browser-bar">
+                    <span></span><span></span><span></span>
+                  </div>
+
+                  <div class="project-shot">
+                    <img src="assets/images/projects/project-03.png" alt="Preview project Generator Sertifikat Digital">
+
+                    <div class="project-shot-overlay">
+                      <span>Project Preview</span>
+                      <strong>Digital Certificate</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-meta reveal"><span>04</span><span>PAYROLL SYSTEM</span><span>2025</span></div>
+            <div class="project-layout project-layout-reverse">
+              <div class="project-copy reveal">
+                <h3>Sistem Penggajian<br>& Lembur</h3>
+                <p>Sistem penghitungan gaji yang menghubungkan data pegawai, absensi, jam kerja, shift, lembur, hingga
+                  pembuatan slip gaji.</p>
+                <ul class="project-tech">
+                  <li>Laravel</li>
+                  <li>PHP</li>
+                  <li>MySQL</li>
+                  <li>Blade</li>
+                </ul>
+                <a href="#contact" class="project-link magnetic">View project overview <span>↗</span></a>
+              </div>
+              <div class="project-visual reveal">
+                <div class="browser-frame">
+                  <div class="browser-bar">
+                    <span></span><span></span><span></span>
+                  </div>
+
+                  <div class="project-shot">
+                    <img src="assets/images/projects/project-04.png" alt="Preview project Sistem Penggajian dan Lembur">
+
+                    <div class="project-shot-overlay">
+                      <span>Management Preview</span>
+                      <strong>Payroll System</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="skills" id="skills">
+      <div class="shell">
+        <div class="section-index reveal">03 / CAPABILITIES</div>
+        <div class="skills-header">
+          <p class="eyebrow reveal">TECH STACK</p>
+          <h2 class="reveal-text">What I work with.</h2>
+        </div>
+
+        <div class="capabilities">
+          <article class="capability reveal"><span class="capability-index">01</span>
+            <div><span class="capability-label">BACKEND</span>
+              <h3>Laravel<br>PHP</h3>
+            </div>
+          </article>
+          <article class="capability reveal"><span class="capability-index">02</span>
+            <div><span class="capability-label">DATABASE</span>
+              <h3>MySQL<br>Relational DB</h3>
+            </div>
+          </article>
+          <article class="capability reveal"><span class="capability-index">03</span>
+            <div><span class="capability-label">FRONTEND</span>
+              <h3>HTML · CSS<br>JavaScript</h3>
+            </div>
+          </article>
+          <article class="capability reveal"><span class="capability-index">04</span>
+            <div><span class="capability-label">TOOLS</span>
+              <h3>Git · GitHub<br>Laragon · Linux</h3>
+            </div>
+          </article>
+          <article class="capability reveal"><span class="capability-index">05</span>
+            <div><span class="capability-label">DESIGN</span>
+              <h3>Responsive UI<br>UI / UX</h3>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="education" id="education">
+      <div class="shell">
+        <div class="section-index reveal">04 / EDUCATION</div>
+        <div class="education-layout">
+          <div class="education-heading reveal">
+            <p class="eyebrow">EDUCATION</p>
+            <h2>Academic<br>foundation.</h2>
+          </div>
+          <article class="education-card reveal">
+            <div class="education-year">D3</div>
             <div>
-              <h3>Diploma Tiga — Manajemen Informatika</h3>
-              <p class="edu-institution">
-                Universitas Bina Sarana Informatika (BSI)
-              </p>
-            </div>
-
-            <span class="edu-badge">A.Md.Kom</span>
-          </div>
-
-          <p>
-            Menempuh pendidikan vokasi yang menggabungkan teori sistem informasi
-            dengan praktik pengembangan perangkat lunak, mulai dari pemrograman,
-            basis data, perancangan sistem, hingga implementasi aplikasi.
-          </p>
-
-          <div class="edu-tags" aria-label="Bidang pembelajaran">
-            <span>Pemrograman Web</span>
-            <span>Basis Data</span>
-            <span>Sistem Informasi</span>
-            <span>Rekayasa Perangkat Lunak</span>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <section class="section section-alt" id="projects">
-      <div class="wrap">
-
-        <div class="section-head reveal">
-          <div>
-            <p class="section-kicker">§03 / SELECTED WORK</p>
-            <h2 class="section-title">Selected Projects</h2>
-          </div>
-
-          <p class="section-note">
-            Project yang merepresentasikan pengalaman saya dalam membangun
-            aplikasi web dan sistem informasi.
-          </p>
-        </div>
-
-        <div class="projects-grid">
-
-          <article class="project-card project-featured reveal">
-            <div class="project-content">
-              <div class="project-head">
-                <span class="project-tag">WEB APP / LARAVEL</span>
-                <span class="project-number">P.01</span>
-              </div>
-
-              <h3>Sistem Absensi Pegawai Klinik</h3>
-
-              <p>
-                Aplikasi web untuk membantu pencatatan kehadiran pegawai klinik
-                sekaligus mendukung pengelolaan cuti, lembur, dan informasi
-                penggajian secara lebih terstruktur.
-              </p>
-
-              <ul class="project-stack" aria-label="Teknologi proyek">
-                <li>Laravel</li>
-                <li>PHP</li>
-                <li>MySQL</li>
-                <li>Blade</li>
-              </ul>
-
-              <div class="project-features">
-                <span>Absensi</span>
-                <span>Cuti</span>
-                <span>Lembur</span>
-                <span>Penggajian</span>
-              </div>
-
-              <a href="#contact" class="project-link">
-                Diskusikan project <span aria-hidden="true">→</span>
-              </a>
+              <span class="education-degree">Manajemen Informatika</span>
+              <h3>Universitas Bina Sarana Informatika</h3>
+              <p>Pendidikan vokasi dengan fokus pada pemrograman, basis data, sistem informasi, rekayasa perangkat
+                lunak, dan implementasi teknologi informasi.</p>
+              <div class="education-tags"><span>A.Md.Kom</span><span>Web
+                  Development</span><span>Database</span><span>Information Systems</span></div>
             </div>
           </article>
-
-          <article class="project-card reveal">
-            <div class="project-content">
-              <div class="project-head">
-                <span class="project-tag">SCHOOL / INFORMATION SYSTEM</span>
-                <span class="project-number">P.02</span>
-              </div>
-
-              <h3>Sistem Informasi Sekolah</h3>
-
-              <p>
-                Sistem informasi sekolah dengan pengelolaan data siswa, guru,
-                kelas, pembayaran, absensi, serta akses berdasarkan peran
-                pengguna.
-              </p>
-
-              <ul class="project-stack" aria-label="Teknologi proyek">
-                <li>Laravel</li>
-                <li>PHP</li>
-                <li>MySQL</li>
-              </ul>
-
-              <div class="project-features">
-                <span>Role Access</span>
-                <span>Siswa</span>
-                <span>Guru</span>
-                <span>Pembayaran</span>
-              </div>
-
-              <a href="#contact" class="project-link">
-                Diskusikan project <span aria-hidden="true">→</span>
-              </a>
-            </div>
-          </article>
-
-          <article class="project-card reveal">
-            <div class="project-content">
-              <div class="project-head">
-                <span class="project-tag">DIGITALIZATION / QR CODE</span>
-                <span class="project-number">P.03</span>
-              </div>
-
-              <h3>Generator Sertifikat Digital</h3>
-
-              <p>
-                Sistem untuk mengelola peserta dan menghasilkan sertifikat
-                digital dengan QR Code sebagai bagian dari proses digitalisasi
-                dokumen.
-              </p>
-
-              <ul class="project-stack" aria-label="Teknologi proyek">
-                <li>Laravel</li>
-                <li>PHP</li>
-                <li>MySQL</li>
-                <li>QR Code</li>
-              </ul>
-
-              <div class="project-features">
-                <span>Peserta</span>
-                <span>Sertifikat</span>
-                <span>QR Code</span>
-                <span>Digitalisasi</span>
-              </div>
-
-              <a href="#contact" class="project-link">
-                Diskusikan project <span aria-hidden="true">→</span>
-              </a>
-            </div>
-          </article>
-
-          <article class="project-card reveal">
-            <div class="project-content">
-              <div class="project-head">
-                <span class="project-tag">WEB / PAYROLL</span>
-                <span class="project-number">P.04</span>
-              </div>
-
-              <h3>Sistem Penggajian & Lembur</h3>
-
-              <p>
-                Sistem pengelolaan penggajian yang menghubungkan data pegawai,
-                kehadiran, jam kerja, lembur, hingga informasi slip gaji.
-              </p>
-
-              <ul class="project-stack" aria-label="Teknologi proyek">
-                <li>Laravel</li>
-                <li>PHP</li>
-                <li>MySQL</li>
-              </ul>
-
-              <div class="project-features">
-                <span>Payroll</span>
-                <span>Overtime</span>
-                <span>Attendance</span>
-                <span>Slip Gaji</span>
-              </div>
-
-              <a href="#contact" class="project-link">
-                Diskusikan project <span aria-hidden="true">→</span>
-              </a>
-            </div>
-          </article>
-
         </div>
       </div>
     </section>
 
-    <section class="section" id="skill">
-      <div class="wrap">
-
-        <div class="section-head reveal">
-          <div>
-            <p class="section-kicker">§04 / TECH STACK</p>
-            <h2 class="section-title">Skills</h2>
-          </div>
-
-          <p class="section-note">
-            Teknologi dan tools yang saya gunakan dalam proses belajar
-            maupun pengembangan project.
-          </p>
+    <section class="contact" id="contact">
+      <div class="shell">
+        <div class="contact-topline reveal"><span>05 / CONTACT</span><span>AVAILABLE FOR OPPORTUNITIES</span></div>
+        <div class="contact-main">
+          <p class="eyebrow reveal">LET'S TALK</p>
+          <h2 class="contact-heading reveal-text">Have a project,<br>opportunity,<br>or idea?</h2>
+          <a class="contact-cta magnetic reveal" href="mailto:rayhan.mardani@email.com"><span>Start a
+              conversation</span><span>↗</span></a>
         </div>
 
-        <div class="skills-grid">
-
-          <article class="skill-card reveal">
-            <div class="skill-top">
-              <span class="skill-name">Laravel</span>
-              <span class="skill-level">Backend</span>
-            </div>
-            <div class="skill-track">
-              <div class="skill-progress" style="--level:82%"></div>
-            </div>
-          </article>
-
-          <article class="skill-card reveal">
-            <div class="skill-top">
-              <span class="skill-name">PHP</span>
-              <span class="skill-level">Backend</span>
-            </div>
-            <div class="skill-track">
-              <div class="skill-progress" style="--level:78%"></div>
-            </div>
-          </article>
-
-          <article class="skill-card reveal">
-            <div class="skill-top">
-              <span class="skill-name">MySQL</span>
-              <span class="skill-level">Database</span>
-            </div>
-            <div class="skill-track">
-              <div class="skill-progress" style="--level:80%"></div>
-            </div>
-          </article>
-
-          <article class="skill-card reveal">
-            <div class="skill-top">
-              <span class="skill-name">HTML & CSS</span>
-              <span class="skill-level">Frontend</span>
-            </div>
-            <div class="skill-track">
-              <div class="skill-progress" style="--level:88%"></div>
-            </div>
-          </article>
-
-          <article class="skill-card reveal">
-            <div class="skill-top">
-              <span class="skill-name">JavaScript</span>
-              <span class="skill-level">Frontend</span>
-            </div>
-            <div class="skill-track">
-              <div class="skill-progress" style="--level:70%"></div>
-            </div>
-          </article>
-
-          <article class="skill-card reveal">
-            <div class="skill-top">
-              <span class="skill-name">Git / GitHub</span>
-              <span class="skill-level">Tools</span>
-            </div>
-            <div class="skill-track">
-              <div class="skill-progress" style="--level:65%"></div>
-            </div>
-          </article>
-
-          <article class="skill-card reveal">
-            <div class="skill-top">
-              <span class="skill-name">UI / UX</span>
-              <span class="skill-level">Design</span>
-            </div>
-            <div class="skill-track">
-              <div class="skill-progress" style="--level:72%"></div>
-            </div>
-          </article>
-
-          <article class="skill-card reveal">
-            <div class="skill-top">
-              <span class="skill-name">Linux</span>
-              <span class="skill-level">Environment</span>
-            </div>
-            <div class="skill-track">
-              <div class="skill-progress" style="--level:65%"></div>
-            </div>
-          </article>
-
+        <div class="contact-footer">
+          <div class="contact-links reveal">
+            <a href="mailto:rayhan.mardani@email.com">Email</a>
+            <a href="https://github.com/username" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://instagram.com/username" target="_blank" rel="noopener noreferrer">Instagram</a>
+          </div>
+          <p class="contact-note reveal">Ganti email, GitHub, dan Instagram dengan akun asli sebelum dipublikasikan.</p>
         </div>
       </div>
     </section>
-
-    <section class="section section-alt" id="contact">
-      <div class="wrap">
-
-        <div class="contact-box reveal">
-          <p class="section-kicker">§05 / CONTACT</p>
-
-          <h2>Let's build something useful.</h2>
-
-          <p>
-            Terbuka untuk kesempatan kerja, kolaborasi project, maupun diskusi
-            mengenai pengembangan aplikasi web. Ganti data kontak di bawah
-            dengan akun asli sebelum portfolio dipublikasikan.
-          </p>
-
-          <div class="contact-grid">
-
-            <a class="contact-card" href="mailto:rayhan.mardani@email.com">
-              <span class="contact-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                  <rect x="3" y="5" width="18" height="14" rx="2"/>
-                  <path d="m3 7 9 6 9-6"/>
-                </svg>
-              </span>
-              <span>
-                <span class="contact-label">Email</span>
-                <span class="contact-value">rayhan.mardani@email.com</span>
-              </span>
-            </a>
-
-            <a class="contact-card" href="https://instagram.com/username" target="_blank" rel="noopener noreferrer">
-              <span class="contact-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                  <rect x="3" y="3" width="18" height="18" rx="5"/>
-                  <circle cx="12" cy="12" r="4"/>
-                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-                </svg>
-              </span>
-              <span>
-                <span class="contact-label">Instagram</span>
-                <span class="contact-value">@username</span>
-              </span>
-            </a>
-
-            <a class="contact-card" href="https://github.com/username" target="_blank" rel="noopener noreferrer">
-              <span class="contact-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.31 6.84 9.66.5.1.68-.22.68-.5v-1.75c-2.78.62-3.37-1.37-3.37-1.37-.46-1.2-1.11-1.52-1.11-1.52-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.75 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.75-1.05 2.75-1.05.55 1.43.2 2.49.1 2.75.64.72 1.02 1.63 1.02 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .28.18.61.69.5A10.02 10.02 0 0 0 22 12.2C22 6.58 17.52 2 12 2Z"/>
-                </svg>
-              </span>
-              <span>
-                <span class="contact-label">GitHub</span>
-                <span class="contact-value">github.com/username</span>
-              </span>
-            </a>
-
-          </div>
-        </div>
-
-      </div>
-    </section>
-
   </main>
 
   <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <p>© <span id="year"></span> Rayhan Ferdisnyah Mardani, A.Md.Kom.</p>
-      <a class="back-top" href="#top">Kembali ke atas ↑</a>
+    <div class="shell footer-shell">
+      <span>© <span id="year"></span> RAYHAN FERDISNYAH MARDANI</span>
+      <a href="#top">BACK TO TOP ↑</a>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+  <script src="js/smooth-scroll.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/main.js"></script>
 </body>
+
 </html>
