@@ -1,37 +1,32 @@
-/* RFM PORTFOLIO / variables.css */
-
-
-/* =========================================================
-   ROOT VARIABLES
-   ========================================================= */
-
 :root {
-  --bg: #03070d;
-  --bg-2: #060d16;
+  --bg: #050506;
+  --bg-soft: #090a0c;
+  --surface: #0c0d10;
+  --surface-2: #101216;
 
-  --panel: rgba(10, 20, 32, 0.72);
-  --panel-solid: #0a1420;
+  --text: #f5f5f7;
+  --text-soft: #d2d2d7;
+  --muted: #8b8f97;
+  --dim: #5f646c;
 
-  --white: #f4f8fc;
-  --text: #d6e0e9;
-  --muted: #778899;
-  --dim: #4d6072;
+  --accent: #a8ddf5;
+  --accent-soft: #d9f2ff;
+  --accent-deep: #5ab8dc;
 
-  --blue: #62d9ff;
-  --blue-soft: #a8edff;
-  --blue-dark: #178eb9;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
 
-  --line: rgba(180, 220, 240, 0.12);
-  --line-blue: rgba(98, 217, 255, 0.30);
+  --font-display: "Manrope", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-mono: "Space Mono", monospace;
 
-  --shadow:
-    0 30px 100px rgba(0, 0, 0, 0.55);
+  --shell: 1440px;
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
 
-  --radius: 20px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  --heading: "Space Grotesk", sans-serif;
-  --body: "DM Sans", sans-serif;
-  --mono: "Space Mono", monospace;
-
-  --max: 1240px;
+  --shadow-soft: 0 30px 90px rgba(0, 0, 0, 0.28);
+  --shadow-deep: 0 60px 160px rgba(0, 0, 0, 0.55);
 }
