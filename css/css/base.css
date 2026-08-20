@@ -1,0 +1,196 @@
+/* RFM PORTFOLIO / base.css */
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100%;
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at 75% 5%,
+      rgba(43, 174, 221, 0.09),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 15% 45%,
+      rgba(15, 86, 120, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #02050a,
+      #050c14 45%,
+      #03070d
+    );
+
+  color: var(--text);
+  font-family: var(--body);
+  line-height: 1.7;
+}
+
+::selection {
+  background: var(--blue);
+  color: #001018;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.skip-link {
+  position: fixed;
+  left: 20px;
+  top: -100px;
+
+  z-index: 9999;
+
+  padding: 10px 16px;
+
+  background: var(--blue);
+  color: #001018;
+
+  border-radius: 6px;
+
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  top: 20px;
+}
+
+
+/* =========================================================
+   CINEMATIC BACKGROUND
+   ========================================================= */
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 85%
+    );
+
+  pointer-events: none;
+
+  z-index: -5;
+}
+
+body::after {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 30%,
+      rgba(0, 0, 0, 0.45)
+    );
+
+  pointer-events: none;
+
+  z-index: -4;
+}
+
+
+/* =========================================================
+   GLOBAL CONTAINER
+   ========================================================= */
+
+.wrap {
+  width: min(
+    calc(100% - 56px),
+    var(--max)
+  );
+
+  margin-inline: auto;
+}
+
+.section {
+  position: relative;
+
+  padding: 150px 0;
+}
+
+.section::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 50%;
+
+  width: min(
+    calc(100% - 56px),
+    var(--max)
+  );
+
+  height: 1px;
+
+  transform: translateX(-50%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--line-blue),
+      transparent
+    );
+}
+
+.section-alt {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.015),
+      rgba(255, 255, 255, 0.005)
+    );
+}

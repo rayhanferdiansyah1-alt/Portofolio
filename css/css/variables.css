@@ -1,0 +1,37 @@
+/* RFM PORTFOLIO / variables.css */
+
+
+/* =========================================================
+   ROOT VARIABLES
+   ========================================================= */
+
+:root {
+  --bg: #03070d;
+  --bg-2: #060d16;
+
+  --panel: rgba(10, 20, 32, 0.72);
+  --panel-solid: #0a1420;
+
+  --white: #f4f8fc;
+  --text: #d6e0e9;
+  --muted: #778899;
+  --dim: #4d6072;
+
+  --blue: #62d9ff;
+  --blue-soft: #a8edff;
+  --blue-dark: #178eb9;
+
+  --line: rgba(180, 220, 240, 0.12);
+  --line-blue: rgba(98, 217, 255, 0.30);
+
+  --shadow:
+    0 30px 100px rgba(0, 0, 0, 0.55);
+
+  --radius: 20px;
+
+  --heading: "Space Grotesk", sans-serif;
+  --body: "DM Sans", sans-serif;
+  --mono: "Space Mono", monospace;
+
+  --max: 1240px;
+}

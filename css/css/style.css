@@ -1,0 +1,12 @@
+/* Main stylesheet entry point */
+@import url("variables.css");
+@import url("base.css");
+@import url("header.css");
+@import url("hero.css");
+@import url("sections.css");
+@import url("projects.css");
+@import url("skills.css");
+@import url("contact.css");
+@import url("footer.css");
+@import url("effects.css");
+@import url("responsive.css");

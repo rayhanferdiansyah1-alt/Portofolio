@@ -1,0 +1,174 @@
+/* RFM PORTFOLIO / contact.css */
+
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+
+.contact-box {
+  position: relative;
+
+  padding: 70px;
+
+  border:
+    1px solid var(--line-blue);
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(98, 217, 255, 0.13),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(13, 29, 44, 0.80),
+      rgba(3, 8, 14, 0.85)
+    );
+}
+
+.contact-box::before {
+  content: "";
+
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  right: -300px;
+  bottom: -350px;
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(98, 217, 255, 0.08);
+}
+
+.contact-box h2 {
+  max-width: 800px;
+
+  margin-top: 15px;
+
+  font-family: var(--heading);
+
+  font-size:
+    clamp(
+      3rem,
+      6vw,
+      6rem
+    );
+
+  line-height: 0.9;
+
+  letter-spacing: -0.08em;
+}
+
+.contact-box > p:not(.section-kicker) {
+  max-width: 650px;
+
+  margin-top: 25px;
+
+  color: var(--muted);
+
+  font-size: 0.82rem;
+}
+
+.contact-grid {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 10px;
+
+  margin-top: 45px;
+
+  z-index: 2;
+}
+
+.contact-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 18px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 10px;
+
+  background:
+    rgba(2, 7, 13, 0.45);
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.contact-card:hover {
+  transform:
+    translateY(-5px);
+
+  border-color:
+    var(--line-blue);
+
+  background:
+    rgba(98, 217, 255, 0.04);
+}
+
+.contact-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 8px;
+
+  color: var(--blue);
+}
+
+.contact-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.contact-label {
+  display: block;
+
+  color: var(--dim);
+
+  font-family: var(--mono);
+
+  font-size: 0.5rem;
+
+  text-transform: uppercase;
+}
+
+.contact-value {
+  display: block;
+
+  margin-top: 3px;
+
+  color: var(--text);
+
+  font-size: 0.7rem;
+
+  overflow-wrap: anywhere;
+}
