@@ -4,9 +4,65 @@
 
   if (!hero || !container) return;
 
+  /*
+  |--------------------------------------------------------------------------
+  | DEVICE / USER PREFERENCES
+  |--------------------------------------------------------------------------
+  */
+
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
+
+  const coarsePointer = window.matchMedia(
+    "(pointer: coarse)"
+  ).matches;
+
+  const mobileViewport = window.matchMedia(
+    "(max-width: 900px)"
+  ).matches;
+
+  const connection =
+    navigator.connection ||
+    navigator.mozConnection ||
+    navigator.webkitConnection;
+
+  const saveData =
+    connection?.saveData === true;
+
+  const deviceMemory =
+    navigator.deviceMemory || 8;
+
+  const cpuThreads =
+    navigator.hardwareConcurrency || 8;
+
+  const lowPowerDevice =
+    deviceMemory <= 4 ||
+    cpuThreads <= 4;
+
+  const reducedQuality =
+    mobileViewport ||
+    coarsePointer ||
+    lowPowerDevice;
+
+
+  /*
+  |--------------------------------------------------------------------------
+  | IMPORTANT
+  |
+  | Kalau user menggunakan:
+  | - Save Data
+  | - Reduced Motion
+  |
+  | Three.js tidak perlu diload.
+  | CSS orb lama otomatis tetap tampil sebagai fallback.
+  |--------------------------------------------------------------------------
+  */
+
+  if (saveData || reducedMotion) {
+    return;
+  }
+
 
   /*
   |--------------------------------------------------------------------------
@@ -22,19 +78,65 @@
     })
     .catch((error) => {
       console.warn(
-        "Three.js gagal dimuat. Hero CSS digunakan sebagai fallback.",
+        "Three.js gagal dimuat. CSS orb digunakan sebagai fallback.",
         error
       );
     });
 
+
+  /*
+  |--------------------------------------------------------------------------
+  | SCENE
+  |--------------------------------------------------------------------------
+  */
+
   function initScene(THREE) {
+    let destroyed = false;
+    let heroVisible = true;
+    let documentVisible = !document.hidden;
+
+    let rafId = null;
+    let previousTime = 0;
+
+    /*
+    |--------------------------------------------------------------------------
+    | QUALITY PROFILE
+    |--------------------------------------------------------------------------
+    */
+
+    const quality = reducedQuality
+      ? {
+          sphereSegments: 48,
+          fresnelSegments: 40,
+          pixelRatio: 1,
+          fps: 30,
+          antialias: false,
+          wireframe: false,
+          thirdRing: false
+        }
+      : {
+          sphereSegments: 72,
+          fresnelSegments: 64,
+          pixelRatio: Math.min(
+            window.devicePixelRatio,
+            1.5
+          ),
+          fps: 60,
+          antialias: true,
+          wireframe: true,
+          thirdRing: true
+        };
+
+
     /*
     |--------------------------------------------------------------------------
     | SCENE
     |--------------------------------------------------------------------------
     */
 
-    const scene = new THREE.Scene();
+    const scene =
+      new THREE.Scene();
+
 
     /*
     |--------------------------------------------------------------------------
@@ -42,12 +144,13 @@
     |--------------------------------------------------------------------------
     */
 
-    const camera = new THREE.PerspectiveCamera(
-      34,
-      1,
-      0.1,
-      100
-    );
+    const camera =
+      new THREE.PerspectiveCamera(
+        34,
+        1,
+        0.1,
+        100
+      );
 
     camera.position.set(
       0,
@@ -55,17 +158,43 @@
       6.8
     );
 
+
     /*
     |--------------------------------------------------------------------------
     | RENDERER
     |--------------------------------------------------------------------------
     */
 
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      powerPreference: "high-performance"
-    });
+    let renderer;
+
+    try {
+      renderer =
+        new THREE.WebGLRenderer({
+          alpha: true,
+
+          antialias:
+            quality.antialias,
+
+          powerPreference:
+            reducedQuality
+              ? "low-power"
+              : "high-performance",
+
+          depth: true,
+
+          stencil: false,
+
+          preserveDrawingBuffer: false
+        });
+    } catch (error) {
+      console.warn(
+        "WebGL tidak tersedia. Menggunakan CSS orb.",
+        error
+      );
+
+      return;
+    }
+
 
     renderer.setClearColor(
       0x000000,
@@ -73,10 +202,7 @@
     );
 
     renderer.setPixelRatio(
-      Math.min(
-        window.devicePixelRatio,
-        1.5
-      )
+      quality.pixelRatio
     );
 
     renderer.outputColorSpace =
@@ -86,7 +212,14 @@
       THREE.ACESFilmicToneMapping;
 
     renderer.toneMappingExposure =
-      1.05;
+      1.02;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CANVAS
+    |--------------------------------------------------------------------------
+    */
 
     const canvas =
       renderer.domElement;
@@ -100,10 +233,13 @@
       canvas.style,
       {
         position: "absolute",
+
         inset: "0",
 
         width: "100%",
         height: "100%",
+
+        display: "block",
 
         pointerEvents: "none",
 
@@ -112,13 +248,14 @@
         zIndex: "5",
 
         transition:
-          "opacity 1.3s cubic-bezier(.16,1,.3,1)"
+          "opacity 1.2s cubic-bezier(.16,1,.3,1)"
       }
     );
 
     container.appendChild(
       canvas
     );
+
 
     /*
     |--------------------------------------------------------------------------
@@ -133,6 +270,7 @@
       world
     );
 
+
     /*
     |--------------------------------------------------------------------------
     | MAIN GLASS ORB
@@ -142,9 +280,12 @@
     const sphereGeometry =
       new THREE.SphereGeometry(
         1.28,
-        96,
-        96
+
+        quality.sphereSegments,
+
+        quality.sphereSegments
       );
+
 
     const sphereMaterial =
       new THREE.MeshPhysicalMaterial({
@@ -153,13 +294,19 @@
             "#0c1217"
           ),
 
-        roughness: 0.16,
+        roughness:
+          reducedQuality
+            ? 0.2
+            : 0.16,
 
         metalness: 0.06,
 
-        transmission: 0.26,
+        transmission:
+          reducedQuality
+            ? 0.18
+            : 0.26,
 
-        thickness: 1.8,
+        thickness: 1.7,
 
         ior: 1.32,
 
@@ -167,19 +314,26 @@
 
         opacity: 0.94,
 
-        clearcoat: 1,
+        clearcoat:
+          reducedQuality
+            ? 0.75
+            : 1,
 
-        clearcoatRoughness: 0.10,
+        clearcoatRoughness: 0.1,
 
-        reflectivity: 0.48,
+        reflectivity: 0.46,
 
-        sheen: 0.14,
+        sheen:
+          reducedQuality
+            ? 0.06
+            : 0.12,
 
         sheenColor:
           new THREE.Color(
             "#8ed9f4"
           )
       });
+
 
     const sphere =
       new THREE.Mesh(
@@ -191,17 +345,22 @@
       sphere
     );
 
+
     /*
     |--------------------------------------------------------------------------
-    | INNER DARK CORE
+    | INNER CORE
     |--------------------------------------------------------------------------
     */
 
     const coreGeometry =
       new THREE.IcosahedronGeometry(
         0.67,
-        6
+
+        reducedQuality
+          ? 3
+          : 5
       );
+
 
     const coreMaterial =
       new THREE.MeshStandardMaterial({
@@ -210,14 +369,15 @@
             "#071017"
           ),
 
-        roughness: 0.38,
+        roughness: 0.4,
 
         metalness: 0.28,
 
         transparent: true,
 
-        opacity: 0.54
+        opacity: 0.52
       });
+
 
     const core =
       new THREE.Mesh(
@@ -233,56 +393,73 @@
       core
     );
 
+
     /*
     |--------------------------------------------------------------------------
-    | ULTRA SUBTLE WIREFRAME
+    | OPTIONAL WIREFRAME
+    |
+    | Desktop:
+    | aktif
+    |
+    | Mobile / low-power:
+    | tidak dibuat sama sekali
     |--------------------------------------------------------------------------
     */
 
-    const wireGeometry =
-      new THREE.IcosahedronGeometry(
-        1.305,
-        2
+    let wire = null;
+    let wireGeometry = null;
+    let wireMaterial = null;
+
+    if (quality.wireframe) {
+      wireGeometry =
+        new THREE.IcosahedronGeometry(
+          1.305,
+          2
+        );
+
+      wireMaterial =
+        new THREE.MeshBasicMaterial({
+          color:
+            new THREE.Color(
+              "#a9e4fa"
+            ),
+
+          wireframe: true,
+
+          transparent: true,
+
+          opacity: 0.018,
+
+          depthWrite: false
+        });
+
+      wire =
+        new THREE.Mesh(
+          wireGeometry,
+          wireMaterial
+        );
+
+      world.add(
+        wire
       );
+    }
 
-    const wireMaterial =
-      new THREE.MeshBasicMaterial({
-        color:
-          new THREE.Color(
-            "#a9e4fa"
-          ),
-
-        wireframe: true,
-
-        transparent: true,
-
-        opacity: 0.022,
-
-        depthWrite: false
-      });
-
-    const wire =
-      new THREE.Mesh(
-        wireGeometry,
-        wireMaterial
-      );
-
-    world.add(
-      wire
-    );
 
     /*
     |--------------------------------------------------------------------------
-    | FRESNEL-LIKE GLASS EDGE
+    | FRESNEL EDGE
     |--------------------------------------------------------------------------
     */
 
     const fresnelGeometry =
       new THREE.SphereGeometry(
         1.32,
-        72,
-        72
+
+        quality.fresnelSegments,
+
+        quality.fresnelSegments
       );
+
 
     const fresnelMaterial =
       new THREE.ShaderMaterial({
@@ -302,7 +479,10 @@
           },
 
           intensity: {
-            value: 0.18
+            value:
+              reducedQuality
+                ? 0.12
+                : 0.17
           }
         },
 
@@ -340,7 +520,7 @@
 
           void main() {
 
-            vec3 viewDir =
+            vec3 viewDirection =
               normalize(
                 vViewPosition
               );
@@ -351,7 +531,7 @@
                 max(
                   dot(
                     normalize(vNormal),
-                    viewDir
+                    viewDirection
                   ),
                   0.0
                 ),
@@ -371,6 +551,7 @@
         `
       });
 
+
     const fresnel =
       new THREE.Mesh(
         fresnelGeometry,
@@ -381,9 +562,10 @@
       fresnel
     );
 
+
     /*
     |--------------------------------------------------------------------------
-    | ORBIT RING — PRIMARY
+    | PRIMARY ORBIT
     |--------------------------------------------------------------------------
     */
 
@@ -391,9 +573,12 @@
       new THREE.TorusGeometry(
         1.92,
         0.005,
-        8,
-        220
+        6,
+        reducedQuality
+          ? 120
+          : 180
       );
+
 
     const ringOneMaterial =
       new THREE.MeshBasicMaterial({
@@ -404,10 +589,11 @@
 
         transparent: true,
 
-        opacity: 0.09,
+        opacity: 0.085,
 
         depthWrite: false
       });
+
 
     const ringOne =
       new THREE.Mesh(
@@ -425,9 +611,10 @@
       ringOne
     );
 
+
     /*
     |--------------------------------------------------------------------------
-    | ORBIT RING — SECONDARY
+    | SECONDARY ORBIT
     |--------------------------------------------------------------------------
     */
 
@@ -435,9 +622,12 @@
       new THREE.TorusGeometry(
         2.15,
         0.0035,
-        8,
-        220
+        6,
+        reducedQuality
+          ? 100
+          : 160
       );
+
 
     const ringTwoMaterial =
       new THREE.MeshBasicMaterial({
@@ -448,10 +638,11 @@
 
         transparent: true,
 
-        opacity: 0.042,
+        opacity: 0.038,
 
         depthWrite: false
       });
+
 
     const ringTwo =
       new THREE.Mesh(
@@ -460,7 +651,7 @@
       );
 
     ringTwo.rotation.x =
-      Math.PI * 0.20;
+      Math.PI * 0.2;
 
     ringTwo.rotation.y =
       Math.PI * 0.52;
@@ -469,49 +660,61 @@
       ringTwo
     );
 
+
     /*
     |--------------------------------------------------------------------------
-    | THIRD ARCH RING
+    | THIRD ORBIT
+    |
+    | Desktop only
     |--------------------------------------------------------------------------
     */
 
-    const ringThreeGeometry =
-      new THREE.TorusGeometry(
-        1.70,
-        0.0028,
-        8,
-        180
+    let ringThree = null;
+    let ringThreeGeometry = null;
+    let ringThreeMaterial = null;
+
+    if (quality.thirdRing) {
+      ringThreeGeometry =
+        new THREE.TorusGeometry(
+          1.7,
+          0.0028,
+          6,
+          140
+        );
+
+
+      ringThreeMaterial =
+        new THREE.MeshBasicMaterial({
+          color:
+            new THREE.Color(
+              "#ffffff"
+            ),
+
+          transparent: true,
+
+          opacity: 0.024,
+
+          depthWrite: false
+        });
+
+
+      ringThree =
+        new THREE.Mesh(
+          ringThreeGeometry,
+          ringThreeMaterial
+        );
+
+      ringThree.rotation.x =
+        Math.PI * 0.82;
+
+      ringThree.rotation.z =
+        Math.PI * 0.24;
+
+      world.add(
+        ringThree
       );
+    }
 
-    const ringThreeMaterial =
-      new THREE.MeshBasicMaterial({
-        color:
-          new THREE.Color(
-            "#ffffff"
-          ),
-
-        transparent: true,
-
-        opacity: 0.026,
-
-        depthWrite: false
-      });
-
-    const ringThree =
-      new THREE.Mesh(
-        ringThreeGeometry,
-        ringThreeMaterial
-      );
-
-    ringThree.rotation.x =
-      Math.PI * 0.82;
-
-    ringThree.rotation.z =
-      Math.PI * 0.24;
-
-    world.add(
-      ringThree
-    );
 
     /*
     |--------------------------------------------------------------------------
@@ -522,9 +725,16 @@
     const haloGeometry =
       new THREE.SphereGeometry(
         1.52,
-        64,
-        64
+
+        reducedQuality
+          ? 32
+          : 48,
+
+        reducedQuality
+          ? 32
+          : 48
       );
+
 
     const haloMaterial =
       new THREE.MeshBasicMaterial({
@@ -535,13 +745,14 @@
 
         transparent: true,
 
-        opacity: 0.011,
+        opacity: 0.01,
 
         side:
           THREE.BackSide,
 
         depthWrite: false
       });
+
 
     const halo =
       new THREE.Mesh(
@@ -553,31 +764,34 @@
       halo
     );
 
+
     /*
     |--------------------------------------------------------------------------
-    | LIGHTING — SOFTER
+    | LIGHTING
     |--------------------------------------------------------------------------
     */
 
     const ambientLight =
       new THREE.AmbientLight(
         0xdcefff,
-        0.34
+        0.3
       );
 
     scene.add(
       ambientLight
     );
 
-    /*
-    | Main icy light
-    */
 
     const keyLight =
       new THREE.PointLight(
         0xbbeeff,
-        7.5,
+
+        reducedQuality
+          ? 5
+          : 7,
+
         16,
+
         2
       );
 
@@ -591,15 +805,17 @@
       keyLight
     );
 
-    /*
-    | Lower blue rim
-    */
 
     const rimLight =
       new THREE.PointLight(
         0x4da5cf,
-        5.2,
+
+        reducedQuality
+          ? 3.5
+          : 5,
+
         14,
+
         2
       );
 
@@ -613,14 +829,11 @@
       rimLight
     );
 
-    /*
-    | White soft top light
-    */
 
     const topLight =
       new THREE.DirectionalLight(
         0xffffff,
-        0.72
+        0.68
       );
 
     topLight.position.set(
@@ -633,29 +846,10 @@
       topLight
     );
 
-    /*
-    | Very subtle fill
-    */
-
-    const fillLight =
-      new THREE.DirectionalLight(
-        0x7cc7e3,
-        0.32
-      );
-
-    fillLight.position.set(
-      -3,
-      1,
-      3
-    );
-
-    scene.add(
-      fillLight
-    );
 
     /*
     |--------------------------------------------------------------------------
-    | POINTER INTERACTION
+    | POINTER
     |--------------------------------------------------------------------------
     */
 
@@ -664,15 +858,18 @@
       y: 0
     };
 
+
     const targetRotation = {
       x: 0,
       y: 0
     };
 
+
     const targetPosition = {
       x: 0,
       y: 0
     };
+
 
     function handlePointer(event) {
       const nx =
@@ -683,31 +880,34 @@
         event.clientY /
         window.innerHeight;
 
+
       pointer.x =
         nx * 2 - 1;
 
       pointer.y =
         ny * 2 - 1;
 
+
       targetRotation.y =
-        pointer.x * 0.16;
+        pointer.x * 0.15;
 
       targetRotation.x =
-        pointer.y * 0.085;
+        pointer.y * 0.08;
+
 
       targetPosition.x =
-        pointer.x * 0.055;
+        pointer.x * 0.05;
 
       targetPosition.y =
-        -pointer.y * 0.035;
+        -pointer.y * 0.03;
     }
 
-    if (
-      !reducedMotion &&
-      window.matchMedia(
-        "(pointer: fine)"
-      ).matches
-    ) {
+
+    /*
+    | Pointer interaction desktop only.
+    */
+
+    if (!coarsePointer) {
       window.addEventListener(
         "pointermove",
         handlePointer,
@@ -717,6 +917,7 @@
       );
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | RESIZE
@@ -724,20 +925,29 @@
     */
 
     function resize() {
+      if (destroyed) return;
+
       const rect =
         container.getBoundingClientRect();
 
+
       const width =
         Math.max(
-          rect.width,
+          Math.round(
+            rect.width
+          ),
           1
         );
 
+
       const height =
         Math.max(
-          rect.height,
+          Math.round(
+            rect.height
+          ),
           1
         );
+
 
       renderer.setSize(
         width,
@@ -745,65 +955,60 @@
         false
       );
 
+
       camera.aspect =
         width / height;
 
+
       camera.updateProjectionMatrix();
+
+
+      /*
+      | Render sekali agar resize tidak
+      | meninggalkan canvas lama.
+      */
+
+      renderer.render(
+        scene,
+        camera
+      );
     }
+
 
     const resizeObserver =
       new ResizeObserver(
         resize
       );
 
+
     resizeObserver.observe(
       container
     );
 
+
     resize();
 
-    /*
-    |--------------------------------------------------------------------------
-    | VISIBILITY OPTIMIZATION
-    |--------------------------------------------------------------------------
-    */
-
-    let heroVisible = true;
-
-    const heroObserver =
-      new IntersectionObserver(
-        (entries) => {
-          heroVisible =
-            entries[0]
-              ?.isIntersecting ??
-            true;
-        },
-        {
-          threshold: 0.02
-        }
-      );
-
-    heroObserver.observe(
-      hero
-    );
 
     /*
     |--------------------------------------------------------------------------
-    | SCROLL REACTION
+    | SCROLL
     |--------------------------------------------------------------------------
     */
 
     let scrollProgress = 0;
 
+
     function updateScroll() {
       const rect =
         hero.getBoundingClientRect();
+
 
       const height =
         Math.max(
           hero.offsetHeight,
           1
         );
+
 
       scrollProgress =
         Math.min(
@@ -816,6 +1021,7 @@
         );
     }
 
+
     window.addEventListener(
       "scroll",
       updateScroll,
@@ -824,56 +1030,100 @@
       }
     );
 
+
     updateScroll();
 
-    /*
-    |--------------------------------------------------------------------------
-    | CLOCK
-    |--------------------------------------------------------------------------
-    */
-
-    const clock =
-      new THREE.Clock();
 
     /*
     |--------------------------------------------------------------------------
-    | ANIMATION
+    | FPS LIMIT
     |--------------------------------------------------------------------------
     */
 
-    function animate() {
-      requestAnimationFrame(
-        animate
-      );
+    const frameDuration =
+      1000 /
+      quality.fps;
 
-      if (!heroVisible) {
+
+    /*
+    |--------------------------------------------------------------------------
+    | ANIMATION LOOP
+    |--------------------------------------------------------------------------
+    */
+
+    function animate(timestamp) {
+      rafId = null;
+
+      if (
+        destroyed ||
+        !heroVisible ||
+        !documentVisible
+      ) {
         return;
       }
 
+
+      if (
+        timestamp -
+        previousTime <
+        frameDuration
+      ) {
+        startAnimation();
+
+        return;
+      }
+
+
+      const delta =
+        Math.min(
+          (
+            timestamp -
+            previousTime
+          ) / 16.667,
+
+          2
+        );
+
+
+      previousTime =
+        timestamp;
+
+
       const time =
-        clock.getElapsedTime();
+        timestamp *
+        0.001;
+
 
       /*
-      | Elegant mouse follow
+      | Smooth pointer movement
       */
 
       world.rotation.y +=
         (
           targetRotation.y -
           world.rotation.y
-        ) * 0.028;
+        ) *
+        0.03 *
+        delta;
+
 
       world.rotation.x +=
         (
           targetRotation.x -
           world.rotation.x
-        ) * 0.028;
+        ) *
+        0.03 *
+        delta;
+
 
       world.position.x +=
         (
           targetPosition.x -
           world.position.x
-        ) * 0.025;
+        ) *
+        0.025 *
+        delta;
+
 
       /*
       | Floating
@@ -882,39 +1132,59 @@
       const floating =
         Math.sin(
           time * 0.48
-        ) * 0.035;
+        ) *
+        0.033;
+
 
       world.position.y =
         floating +
         targetPosition.y -
-        scrollProgress * 0.18;
+        scrollProgress *
+        0.17;
+
 
       /*
-      | Very slow autonomous motion
+      | Autonomous movement
       */
 
-      if (!reducedMotion) {
-        sphere.rotation.y +=
-          0.00075;
+      sphere.rotation.y +=
+        0.0007 *
+        delta;
 
-        core.rotation.y -=
-          0.00060;
 
-        core.rotation.x +=
-          0.00032;
+      core.rotation.y -=
+        0.00055 *
+        delta;
 
+
+      core.rotation.x +=
+        0.00028 *
+        delta;
+
+
+      if (wire) {
         wire.rotation.y +=
-          0.00030;
-
-        ringOne.rotation.z +=
-          0.00034;
-
-        ringTwo.rotation.z -=
-          0.00023;
-
-        ringThree.rotation.y +=
-          0.00018;
+          0.00025 *
+          delta;
       }
+
+
+      ringOne.rotation.z +=
+        0.00031 *
+        delta;
+
+
+      ringTwo.rotation.z -=
+        0.0002 *
+        delta;
+
+
+      if (ringThree) {
+        ringThree.rotation.y +=
+          0.00016 *
+          delta;
+      }
+
 
       /*
       | Scroll depth
@@ -922,68 +1192,257 @@
 
       world.rotation.z =
         scrollProgress *
-        0.045;
+        0.042;
+
 
       /*
-      | Interactive lighting
+      | Lighting reaction
+      |
+      | Desktop pointer:
+      | dynamic
+      |
+      | Touch/mobile:
+      | mostly static
       */
 
-      keyLight.position.x =
-        4.2 +
-        pointer.x * 0.75;
+      if (!coarsePointer) {
+        keyLight.position.x =
+          4.2 +
+          pointer.x *
+          0.7;
 
-      keyLight.position.y =
-        3.4 -
-        pointer.y * 0.48;
+
+        keyLight.position.y =
+          3.4 -
+          pointer.y *
+          0.45;
+      }
+
 
       /*
-      | Subtle breathing
+      | Tiny breathing
       */
 
       const breathing =
         1 +
         Math.sin(
           time * 0.55
-        ) * 0.004;
+        ) *
+        0.0035;
+
 
       halo.scale.setScalar(
         breathing
       );
 
+
       renderer.render(
         scene,
         camera
       );
+
+
+      startAnimation();
     }
+
 
     /*
     |--------------------------------------------------------------------------
-    | WEBGL READY
+    | START / STOP RAF
     |--------------------------------------------------------------------------
     */
 
+    function startAnimation() {
+      if (
+        destroyed ||
+        rafId !== null ||
+        !heroVisible ||
+        !documentVisible
+      ) {
+        return;
+      }
+
+      rafId =
+        requestAnimationFrame(
+          animate
+        );
+    }
+
+
+    function stopAnimation() {
+      if (rafId === null) {
+        return;
+      }
+
+      cancelAnimationFrame(
+        rafId
+      );
+
+      rafId = null;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HERO VISIBILITY
+    |
+    | Orb berhenti total ketika Hero
+    | sudah keluar viewport.
+    |--------------------------------------------------------------------------
+    */
+
+    const heroObserver =
+      new IntersectionObserver(
+        (entries) => {
+          const entry =
+            entries[0];
+
+          heroVisible =
+            entry?.isIntersecting ??
+            true;
+
+
+          if (heroVisible) {
+            previousTime =
+              performance.now();
+
+            startAnimation();
+          } else {
+            stopAnimation();
+          }
+        },
+        {
+          threshold: 0.01
+        }
+      );
+
+
+    heroObserver.observe(
+      hero
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TAB VISIBILITY
+    |
+    | Ketika user pindah tab:
+    | render loop berhenti.
+    |--------------------------------------------------------------------------
+    */
+
+    function handleVisibilityChange() {
+      documentVisible =
+        !document.hidden;
+
+
+      if (documentVisible) {
+        previousTime =
+          performance.now();
+
+        startAnimation();
+      } else {
+        stopAnimation();
+      }
+    }
+
+
+    document.addEventListener(
+      "visibilitychange",
+      handleVisibilityChange
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | WEBGL CONTEXT LOST
+    |--------------------------------------------------------------------------
+    */
+
+    function handleContextLost(
+      event
+    ) {
+      event.preventDefault();
+
+      stopAnimation();
+
+      canvas.style.opacity =
+        "0";
+
+      showCssFallback();
+    }
+
+
+    canvas.addEventListener(
+      "webglcontextlost",
+      handleContextLost,
+      false
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CSS FALLBACK
+    |--------------------------------------------------------------------------
+    */
+
+    const fallbackElements =
+      container.querySelectorAll(
+        ".hero-orbit-core, .hero-orbit-ring"
+      );
+
+
+    function hideCssFallback() {
+      fallbackElements.forEach(
+        (element) => {
+          element.style.transition =
+            "opacity .9s ease";
+
+          element.style.opacity =
+            "0";
+        }
+      );
+    }
+
+
+    function showCssFallback() {
+      fallbackElements.forEach(
+        (element) => {
+          element.style.opacity =
+            "";
+        }
+      );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FIRST FRAME
+    |--------------------------------------------------------------------------
+    */
+
+    renderer.render(
+      scene,
+      camera
+    );
+
+
     requestAnimationFrame(
       () => {
-        container
-          .querySelectorAll(
-            ".hero-orbit-core, .hero-orbit-ring"
-          )
-          .forEach(
-            (element) => {
-              element.style.transition =
-                "opacity .9s ease";
+        if (destroyed) return;
 
-              element.style.opacity =
-                "0";
-            }
-          );
+        hideCssFallback();
 
         canvas.style.opacity =
           "1";
+
+        previousTime =
+          performance.now();
+
+        startAnimation();
       }
     );
 
-    animate();
 
     /*
     |--------------------------------------------------------------------------
@@ -991,43 +1450,124 @@
     |--------------------------------------------------------------------------
     */
 
+    function cleanup() {
+      if (destroyed) return;
+
+      destroyed = true;
+
+
+      stopAnimation();
+
+
+      resizeObserver.disconnect();
+
+      heroObserver.disconnect();
+
+
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange
+      );
+
+
+      window.removeEventListener(
+        "scroll",
+        updateScroll
+      );
+
+
+      window.removeEventListener(
+        "pointermove",
+        handlePointer
+      );
+
+
+      canvas.removeEventListener(
+        "webglcontextlost",
+        handleContextLost
+      );
+
+
+      /*
+      | Geometry
+      */
+
+      sphereGeometry.dispose();
+
+      coreGeometry.dispose();
+
+      fresnelGeometry.dispose();
+
+      ringOneGeometry.dispose();
+
+      ringTwoGeometry.dispose();
+
+      haloGeometry.dispose();
+
+
+      if (wireGeometry) {
+        wireGeometry.dispose();
+      }
+
+
+      if (ringThreeGeometry) {
+        ringThreeGeometry.dispose();
+      }
+
+
+      /*
+      | Material
+      */
+
+      sphereMaterial.dispose();
+
+      coreMaterial.dispose();
+
+      fresnelMaterial.dispose();
+
+      ringOneMaterial.dispose();
+
+      ringTwoMaterial.dispose();
+
+      haloMaterial.dispose();
+
+
+      if (wireMaterial) {
+        wireMaterial.dispose();
+      }
+
+
+      if (ringThreeMaterial) {
+        ringThreeMaterial.dispose();
+      }
+
+
+      /*
+      | Renderer
+      */
+
+      renderer.dispose();
+
+      renderer.forceContextLoss();
+
+
+      if (
+        canvas.parentNode ===
+        container
+      ) {
+        container.removeChild(
+          canvas
+        );
+      }
+
+
+      showCssFallback();
+    }
+
+
     window.addEventListener(
       "pagehide",
-      () => {
-        resizeObserver.disconnect();
-        heroObserver.disconnect();
-
-        window.removeEventListener(
-          "pointermove",
-          handlePointer
-        );
-
-        renderer.dispose();
-
-        sphereGeometry.dispose();
-        sphereMaterial.dispose();
-
-        coreGeometry.dispose();
-        coreMaterial.dispose();
-
-        wireGeometry.dispose();
-        wireMaterial.dispose();
-
-        fresnelGeometry.dispose();
-        fresnelMaterial.dispose();
-
-        ringOneGeometry.dispose();
-        ringOneMaterial.dispose();
-
-        ringTwoGeometry.dispose();
-        ringTwoMaterial.dispose();
-
-        ringThreeGeometry.dispose();
-        ringThreeMaterial.dispose();
-
-        haloGeometry.dispose();
-        haloMaterial.dispose();
-      },
+      cleanup,
       {
         once: true
       }
