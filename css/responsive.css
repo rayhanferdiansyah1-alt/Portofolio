@@ -889,3 +889,1328 @@
     transform: none !important;
   }
 }
+
+/* =========================================================
+   RFM PORTFOLIO — V3.7
+   FINAL RESPONSIVE AUDIT
+   Desktop / Laptop / Tablet / Mobile
+   ========================================================= */
+
+
+/* =========================================================
+   LARGE DESKTOP
+   1600px+
+   ========================================================= */
+
+@media (min-width: 1600px) {
+
+  .hero-title {
+    max-width: 1280px;
+  }
+
+  .hero-orbit {
+    right: -2vw;
+
+    width:
+      min(
+        38vw,
+        650px
+      );
+  }
+
+  .project-inner {
+    gap:
+      clamp(
+        90px,
+        8vw,
+        150px
+      );
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height: 620px;
+  }
+
+}
+
+
+/* =========================================================
+   STANDARD DESKTOP / LAPTOP
+   1200px — 1599px
+   ========================================================= */
+
+@media
+(min-width: 1200px)
+and (max-width: 1599px) {
+
+  .hero-title {
+    font-size:
+      clamp(
+        6.2rem,
+        10.6vw,
+        10.5rem
+      );
+  }
+
+  .hero-orbit {
+    width:
+      min(
+        40vw,
+        590px
+      );
+
+    right: -6vw;
+  }
+
+  .project-inner {
+    gap:
+      clamp(
+        60px,
+        7vw,
+        105px
+      );
+  }
+
+}
+
+
+/* =========================================================
+   COMMON LAPTOP
+   1024px — 1399px
+   Especially 1366×768
+   ========================================================= */
+
+@media
+(min-width: 1024px)
+and (max-width: 1399px) {
+
+  .shell {
+    width:
+      min(
+        calc(100% - 64px),
+        var(--shell)
+      );
+  }
+
+
+  /* -------------------------
+     HEADER
+     ------------------------- */
+
+  .site-header {
+    padding-top: 24px;
+  }
+
+  .nav {
+    gap:
+      clamp(
+        18px,
+        2.4vw,
+        34px
+      );
+  }
+
+
+  /* -------------------------
+     HERO
+     ------------------------- */
+
+  .hero {
+    padding-top: 96px;
+  }
+
+  .hero-topline {
+    margin-bottom:
+      clamp(
+        24px,
+        4vh,
+        40px
+      );
+  }
+
+  .hero-title {
+    font-size:
+      clamp(
+        5.2rem,
+        9.6vw,
+        8.8rem
+      );
+
+    line-height: 0.77;
+  }
+
+  .hero-bottom {
+    margin-top:
+      clamp(
+        28px,
+        4vh,
+        48px
+      );
+  }
+
+  .hero-intro {
+    max-width: 540px;
+  }
+
+  .hero-intro p {
+    font-size: 0.94rem;
+
+    line-height: 1.7;
+  }
+
+  .hero-orbit {
+    width:
+      min(
+        38vw,
+        520px
+      );
+
+    right: -7vw;
+
+    top: 48%;
+  }
+
+
+  /* -------------------------
+     PROJECTS
+     ------------------------- */
+
+  .project {
+    padding:
+      90px 0;
+  }
+
+  .project-inner {
+    gap:
+      clamp(
+        50px,
+        6vw,
+        80px
+      );
+  }
+
+  .project-title {
+    font-size:
+      clamp(
+        3rem,
+        5.3vw,
+        5rem
+      );
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height:
+      clamp(
+        400px,
+        39vw,
+        540px
+      );
+  }
+
+
+  /* -------------------------
+     ABOUT
+     ------------------------- */
+
+  .about-grid {
+    gap:
+      clamp(
+        55px,
+        7vw,
+        90px
+      );
+  }
+
+  .about-heading h2 {
+    font-size:
+      clamp(
+        3.8rem,
+        6.5vw,
+        6rem
+      );
+  }
+
+
+  /* -------------------------
+     CAPABILITIES
+     ------------------------- */
+
+  .skills-header h2 {
+    font-size:
+      clamp(
+        4rem,
+        7.5vw,
+        7rem
+      );
+  }
+
+  .capability {
+    min-height: 175px;
+  }
+
+  .capability h3 {
+    font-size:
+      clamp(
+        2.8rem,
+        4.6vw,
+        4.8rem
+      );
+  }
+
+
+  /* -------------------------
+     CONTACT
+     ------------------------- */
+
+  .contact-heading {
+    font-size:
+      clamp(
+        4.8rem,
+        9vw,
+        8.6rem
+      );
+  }
+
+}
+
+
+/* =========================================================
+   SHORT LAPTOP SCREEN
+   Example: 1366×768
+   ========================================================= */
+
+@media
+(min-width: 901px)
+and (max-height: 800px) {
+
+  .hero {
+    min-height: 100svh;
+
+    padding-top: 90px;
+
+    padding-bottom: 24px;
+  }
+
+  .hero-topline {
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size:
+      clamp(
+        4.6rem,
+        8.8vw,
+        8.1rem
+      );
+
+    line-height: 0.76;
+  }
+
+  .hero-bottom {
+    margin-top: 24px;
+  }
+
+  .hero-intro p {
+    max-width: 500px;
+
+    font-size: 0.88rem;
+
+    line-height: 1.58;
+  }
+
+  .hero-intro .text-link {
+    margin-top: 15px;
+  }
+
+  .hero-scroll {
+    bottom: 22px;
+  }
+
+  .hero-orbit {
+    width:
+      min(
+        35vw,
+        480px
+      );
+
+    right: -7vw;
+  }
+
+
+  .about,
+  .skills,
+  .education {
+    padding-top: 110px;
+
+    padding-bottom: 110px;
+  }
+
+
+  .projects {
+    padding-top: 110px;
+  }
+
+
+  .contact {
+    min-height: auto;
+
+    padding-top: 105px;
+
+    padding-bottom: 65px;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   701px — 900px
+   ========================================================= */
+
+@media
+(min-width: 701px)
+and (max-width: 900px) {
+
+  .shell {
+    width:
+      min(
+        calc(100% - 52px),
+        var(--shell)
+      );
+  }
+
+
+  /* HERO */
+
+  .hero {
+    min-height: auto;
+
+    padding-top: 135px;
+
+    padding-bottom: 100px;
+  }
+
+  .hero-title {
+    position: relative;
+
+    z-index: 3;
+
+    font-size:
+      clamp(
+        5.2rem,
+        13vw,
+        7.5rem
+      );
+  }
+
+  .hero-bottom {
+    position: relative;
+
+    z-index: 4;
+  }
+
+  .hero-orbit {
+    width: 480px;
+
+    right: -190px;
+
+    top: 43%;
+
+    opacity: 0.72;
+  }
+
+
+  /* PROJECTS */
+
+  .project {
+    padding:
+      85px 0;
+  }
+
+  .project-inner {
+    grid-template-columns: 1fr;
+
+    gap: 52px;
+  }
+
+  .project:nth-child(even)
+  .project-copy,
+
+  .project:nth-child(even)
+  .project-visual {
+    order: initial;
+  }
+
+  .project-copy {
+    max-width: 720px;
+  }
+
+  .project-title {
+    font-size:
+      clamp(
+        3.5rem,
+        9vw,
+        5.6rem
+      );
+  }
+
+  .project-visual {
+    width: 100%;
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height:
+      clamp(
+        430px,
+        62vw,
+        600px
+      );
+  }
+
+
+  /* ABOUT */
+
+  .about-grid {
+    grid-template-columns: 1fr;
+
+    gap: 48px;
+  }
+
+  .about-copy {
+    max-width: 680px;
+  }
+
+
+  /* STATS */
+
+  .about-stats {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+
+  /* CAPABILITIES */
+
+  .skills-header {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .capability {
+    grid-template-columns:
+      65px
+      1fr;
+
+    min-height: 160px;
+  }
+
+
+  /* EDUCATION */
+
+  .education-layout {
+    grid-template-columns: 1fr;
+
+    gap: 50px;
+  }
+
+
+  /* CONTACT */
+
+  .contact {
+    min-height: auto;
+  }
+
+  .contact-heading {
+    font-size:
+      clamp(
+        5rem,
+        12vw,
+        7rem
+      );
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   431px — 700px
+   ========================================================= */
+
+@media
+(min-width: 431px)
+and (max-width: 700px) {
+
+  .shell {
+    width:
+      calc(100% - 40px);
+  }
+
+
+  /* -------------------------
+     HEADER
+     ------------------------- */
+
+  .site-header {
+    padding-top: 20px;
+  }
+
+
+  /* -------------------------
+     HERO
+     ------------------------- */
+
+  .hero {
+    min-height: auto;
+
+    padding-top: 118px;
+
+    padding-bottom: 90px;
+
+    overflow: hidden;
+  }
+
+  .hero-topline {
+    margin-bottom: 38px;
+  }
+
+  .hero-title {
+    position: relative;
+
+    z-index: 4;
+
+    font-size:
+      clamp(
+        4.1rem,
+        16.5vw,
+        6.5rem
+      );
+
+    line-height: 0.79;
+
+    letter-spacing: -0.075em;
+  }
+
+  .hero-bottom {
+    position: relative;
+
+    z-index: 5;
+
+    margin-top: 55px;
+  }
+
+  .hero-intro {
+    max-width: 420px;
+  }
+
+  .hero-intro p {
+    font-size: 0.91rem;
+
+    line-height: 1.72;
+  }
+
+  .hero-status {
+    margin-top: 55px;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+
+
+  /* Keep Three.js decorative,
+     not dominant */
+
+  .hero-orbit {
+    width: 410px;
+
+    right: -240px;
+
+    top: 36%;
+
+    opacity: 0.58;
+
+    pointer-events: none;
+  }
+
+
+  /* -------------------------
+     SECTION SPACING
+     ------------------------- */
+
+  .about,
+  .skills,
+  .education,
+  .contact {
+    padding-top: 100px;
+
+    padding-bottom: 90px;
+  }
+
+  .projects {
+    padding-top: 100px;
+  }
+
+
+  /* -------------------------
+     ABOUT
+     ------------------------- */
+
+  .about-heading h2 {
+    font-size:
+      clamp(
+        3.3rem,
+        13vw,
+        5rem
+      );
+  }
+
+  .about-copy p {
+    font-size: 0.91rem;
+  }
+
+  .about-stats {
+    grid-template-columns: 1fr;
+
+    margin-top: 70px;
+  }
+
+  .stat {
+    min-height: 125px;
+  }
+
+
+  /* -------------------------
+     PROJECTS
+     ------------------------- */
+
+  .project {
+    padding:
+      75px 0;
+  }
+
+  .project-inner {
+    grid-template-columns: 1fr;
+
+    gap: 42px;
+  }
+
+  .project:nth-child(even)
+  .project-copy,
+
+  .project:nth-child(even)
+  .project-visual {
+    order: initial;
+  }
+
+  .project-meta {
+    margin-bottom: 28px;
+  }
+
+  .project-title {
+    font-size:
+      clamp(
+        3rem,
+        12vw,
+        4.8rem
+      );
+
+    line-height: 0.91;
+  }
+
+  .project-description {
+    max-width: 100%;
+
+    font-size: 0.9rem;
+  }
+
+  .project-tech {
+    margin-top: 30px;
+  }
+
+  .project-visual {
+    margin-top: 5px;
+  }
+
+  .browser-frame {
+    transform: none;
+  }
+
+  .project:hover
+  .browser-frame {
+    transform: none;
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height:
+      clamp(
+        330px,
+        88vw,
+        500px
+      );
+  }
+
+
+  /* -------------------------
+     CAPABILITIES
+     ------------------------- */
+
+  .skills-header h2 {
+    font-size:
+      clamp(
+        3.5rem,
+        14vw,
+        5.4rem
+      );
+  }
+
+  .capabilities {
+    margin-top: 70px;
+  }
+
+  .capability {
+    grid-template-columns:
+      50px
+      1fr;
+
+    gap: 15px;
+
+    min-height: 145px;
+  }
+
+  .capability h3 {
+    font-size:
+      clamp(
+        2.45rem,
+        10vw,
+        3.8rem
+      );
+  }
+
+
+  /* -------------------------
+     EDUCATION
+     ------------------------- */
+
+  .education-layout {
+    grid-template-columns: 1fr;
+
+    gap: 45px;
+  }
+
+  .education-card {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+
+  /* -------------------------
+     CONTACT
+     ------------------------- */
+
+  .contact-heading {
+    font-size:
+      clamp(
+        3.8rem,
+        15vw,
+        5.7rem
+      );
+
+    line-height: 0.84;
+  }
+
+  .contact-cta {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   <= 430px
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .shell {
+    width:
+      calc(100% - 32px);
+  }
+
+
+  /* HEADER */
+
+  .site-header {
+    padding-top: 18px;
+  }
+
+  .logo {
+    font-size: 0.8rem;
+  }
+
+
+  /* HERO */
+
+  .hero {
+    min-height: auto;
+
+    padding-top: 105px;
+
+    padding-bottom: 80px;
+  }
+
+  .hero-topline {
+    margin-bottom: 32px;
+  }
+
+  .hero-topline span {
+    font-size: 0.47rem;
+  }
+
+  .hero-title {
+    position: relative;
+
+    z-index: 4;
+
+    font-size:
+      clamp(
+        3.6rem,
+        16.8vw,
+        4.7rem
+      );
+
+    line-height: 0.8;
+
+    letter-spacing: -0.075em;
+  }
+
+  .hero-bottom {
+    position: relative;
+
+    z-index: 5;
+
+    margin-top: 48px;
+  }
+
+  .hero-intro p {
+    font-size: 0.86rem;
+
+    line-height: 1.68;
+  }
+
+  .hero-status {
+    margin-top: 45px;
+
+    gap: 20px;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+
+  .hero-orbit {
+    width: 330px;
+
+    right: -205px;
+
+    top: 34%;
+
+    opacity: 0.48;
+  }
+
+
+  /* ABOUT */
+
+  .about {
+    padding:
+      90px 0;
+  }
+
+  .about-grid {
+    margin-top: 42px;
+  }
+
+  .about-heading h2 {
+    font-size:
+      clamp(
+        3rem,
+        14vw,
+        4rem
+      );
+  }
+
+  .about-copy p {
+    font-size: 0.86rem;
+
+    line-height: 1.8;
+  }
+
+  .about-stats {
+    margin-top: 62px;
+  }
+
+
+  /* PROJECTS */
+
+  .projects {
+    padding-top: 90px;
+  }
+
+  .project {
+    padding:
+      65px 0;
+  }
+
+  .project-inner {
+    grid-template-columns: 1fr;
+
+    gap: 36px;
+  }
+
+  .project:nth-child(even)
+  .project-copy,
+
+  .project:nth-child(even)
+  .project-visual {
+    order: initial;
+  }
+
+  .project-title {
+    font-size:
+      clamp(
+        2.75rem,
+        13vw,
+        3.7rem
+      );
+
+    line-height: 0.91;
+  }
+
+  .project-description {
+    font-size: 0.85rem;
+
+    line-height: 1.75;
+  }
+
+  .project-shot,
+  .project-shot img {
+    min-height: 300px;
+  }
+
+  .browser-frame {
+    transform: none !important;
+  }
+
+  .project:hover
+  .browser-frame {
+    transform: none !important;
+  }
+
+  .project-shot-overlay {
+    left: 14px;
+
+    right: 14px;
+
+    bottom: 14px;
+  }
+
+  .project-shot-overlay strong {
+    font-size: 1.25rem;
+  }
+
+
+  /* SKILLS */
+
+  .skills {
+    padding:
+      90px 0;
+  }
+
+  .skills-header h2 {
+    font-size:
+      clamp(
+        3rem,
+        14vw,
+        4rem
+      );
+  }
+
+  .capabilities {
+    margin-top: 60px;
+  }
+
+  .capability {
+    grid-template-columns:
+      38px
+      minmax(0, 1fr);
+
+    min-height: 130px;
+
+    gap: 12px;
+  }
+
+  .capability h3 {
+    font-size:
+      clamp(
+        2.2rem,
+        11vw,
+        3rem
+      );
+
+    word-break: normal;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* EDUCATION */
+
+  .education {
+    padding:
+      90px 0;
+  }
+
+  .education-heading h2 {
+    font-size:
+      clamp(
+        2.9rem,
+        14vw,
+        4rem
+      );
+  }
+
+  .education-card h3 {
+    font-size:
+      clamp(
+        1.9rem,
+        9vw,
+        2.7rem
+      );
+  }
+
+
+  /* CONTACT */
+
+  .contact {
+    padding:
+      90px 0
+      60px;
+  }
+
+  .contact-main {
+    margin-top: 65px;
+  }
+
+  .contact-heading {
+    font-size:
+      clamp(
+        3.3rem,
+        15vw,
+        4.4rem
+      );
+
+    line-height: 0.84;
+  }
+
+  .contact-cta {
+    margin-top: 48px;
+
+    gap: 16px;
+
+    font-size: 1.15rem;
+  }
+
+  .contact-footer {
+    margin-top: 75px;
+  }
+
+  .contact-note {
+    font-size: 0.65rem;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE LANDSCAPE / SHORT HEIGHT
+   ========================================================= */
+
+@media
+(max-width: 900px)
+and (max-height: 560px)
+and (orientation: landscape) {
+
+  .hero {
+    min-height: auto;
+
+    padding-top: 90px;
+
+    padding-bottom: 55px;
+  }
+
+  .hero-title {
+    font-size:
+      clamp(
+        3.2rem,
+        10vw,
+        5.8rem
+      );
+  }
+
+  .hero-bottom {
+    margin-top: 30px;
+  }
+
+  .hero-status,
+  .hero-scroll {
+    display: none;
+  }
+
+  .hero-orbit {
+    width: 330px;
+
+    right: -120px;
+
+    top: 46%;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   Remove desktop-style aggressive hover movement
+   ========================================================= */
+
+@media (hover: none) {
+
+  .project:hover
+  .browser-frame,
+
+  .project:hover
+  .project-shot img,
+
+  .stat:hover,
+
+  .stat + .stat:hover,
+
+  .education-card:hover,
+
+  .capability:hover,
+
+  .capability:hover h3,
+
+  .contact-cta:hover {
+    transform: none;
+  }
+
+
+  .project:hover
+  .project-shot img {
+    filter:
+      saturate(0.95)
+      contrast(1.03)
+      brightness(0.92);
+  }
+
+
+  .stat:hover,
+  .stat + .stat:hover,
+  .education-card:hover,
+  .capability:hover,
+  .contact-cta:hover {
+    padding-left: initial;
+
+    padding-right: initial;
+  }
+
+}
+
+
+/* =========================================================
+   THREE.JS / CANVAS SAFETY
+   ========================================================= */
+
+.hero-orbit canvas {
+  max-width: 100%;
+
+  max-height: 100%;
+
+  touch-action: none;
+}
+
+
+/* =========================================================
+   PREVENT HORIZONTAL OVERFLOW
+   ========================================================= */
+
+html,
+body {
+  max-width: 100%;
+
+  overflow-x: clip;
+}
+
+
+/* =========================================================
+   MEDIA SAFETY
+   ========================================================= */
+
+img,
+canvas,
+svg,
+video {
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   TEXT SAFETY
+   ========================================================= */
+
+.project-title,
+.contact-heading,
+.about-heading h2,
+.skills-header h2,
+.education-heading h2 {
+  overflow-wrap: normal;
+
+  word-break: normal;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+
+    scroll-behavior:
+      auto !important;
+  }
+
+}
