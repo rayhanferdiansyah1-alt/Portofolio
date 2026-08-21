@@ -289,13 +289,37 @@
 
   /*
 |--------------------------------------------------------------------------
-| PROJECTS — B2 CINEMATIC SHOWCASE
+| PROJECTS — B2 + B3 CINEMATIC SHOWCASE
 |--------------------------------------------------------------------------
 */
 
   const projectMobile = window.matchMedia("(max-width: 700px)").matches;
 
-  gsap.utils.toArray(".project").forEach((project) => {
+  /*
+|--------------------------------------------------------------------------
+| B3 — PROJECT FOCUS STATE
+|--------------------------------------------------------------------------
+*/
+
+  const projectItems = gsap.utils.toArray(".project");
+
+  const setProjectFocus = (activeProject) => {
+    projectItems.forEach((item) => {
+      item.classList.toggle("is-focus", item === activeProject);
+    });
+  };
+
+  const clearProjectFocus = (project) => {
+    project.classList.remove("is-focus");
+  };
+
+  /*
+|--------------------------------------------------------------------------
+| PROJECT LOOP
+|--------------------------------------------------------------------------
+*/
+
+  projectItems.forEach((project) => {
     const meta = project.querySelector(".project-meta");
 
     const copy = project.querySelector(".project-copy");
@@ -325,7 +349,9 @@
     });
 
     /*
-    | Meta
+    |--------------------------------------------------------------------------
+    | META
+    |--------------------------------------------------------------------------
     */
 
     if (meta) {
@@ -349,7 +375,9 @@
     }
 
     /*
-    | Project title + description
+    |--------------------------------------------------------------------------
+    | PROJECT COPY
+    |--------------------------------------------------------------------------
     */
 
     if (copy) {
@@ -375,10 +403,9 @@
     }
 
     /*
-    | Main visual
-    |
-    | Sengaja tidak memakai transform scale
-    | supaya tidak bentrok dengan hover CSS.
+    |--------------------------------------------------------------------------
+    | PROJECT VISUAL
+    |--------------------------------------------------------------------------
     */
 
     if (visual) {
@@ -402,7 +429,9 @@
     }
 
     /*
-    | Footer
+    |--------------------------------------------------------------------------
+    | PROJECT FOOTER
+    |--------------------------------------------------------------------------
     */
 
     if (footer) {
@@ -429,12 +458,8 @@
 
     /*
     |--------------------------------------------------------------------------
-    | VISUAL PARALLAX
+    | B2 — VISUAL PARALLAX
     |--------------------------------------------------------------------------
-    |
-    | Seluruh project visual bergerak sedikit
-    | berbeda dari kecepatan halaman.
-    |
     */
 
     if (visual) {
@@ -467,14 +492,12 @@
 
     /*
     |--------------------------------------------------------------------------
-    | IMAGE INTERNAL PAN
+    | B2 — IMAGE INTERNAL PAN
     |--------------------------------------------------------------------------
     |
-    | Pakai object-position,
-    | BUKAN transform.
-    |
-    | Jadi hover scale dari projects.css
-    | tetap bisa bekerja.
+    | Pakai object-position.
+    | Tidak mengubah transform image,
+    | jadi hover scale dari CSS tetap aman.
     |
     */
 
@@ -508,12 +531,8 @@
 
     /*
     |--------------------------------------------------------------------------
-    | OVERLAY DEPTH
+    | B2 — OVERLAY DEPTH
     |--------------------------------------------------------------------------
-    |
-    | Label di atas screenshot bergerak
-    | sedikit berbeda dari image.
-    |
     */
 
     if (overlay) {
@@ -543,8 +562,57 @@
         },
       );
     }
-  });
 
+    /*
+    |--------------------------------------------------------------------------
+    | B3 — PROJECT VIEWPORT FOCUS
+    |--------------------------------------------------------------------------
+    |
+    | Project aktif saat melewati area fokus
+    | di tengah viewport.
+    |
+    */
+
+    ScrollTrigger.create({
+      trigger: project,
+
+      start: "top 58%",
+
+      end: "bottom 42%",
+
+      /*
+      | Scroll turun
+      */
+
+      onEnter: () => {
+        setProjectFocus(project);
+      },
+
+      /*
+      | Scroll naik
+      */
+
+      onEnterBack: () => {
+        setProjectFocus(project);
+      },
+
+      /*
+      | Keluar ke bawah
+      */
+
+      onLeave: () => {
+        clearProjectFocus(project);
+      },
+
+      /*
+      | Keluar ke atas
+      */
+
+      onLeaveBack: () => {
+        clearProjectFocus(project);
+      },
+    });
+  });
   /*
   |--------------------------------------------------------------------------
   | CAPABILITIES
