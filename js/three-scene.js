@@ -1,61 +1,37 @@
 (() => {
   const hero = document.querySelector(".hero");
-  const container = document.querySelector(".hero-orbit");
+  const host = document.querySelector(".hero-orbit");
 
-  if (!hero || !container) return;
+  if (!hero || !host) return;
 
-  /*
-  |--------------------------------------------------------------------------
-  | DEVICE / USER PREFERENCES
-  |--------------------------------------------------------------------------
-  */
+  /* =========================================================
+     USER / DEVICE PREFERENCES
+     ========================================================= */
 
   const reducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
+    "(prefers-reduced-motion: reduce)",
   ).matches;
 
-  const coarsePointer = window.matchMedia(
-    "(pointer: coarse)"
-  ).matches;
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
 
-  const mobileViewport = window.matchMedia(
-    "(max-width: 900px)"
-  ).matches;
+  const mobile = window.matchMedia("(max-width: 900px)").matches;
 
   const connection =
     navigator.connection ||
     navigator.mozConnection ||
     navigator.webkitConnection;
 
-  const saveData =
-    connection?.saveData === true;
+  const saveData = connection?.saveData === true;
 
-  const deviceMemory =
-    navigator.deviceMemory || 8;
+  const deviceMemory = navigator.deviceMemory || 8;
 
-  const cpuThreads =
-    navigator.hardwareConcurrency || 8;
+  const cpuThreads = navigator.hardwareConcurrency || 8;
 
-  const lowPowerDevice =
-    deviceMemory <= 4 ||
-    cpuThreads <= 4;
-
-  const reducedQuality =
-    mobileViewport ||
-    coarsePointer ||
-    lowPowerDevice;
-
+  const lowPower = deviceMemory <= 4 || cpuThreads <= 4;
 
   /*
   |--------------------------------------------------------------------------
-  | IMPORTANT
-  |
-  | Kalau user menggunakan:
-  | - Save Data
-  | - Reduced Motion
-  |
-  | Three.js tidak perlu diload.
-  | CSS orb lama otomatis tetap tampil sebagai fallback.
+  | FALLBACK
   |--------------------------------------------------------------------------
   */
 
@@ -63,1514 +39,823 @@
     return;
   }
 
+  /* =========================================================
+     LOAD THREE.JS
+     ========================================================= */
 
-  /*
-  |--------------------------------------------------------------------------
-  | LOAD THREE.JS
-  |--------------------------------------------------------------------------
-  */
-
-  import(
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
-  )
+  import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js")
     .then((THREE) => {
       initScene(THREE);
     })
     .catch((error) => {
-      console.warn(
-        "Three.js gagal dimuat. CSS orb digunakan sebagai fallback.",
-        error
-      );
+      console.warn("Three.js gagal dimuat. CSS visual tetap digunakan.", error);
     });
 
-
-  /*
-  |--------------------------------------------------------------------------
-  | SCENE
-  |--------------------------------------------------------------------------
-  */
+  /* =========================================================
+     INITIALIZE
+     ========================================================= */
 
   function initScene(THREE) {
-    let destroyed = false;
-    let heroVisible = true;
-    let documentVisible = !document.hidden;
-
-    let rafId = null;
-    let previousTime = 0;
-
-    /*
-    |--------------------------------------------------------------------------
-    | QUALITY PROFILE
-    |--------------------------------------------------------------------------
-    */
+    const reducedQuality = mobile || coarsePointer || lowPower;
 
     const quality = reducedQuality
       ? {
-          sphereSegments: 48,
-          fresnelSegments: 40,
+          segments: 64,
           pixelRatio: 1,
           fps: 30,
           antialias: false,
-          wireframe: false,
-          thirdRing: false
+          edgeDetail: false,
         }
       : {
-          sphereSegments: 72,
-          fresnelSegments: 64,
-          pixelRatio: Math.min(
-            window.devicePixelRatio,
-            1.5
-          ),
+          segments: 120,
+          pixelRatio: Math.min(window.devicePixelRatio, 1.5),
           fps: 60,
           antialias: true,
-          wireframe: true,
-          thirdRing: true
+          edgeDetail: true,
         };
 
+    /* =========================================================
+       SCENE
+       ========================================================= */
 
-    /*
-    |--------------------------------------------------------------------------
-    | SCENE
-    |--------------------------------------------------------------------------
-    */
+    const scene = new THREE.Scene();
 
-    const scene =
-      new THREE.Scene();
+    /* =========================================================
+       CAMERA
+       ========================================================= */
 
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
 
-    /*
-    |--------------------------------------------------------------------------
-    | CAMERA
-    |--------------------------------------------------------------------------
-    */
+    camera.position.set(0, 0, 6.7);
 
-    const camera =
-      new THREE.PerspectiveCamera(
-        34,
-        1,
-        0.1,
-        100
-      );
-
-    camera.position.set(
-      0,
-      0,
-      6.8
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | RENDERER
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       RENDERER
+       ========================================================= */
 
     let renderer;
 
     try {
-      renderer =
-        new THREE.WebGLRenderer({
-          alpha: true,
-
-          antialias:
-            quality.antialias,
-
-          powerPreference:
-            reducedQuality
-              ? "low-power"
-              : "high-performance",
-
-          depth: true,
-
-          stencil: false,
-
-          preserveDrawingBuffer: false
-        });
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: quality.antialias,
+        powerPreference: reducedQuality ? "low-power" : "high-performance",
+        stencil: false,
+        preserveDrawingBuffer: false,
+      });
     } catch (error) {
-      console.warn(
-        "WebGL tidak tersedia. Menggunakan CSS orb.",
-        error
-      );
+      console.warn("WebGL tidak tersedia.", error);
 
       return;
     }
 
+    renderer.setClearColor(0x000000, 0);
 
-    renderer.setClearColor(
-      0x000000,
-      0
-    );
+    renderer.setPixelRatio(quality.pixelRatio);
 
-    renderer.setPixelRatio(
-      quality.pixelRatio
-    );
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    renderer.outputColorSpace =
-      THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
-    renderer.toneMapping =
-      THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.38;
 
-    renderer.toneMappingExposure =
-      1.02;
+    /* =========================================================
+       CANVAS
+       ========================================================= */
 
+    const canvas = renderer.domElement;
 
-    /*
-    |--------------------------------------------------------------------------
-    | CANVAS
-    |--------------------------------------------------------------------------
-    */
+    canvas.setAttribute("aria-hidden", "true");
 
-    const canvas =
-      renderer.domElement;
+    Object.assign(canvas.style, {
+      position: "absolute",
+      inset: "0",
 
-    canvas.setAttribute(
-      "aria-hidden",
-      "true"
-    );
+      width: "100%",
+      height: "100%",
 
-    Object.assign(
-      canvas.style,
-      {
-        position: "absolute",
+      display: "block",
 
-        inset: "0",
+      pointerEvents: "none",
 
-        width: "100%",
-        height: "100%",
+      opacity: "0",
 
-        display: "block",
+      transition: "opacity 1.2s cubic-bezier(.16,1,.3,1)",
+    });
 
-        pointerEvents: "none",
+    host.appendChild(canvas);
 
-        opacity: "0",
+    /* =========================================================
+       WORLD
+       ========================================================= */
 
-        zIndex: "5",
+    const world = new THREE.Group();
 
-        transition:
-          "opacity 1.2s cubic-bezier(.16,1,.3,1)"
-      }
-    );
+    scene.add(world);
 
-    container.appendChild(
-      canvas
-    );
+    /* =========================================================
+       CREATE TWISTED RIBBON CURVE
+       ========================================================= */
 
+    const curvePoints = [];
 
-    /*
-    |--------------------------------------------------------------------------
-    | WORLD
-    |--------------------------------------------------------------------------
-    */
+    const pathSegments = reducedQuality ? 20 : 34;
 
-    const world =
-      new THREE.Group();
+    for (let i = 0; i <= pathSegments; i++) {
+      const t = i / pathSegments;
 
-    scene.add(
-      world
-    );
+      /*
+  |--------------------------------------------------------------------------
+  | SHORTER VERTICAL BODY
+  | Tidak setinggi versi DNA sebelumnya.
+  |--------------------------------------------------------------------------
+  */
 
+      const y = THREE.MathUtils.lerp(-1.55, 1.55, t);
 
-    /*
-    |--------------------------------------------------------------------------
-    | MAIN GLASS ORB
-    |--------------------------------------------------------------------------
-    */
+      /*
+  |--------------------------------------------------------------------------
+  | LARGE ORGANIC S-CURVE
+  |--------------------------------------------------------------------------
+  */
 
-    const sphereGeometry =
-      new THREE.SphereGeometry(
-        1.28,
+      const x =
+        Math.sin(t * Math.PI * 1.65) * 0.52 +
+        Math.sin(t * Math.PI * 3.15 + 0.45) * 0.14 +
+        Math.cos(t * Math.PI * 0.82) * 0.1;
 
-        quality.sphereSegments,
+      /*
+  |--------------------------------------------------------------------------
+  | DEPTH
+  | Membuat bentuk tidak terasa flat.
+  |--------------------------------------------------------------------------
+  */
 
-        quality.sphereSegments
-      );
+      const z =
+        Math.cos(t * Math.PI * 1.35 + 0.25) * 0.38 +
+        Math.sin(t * Math.PI * 2.35) * 0.11;
 
-
-    const sphereMaterial =
-      new THREE.MeshPhysicalMaterial({
-        color:
-          new THREE.Color(
-            "#0c1217"
-          ),
-
-        roughness:
-          reducedQuality
-            ? 0.2
-            : 0.16,
-
-        metalness: 0.06,
-
-        transmission:
-          reducedQuality
-            ? 0.18
-            : 0.26,
-
-        thickness: 1.7,
-
-        ior: 1.32,
-
-        transparent: true,
-
-        opacity: 0.94,
-
-        clearcoat:
-          reducedQuality
-            ? 0.75
-            : 1,
-
-        clearcoatRoughness: 0.1,
-
-        reflectivity: 0.46,
-
-        sheen:
-          reducedQuality
-            ? 0.06
-            : 0.12,
-
-        sheenColor:
-          new THREE.Color(
-            "#8ed9f4"
-          )
-      });
-
-
-    const sphere =
-      new THREE.Mesh(
-        sphereGeometry,
-        sphereMaterial
-      );
-
-    world.add(
-      sphere
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | INNER CORE
-    |--------------------------------------------------------------------------
-    */
-
-    const coreGeometry =
-      new THREE.IcosahedronGeometry(
-        0.67,
-
-        reducedQuality
-          ? 3
-          : 5
-      );
-
-
-    const coreMaterial =
-      new THREE.MeshStandardMaterial({
-        color:
-          new THREE.Color(
-            "#071017"
-          ),
-
-        roughness: 0.4,
-
-        metalness: 0.28,
-
-        transparent: true,
-
-        opacity: 0.52
-      });
-
-
-    const core =
-      new THREE.Mesh(
-        coreGeometry,
-        coreMaterial
-      );
-
-    core.scale.setScalar(
-      0.96
-    );
-
-    world.add(
-      core
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | OPTIONAL WIREFRAME
-    |
-    | Desktop:
-    | aktif
-    |
-    | Mobile / low-power:
-    | tidak dibuat sama sekali
-    |--------------------------------------------------------------------------
-    */
-
-    let wire = null;
-    let wireGeometry = null;
-    let wireMaterial = null;
-
-    if (quality.wireframe) {
-      wireGeometry =
-        new THREE.IcosahedronGeometry(
-          1.305,
-          2
-        );
-
-      wireMaterial =
-        new THREE.MeshBasicMaterial({
-          color:
-            new THREE.Color(
-              "#a9e4fa"
-            ),
-
-          wireframe: true,
-
-          transparent: true,
-
-          opacity: 0.018,
-
-          depthWrite: false
-        });
-
-      wire =
-        new THREE.Mesh(
-          wireGeometry,
-          wireMaterial
-        );
-
-      world.add(
-        wire
-      );
+      curvePoints.push(new THREE.Vector3(x, y, z));
     }
 
+    const curve = new THREE.CatmullRomCurve3(curvePoints);
 
-    /*
-    |--------------------------------------------------------------------------
-    | FRESNEL EDGE
-    |--------------------------------------------------------------------------
-    */
+    curve.curveType = "catmullrom";
 
-    const fresnelGeometry =
-      new THREE.SphereGeometry(
-        1.32,
+    curve.tension = 0.42;
 
-        quality.fresnelSegments,
+    /* =========================================================
+       RIBBON GEOMETRY
+       ========================================================= */
 
-        quality.fresnelSegments
+    function createRibbonGeometry(segments) {
+      const geometry = new THREE.BufferGeometry();
+
+      const positions = [];
+      const uvs = [];
+      const indices = [];
+
+      const frames = curve.computeFrenetFrames(segments, false);
+
+      /*
+      | Four corners = solid rectangular ribbon.
+      */
+
+      for (let i = 0; i <= segments; i++) {
+        const u = i / segments;
+
+        const center = curve.getPointAt(u);
+
+        const normal = frames.normals[i].clone();
+
+        const binormal = frames.binormals[i].clone();
+
+        /*
+        | Twist amount.
+        |
+        | ~3.25 full rotations.
+        */
+
+        const twist =
+          u * Math.PI * 3.35 +
+          Math.sin(u * Math.PI * 1.65) * 0.42 +
+          Math.sin(u * Math.PI * 3.2) * 0.1;
+
+        /*
+        | Rotate width/depth axes around path.
+        */
+
+        const widthAxis = normal
+          .clone()
+          .multiplyScalar(Math.cos(twist))
+          .add(binormal.clone().multiplyScalar(Math.sin(twist)))
+          .normalize();
+
+        const depthAxis = normal
+          .clone()
+          .multiplyScalar(-Math.sin(twist))
+          .add(binormal.clone().multiplyScalar(Math.cos(twist)))
+          .normalize();
+
+        /*
+        | Wider in the center,
+        | slightly tapered near the ends.
+        */
+
+        /*
+|--------------------------------------------------------------------------
+| ORGANIC WIDTH
+|--------------------------------------------------------------------------
+|
+| Lebar terbesar berada di badan sculpture.
+| Sedikit asymmetric supaya tidak terasa matematis.
+|
+*/
+
+        const taper = 0.48 + Math.pow(Math.sin(Math.PI * u), 0.58) * 0.72;
+
+        const asymmetry = 1 + Math.sin(u * Math.PI * 2.6 + 0.55) * 0.13;
+
+        const width = 0.96 * taper * asymmetry;
+
+        const thickness = 0.085;
+
+        const halfWidth = width * 0.5;
+
+        const halfDepth = thickness * 0.5;
+
+        const corners = [
+          center
+            .clone()
+            .add(widthAxis.clone().multiplyScalar(halfWidth))
+            .add(depthAxis.clone().multiplyScalar(halfDepth)),
+
+          center
+            .clone()
+            .add(widthAxis.clone().multiplyScalar(-halfWidth))
+            .add(depthAxis.clone().multiplyScalar(halfDepth)),
+
+          center
+            .clone()
+            .add(widthAxis.clone().multiplyScalar(-halfWidth))
+            .add(depthAxis.clone().multiplyScalar(-halfDepth)),
+
+          center
+            .clone()
+            .add(widthAxis.clone().multiplyScalar(halfWidth))
+            .add(depthAxis.clone().multiplyScalar(-halfDepth)),
+        ];
+
+        corners.forEach((point, index) => {
+          positions.push(point.x, point.y, point.z);
+
+          uvs.push(u, index / 3);
+        });
+      }
+
+      /*
+      | Connect each cross-section.
+      */
+
+      for (let i = 0; i < segments; i++) {
+        for (let side = 0; side < 4; side++) {
+          const nextSide = (side + 1) % 4;
+
+          const a = i * 4 + side;
+
+          const b = i * 4 + nextSide;
+
+          const c = (i + 1) * 4 + nextSide;
+
+          const d = (i + 1) * 4 + side;
+
+          indices.push(a, b, c);
+
+          indices.push(a, c, d);
+        }
+      }
+
+      /*
+      | Bottom cap
+      */
+
+      indices.push(0, 2, 1);
+
+      indices.push(0, 3, 2);
+
+      /*
+      | Top cap
+      */
+
+      const end = segments * 4;
+
+      indices.push(end, end + 1, end + 2);
+
+      indices.push(end, end + 2, end + 3);
+
+      geometry.setAttribute(
+        "position",
+
+        new THREE.Float32BufferAttribute(positions, 3),
       );
 
+      geometry.setAttribute(
+        "uv",
 
-    const fresnelMaterial =
-      new THREE.ShaderMaterial({
+        new THREE.Float32BufferAttribute(uvs, 2),
+      );
+
+      geometry.setIndex(indices);
+
+      geometry.computeVertexNormals();
+
+      geometry.computeBoundingSphere();
+
+      return geometry;
+    }
+
+    const ribbonGeometry = createRibbonGeometry(quality.segments);
+
+    /* =========================================================
+       DARK CHROME MATERIAL
+       ========================================================= */
+
+    const ribbonMaterial = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color("#8f9da6"),
+
+      metalness: 0.82,
+
+      roughness: 0.22,
+
+      clearcoat: 1,
+
+      clearcoatRoughness: 0.11,
+
+      reflectivity: 0.88,
+
+      sheen: 0.22,
+
+      sheenColor: new THREE.Color("#d9f4ff"),
+
+      side: THREE.DoubleSide,
+    });
+
+    const ribbon = new THREE.Mesh(ribbonGeometry, ribbonMaterial);
+
+    world.add(ribbon);
+
+    /* =========================================================
+       SUBTLE EDGE DETAIL
+       Desktop only
+       ========================================================= */
+
+    let edgeLines = null;
+    let edgeGeometry = null;
+    let edgeMaterial = null;
+
+    if (quality.edgeDetail) {
+      edgeGeometry = new THREE.EdgesGeometry(ribbonGeometry, 28);
+
+      edgeMaterial = new THREE.LineBasicMaterial({
+        color: new THREE.Color("#bcecff"),
+
         transparent: true,
+
+        opacity: 0.075,
 
         depthWrite: false,
-
-        blending:
-          THREE.AdditiveBlending,
-
-        uniforms: {
-          glowColor: {
-            value:
-              new THREE.Color(
-                "#8edbf7"
-              )
-          },
-
-          intensity: {
-            value:
-              reducedQuality
-                ? 0.12
-                : 0.17
-          }
-        },
-
-        vertexShader: `
-          varying vec3 vNormal;
-          varying vec3 vViewPosition;
-
-          void main() {
-
-            vec4 mvPosition =
-              modelViewMatrix *
-              vec4(position, 1.0);
-
-            vViewPosition =
-              -mvPosition.xyz;
-
-            vNormal =
-              normalize(
-                normalMatrix *
-                normal
-              );
-
-            gl_Position =
-              projectionMatrix *
-              mvPosition;
-          }
-        `,
-
-        fragmentShader: `
-          uniform vec3 glowColor;
-          uniform float intensity;
-
-          varying vec3 vNormal;
-          varying vec3 vViewPosition;
-
-          void main() {
-
-            vec3 viewDirection =
-              normalize(
-                vViewPosition
-              );
-
-            float fresnel =
-              pow(
-                1.0 -
-                max(
-                  dot(
-                    normalize(vNormal),
-                    viewDirection
-                  ),
-                  0.0
-                ),
-                3.4
-              );
-
-            float alpha =
-              fresnel *
-              intensity;
-
-            gl_FragColor =
-              vec4(
-                glowColor,
-                alpha
-              );
-          }
-        `
       });
 
+      edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
 
-    const fresnel =
-      new THREE.Mesh(
-        fresnelGeometry,
-        fresnelMaterial
-      );
-
-    world.add(
-      fresnel
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | PRIMARY ORBIT
-    |--------------------------------------------------------------------------
-    */
-
-    const ringOneGeometry =
-      new THREE.TorusGeometry(
-        1.92,
-        0.005,
-        6,
-        reducedQuality
-          ? 120
-          : 180
-      );
-
-
-    const ringOneMaterial =
-      new THREE.MeshBasicMaterial({
-        color:
-          new THREE.Color(
-            "#b4e8fb"
-          ),
-
-        transparent: true,
-
-        opacity: 0.085,
-
-        depthWrite: false
-      });
-
-
-    const ringOne =
-      new THREE.Mesh(
-        ringOneGeometry,
-        ringOneMaterial
-      );
-
-    ringOne.rotation.x =
-      Math.PI * 0.56;
-
-    ringOne.rotation.y =
-      Math.PI * 0.16;
-
-    world.add(
-      ringOne
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | SECONDARY ORBIT
-    |--------------------------------------------------------------------------
-    */
-
-    const ringTwoGeometry =
-      new THREE.TorusGeometry(
-        2.15,
-        0.0035,
-        6,
-        reducedQuality
-          ? 100
-          : 160
-      );
-
-
-    const ringTwoMaterial =
-      new THREE.MeshBasicMaterial({
-        color:
-          new THREE.Color(
-            "#e8f8ff"
-          ),
-
-        transparent: true,
-
-        opacity: 0.038,
-
-        depthWrite: false
-      });
-
-
-    const ringTwo =
-      new THREE.Mesh(
-        ringTwoGeometry,
-        ringTwoMaterial
-      );
-
-    ringTwo.rotation.x =
-      Math.PI * 0.2;
-
-    ringTwo.rotation.y =
-      Math.PI * 0.52;
-
-    world.add(
-      ringTwo
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | THIRD ORBIT
-    |
-    | Desktop only
-    |--------------------------------------------------------------------------
-    */
-
-    let ringThree = null;
-    let ringThreeGeometry = null;
-    let ringThreeMaterial = null;
-
-    if (quality.thirdRing) {
-      ringThreeGeometry =
-        new THREE.TorusGeometry(
-          1.7,
-          0.0028,
-          6,
-          140
-        );
-
-
-      ringThreeMaterial =
-        new THREE.MeshBasicMaterial({
-          color:
-            new THREE.Color(
-              "#ffffff"
-            ),
-
-          transparent: true,
-
-          opacity: 0.024,
-
-          depthWrite: false
-        });
-
-
-      ringThree =
-        new THREE.Mesh(
-          ringThreeGeometry,
-          ringThreeMaterial
-        );
-
-      ringThree.rotation.x =
-        Math.PI * 0.82;
-
-      ringThree.rotation.z =
-        Math.PI * 0.24;
-
-      world.add(
-        ringThree
-      );
+      ribbon.add(edgeLines);
     }
 
+    /* =========================================================
+       SOFT HALO
+       ========================================================= */
 
-    /*
-    |--------------------------------------------------------------------------
-    | HALO
-    |--------------------------------------------------------------------------
-    */
+    const glowCanvas = document.createElement("canvas");
 
-    const haloGeometry =
-      new THREE.SphereGeometry(
-        1.52,
+    glowCanvas.width = 256;
 
-        reducedQuality
-          ? 32
-          : 48,
+    glowCanvas.height = 256;
 
-        reducedQuality
-          ? 32
-          : 48
-      );
+    const glowContext = glowCanvas.getContext("2d");
 
-
-    const haloMaterial =
-      new THREE.MeshBasicMaterial({
-        color:
-          new THREE.Color(
-            "#78cbe8"
-          ),
-
-        transparent: true,
-
-        opacity: 0.01,
-
-        side:
-          THREE.BackSide,
-
-        depthWrite: false
-      });
-
-
-    const halo =
-      new THREE.Mesh(
-        haloGeometry,
-        haloMaterial
-      );
-
-    world.add(
-      halo
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | LIGHTING
-    |--------------------------------------------------------------------------
-    */
-
-    const ambientLight =
-      new THREE.AmbientLight(
-        0xdcefff,
-        0.3
-      );
-
-    scene.add(
-      ambientLight
-    );
-
-
-    const keyLight =
-      new THREE.PointLight(
-        0xbbeeff,
-
-        reducedQuality
-          ? 5
-          : 7,
-
-        16,
-
-        2
-      );
-
-    keyLight.position.set(
-      4.2,
-      3.4,
-      5
-    );
-
-    scene.add(
-      keyLight
-    );
-
-
-    const rimLight =
-      new THREE.PointLight(
-        0x4da5cf,
-
-        reducedQuality
-          ? 3.5
-          : 5,
-
-        14,
-
-        2
-      );
-
-    rimLight.position.set(
-      -4.5,
-      -2.8,
-      3.5
-    );
-
-    scene.add(
-      rimLight
-    );
-
-
-    const topLight =
-      new THREE.DirectionalLight(
-        0xffffff,
-        0.68
-      );
-
-    topLight.position.set(
+    const gradient = glowContext.createRadialGradient(
+      128,
+      128,
       0,
-      5,
-      5
+
+      128,
+      128,
+      128,
     );
 
-    scene.add(
-      topLight
-    );
+    gradient.addColorStop(0, "rgba(130, 215, 245, .16)");
 
+    gradient.addColorStop(0.35, "rgba(105, 190, 225, .07)");
+
+    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+    glowContext.fillStyle = gradient;
+
+    glowContext.fillRect(0, 0, 256, 256);
+
+    const glowTexture = new THREE.CanvasTexture(glowCanvas);
+
+    const glowMaterial = new THREE.SpriteMaterial({
+      map: glowTexture,
+
+      transparent: true,
+
+      opacity: reducedQuality ? 0.36 : 0.48,
+
+      depthWrite: false,
+    });
+
+    const glow = new THREE.Sprite(glowMaterial);
+
+    glow.scale.set(5.2, 5.2, 1);
+
+    glow.position.set(0.25, 0, -1.3);
+
+    scene.add(glow);
+
+    /* =========================================================
+       LIGHTING
+       ========================================================= */
 
     /*
-    |--------------------------------------------------------------------------
-    | POINTER
-    |--------------------------------------------------------------------------
+    | Ambient
     */
+
+    const ambient = new THREE.AmbientLight(0xc8e4ef, 0.48);
+
+    scene.add(ambient);
+
+    /*
+    | Main white light
+    */
+
+    const keyLight = new THREE.PointLight(0xf4fcff, 26, 15, 2);
+
+    keyLight.position.set(3.5, 3.3, 4);
+
+    scene.add(keyLight);
+
+    /*
+    | Ice-blue rim
+    */
+
+    const rimLight = new THREE.PointLight(0x8bdcff, 19, 14, 2);
+
+    rimLight.position.set(-3.7, 0.5, 2);
+
+    scene.add(rimLight);
+
+    /*
+    | Lower fill
+    */
+
+    const lowerLight = new THREE.PointLight(0x3a7895, 8, 11, 2);
+
+    lowerLight.position.set(1, -4, 2.5);
+
+    scene.add(lowerLight);
+
+    /*
+    | Rear highlight
+    */
+
+    const rearLight = new THREE.PointLight(0xffffff, 8, 11, 2);
+
+    rearLight.position.set(-1, 2, -4);
+
+    scene.add(rearLight);
+
+    /* =========================================================
+       INITIAL SCULPTURE POSE
+       ========================================================= */
+
+    world.rotation.set(0.04, -0.38, -0.1);
+
+    world.scale.setScalar(reducedQuality ? 0.94 : 1.12);
+
+    /* =========================================================
+       POINTER INTERACTION
+       ========================================================= */
 
     const pointer = {
       x: 0,
-      y: 0
+      y: 0,
     };
-
 
     const targetRotation = {
-      x: 0,
-      y: 0
+      x: world.rotation.x,
+      y: world.rotation.y,
     };
 
+    function onPointerMove(event) {
+      pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
 
-    const targetPosition = {
-      x: 0,
-      y: 0
-    };
+      pointer.y = (event.clientY / window.innerHeight) * 2 - 1;
 
+      targetRotation.y = -0.38 + pointer.x * 0.14;
 
-    function handlePointer(event) {
-      const nx =
-        event.clientX /
-        window.innerWidth;
-
-      const ny =
-        event.clientY /
-        window.innerHeight;
-
-
-      pointer.x =
-        nx * 2 - 1;
-
-      pointer.y =
-        ny * 2 - 1;
-
-
-      targetRotation.y =
-        pointer.x * 0.15;
-
-      targetRotation.x =
-        pointer.y * 0.08;
-
-
-      targetPosition.x =
-        pointer.x * 0.05;
-
-      targetPosition.y =
-        -pointer.y * 0.03;
+      targetRotation.x = 0.04 + pointer.y * 0.065;
     }
-
-
-    /*
-    | Pointer interaction desktop only.
-    */
 
     if (!coarsePointer) {
-      window.addEventListener(
-        "pointermove",
-        handlePointer,
-        {
-          passive: true
-        }
-      );
+      window.addEventListener("pointermove", onPointerMove, {
+        passive: true,
+      });
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | RESIZE
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       RESIZE
+       ========================================================= */
 
     function resize() {
-      if (destroyed) return;
+      const rect = host.getBoundingClientRect();
 
-      const rect =
-        container.getBoundingClientRect();
+      const width = Math.max(Math.round(rect.width), 1);
 
+      const height = Math.max(Math.round(rect.height), 1);
 
-      const width =
-        Math.max(
-          Math.round(
-            rect.width
-          ),
-          1
-        );
+      renderer.setSize(width, height, false);
 
-
-      const height =
-        Math.max(
-          Math.round(
-            rect.height
-          ),
-          1
-        );
-
-
-      renderer.setSize(
-        width,
-        height,
-        false
-      );
-
-
-      camera.aspect =
-        width / height;
-
+      camera.aspect = width / height;
 
       camera.updateProjectionMatrix();
 
-
-      /*
-      | Render sekali agar resize tidak
-      | meninggalkan canvas lama.
-      */
-
-      renderer.render(
-        scene,
-        camera
-      );
+      renderer.render(scene, camera);
     }
 
+    const resizeObserver = new ResizeObserver(resize);
 
-    const resizeObserver =
-      new ResizeObserver(
-        resize
-      );
-
-
-    resizeObserver.observe(
-      container
-    );
-
+    resizeObserver.observe(host);
 
     resize();
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCROLL
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       SCROLL REACTION
+       Internal 3D only.
+       CSS container position is NOT touched.
+       ========================================================= */
 
     let scrollProgress = 0;
 
-
     function updateScroll() {
-      const rect =
-        hero.getBoundingClientRect();
+      const rect = hero.getBoundingClientRect();
 
+      const height = Math.max(hero.offsetHeight, 1);
 
-      const height =
-        Math.max(
-          hero.offsetHeight,
-          1
-        );
-
-
-      scrollProgress =
-        Math.min(
-          Math.max(
-            -rect.top /
-            height,
-            0
-          ),
-          1
-        );
+      scrollProgress = Math.min(Math.max(-rect.top / height, 0), 1);
     }
 
-
-    window.addEventListener(
-      "scroll",
-      updateScroll,
-      {
-        passive: true
-      }
-    );
-
+    window.addEventListener("scroll", updateScroll, {
+      passive: true,
+    });
 
     updateScroll();
 
+    /* =========================================================
+       VISIBILITY
+       ========================================================= */
 
-    /*
-    |--------------------------------------------------------------------------
-    | FPS LIMIT
-    |--------------------------------------------------------------------------
-    */
+    let heroVisible = true;
+    let documentVisible = !document.hidden;
 
-    const frameDuration =
-      1000 /
-      quality.fps;
+    const heroObserver = new IntersectionObserver(
+      (entries) => {
+        heroVisible = entries[0]?.isIntersecting ?? true;
 
+        if (heroVisible) {
+          start();
+        } else {
+          stop();
+        }
+      },
+      {
+        threshold: 0.01,
+      },
+    );
 
-    /*
-    |--------------------------------------------------------------------------
-    | ANIMATION LOOP
-    |--------------------------------------------------------------------------
-    */
+    heroObserver.observe(hero);
+
+    function visibilityChange() {
+      documentVisible = !document.hidden;
+
+      if (documentVisible) {
+        start();
+      } else {
+        stop();
+      }
+    }
+
+    document.addEventListener("visibilitychange", visibilityChange);
+
+    /* =========================================================
+       ANIMATION LOOP
+       ========================================================= */
+
+    let raf = null;
+
+    let previousTime = performance.now();
+
+    const frameDuration = 1000 / quality.fps;
+
+    function start() {
+      if (raf !== null || !heroVisible || !documentVisible) {
+        return;
+      }
+
+      raf = requestAnimationFrame(animate);
+    }
+
+    function stop() {
+      if (raf === null) {
+        return;
+      }
+
+      cancelAnimationFrame(raf);
+
+      raf = null;
+    }
 
     function animate(timestamp) {
-      rafId = null;
+      raf = null;
 
-      if (
-        destroyed ||
-        !heroVisible ||
-        !documentVisible
-      ) {
+      if (!heroVisible || !documentVisible) {
         return;
       }
 
+      const elapsed = timestamp - previousTime;
 
-      if (
-        timestamp -
-        previousTime <
-        frameDuration
-      ) {
-        startAnimation();
+      if (elapsed < frameDuration) {
+        start();
 
         return;
       }
 
+      const delta = Math.min(elapsed / 16.667, 2);
 
-      const delta =
-        Math.min(
-          (
-            timestamp -
-            previousTime
-          ) / 16.667,
+      previousTime = timestamp;
 
-          2
-        );
-
-
-      previousTime =
-        timestamp;
-
-
-      const time =
-        timestamp *
-        0.001;
-
+      const time = timestamp * 0.001;
 
       /*
-      | Smooth pointer movement
+      | Heavy, slow mouse response
       */
 
-      world.rotation.y +=
-        (
-          targetRotation.y -
-          world.rotation.y
-        ) *
-        0.03 *
-        delta;
+      world.rotation.x += (targetRotation.x - world.rotation.x) * 0.025 * delta;
 
-
-      world.rotation.x +=
-        (
-          targetRotation.x -
-          world.rotation.x
-        ) *
-        0.03 *
-        delta;
-
-
-      world.position.x +=
-        (
-          targetPosition.x -
-          world.position.x
-        ) *
-        0.025 *
-        delta;
-
+      world.rotation.y += (targetRotation.y - world.rotation.y) * 0.025 * delta;
 
       /*
-      | Floating
+      | Autonomous sculpture rotation
       */
 
-      const floating =
-        Math.sin(
-          time * 0.48
-        ) *
-        0.033;
-
-
-      world.position.y =
-        floating +
-        targetPosition.y -
-        scrollProgress *
-        0.17;
-
+      world.rotation.y += 0.0007 * delta;
 
       /*
-      | Autonomous movement
+      | Slow floating
       */
 
-      sphere.rotation.y +=
-        0.0007 *
-        delta;
-
-
-      core.rotation.y -=
-        0.00055 *
-        delta;
-
-
-      core.rotation.x +=
-        0.00028 *
-        delta;
-
-
-      if (wire) {
-        wire.rotation.y +=
-          0.00025 *
-          delta;
-      }
-
-
-      ringOne.rotation.z +=
-        0.00031 *
-        delta;
-
-
-      ringTwo.rotation.z -=
-        0.0002 *
-        delta;
-
-
-      if (ringThree) {
-        ringThree.rotation.y +=
-          0.00016 *
-          delta;
-      }
-
+      world.position.y = Math.sin(time * 0.42) * 0.035 - scrollProgress * 0.18;
 
       /*
-      | Scroll depth
+      | Slight scroll rotation
       */
 
-      world.rotation.z =
-        scrollProgress *
-        0.042;
-
+      world.rotation.z = -0.14 + scrollProgress * 0.1;
 
       /*
-      | Lighting reaction
-      |
-      | Desktop pointer:
-      | dynamic
-      |
-      | Touch/mobile:
-      | mostly static
+      | Mouse-responsive lighting
       */
 
       if (!coarsePointer) {
-        keyLight.position.x =
-          4.2 +
-          pointer.x *
-          0.7;
+        keyLight.position.x = 3.5 + pointer.x * 0.85;
 
-
-        keyLight.position.y =
-          3.4 -
-          pointer.y *
-          0.45;
+        keyLight.position.y = 3.3 - pointer.y * 0.45;
       }
-
 
       /*
-      | Tiny breathing
+      | Tiny breathing glow
       */
 
-      const breathing =
-        1 +
-        Math.sin(
-          time * 0.55
-        ) *
-        0.0035;
+      const glowScale = 5.2 + Math.sin(time * 0.48) * 0.08;
 
+      glow.scale.set(glowScale, glowScale, 1);
 
-      halo.scale.setScalar(
-        breathing
-      );
+      renderer.render(scene, camera);
 
-
-      renderer.render(
-        scene,
-        camera
-      );
-
-
-      startAnimation();
+      start();
     }
 
+    /* =========================================================
+       CSS FALLBACK
+       ========================================================= */
 
-    /*
-    |--------------------------------------------------------------------------
-    | START / STOP RAF
-    |--------------------------------------------------------------------------
-    */
-
-    function startAnimation() {
-      if (
-        destroyed ||
-        rafId !== null ||
-        !heroVisible ||
-        !documentVisible
-      ) {
-        return;
-      }
-
-      rafId =
-        requestAnimationFrame(
-          animate
-        );
-    }
-
-
-    function stopAnimation() {
-      if (rafId === null) {
-        return;
-      }
-
-      cancelAnimationFrame(
-        rafId
-      );
-
-      rafId = null;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | HERO VISIBILITY
-    |
-    | Orb berhenti total ketika Hero
-    | sudah keluar viewport.
-    |--------------------------------------------------------------------------
-    */
-
-    const heroObserver =
-      new IntersectionObserver(
-        (entries) => {
-          const entry =
-            entries[0];
-
-          heroVisible =
-            entry?.isIntersecting ??
-            true;
-
-
-          if (heroVisible) {
-            previousTime =
-              performance.now();
-
-            startAnimation();
-          } else {
-            stopAnimation();
-          }
-        },
-        {
-          threshold: 0.01
-        }
-      );
-
-
-    heroObserver.observe(
-      hero
+    const fallback = host.querySelectorAll(
+      ".hero-orbit-core, .hero-orbit-ring",
     );
 
+    function hideFallback() {
+      fallback.forEach((element) => {
+        element.style.transition = "opacity .8s ease";
 
-    /*
-    |--------------------------------------------------------------------------
-    | TAB VISIBILITY
-    |
-    | Ketika user pindah tab:
-    | render loop berhenti.
-    |--------------------------------------------------------------------------
-    */
-
-    function handleVisibilityChange() {
-      documentVisible =
-        !document.hidden;
-
-
-      if (documentVisible) {
-        previousTime =
-          performance.now();
-
-        startAnimation();
-      } else {
-        stopAnimation();
-      }
+        element.style.opacity = "0";
+      });
     }
 
+    function showFallback() {
+      fallback.forEach((element) => {
+        element.style.opacity = "";
+      });
+    }
 
-    document.addEventListener(
-      "visibilitychange",
-      handleVisibilityChange
-    );
+    /* =========================================================
+       WEBGL READY
+       ========================================================= */
 
+    renderer.render(scene, camera);
 
-    /*
-    |--------------------------------------------------------------------------
-    | WEBGL CONTEXT LOST
-    |--------------------------------------------------------------------------
-    */
+    requestAnimationFrame(() => {
+      hideFallback();
 
-    function handleContextLost(
-      event
-    ) {
+      canvas.style.opacity = "1";
+
+      previousTime = performance.now();
+
+      start();
+    });
+
+    /* =========================================================
+       WEBGL CONTEXT LOSS
+       ========================================================= */
+
+    function contextLost(event) {
       event.preventDefault();
 
-      stopAnimation();
+      stop();
 
-      canvas.style.opacity =
-        "0";
+      canvas.style.opacity = "0";
 
-      showCssFallback();
+      showFallback();
     }
 
+    canvas.addEventListener("webglcontextlost", contextLost, false);
 
-    canvas.addEventListener(
-      "webglcontextlost",
-      handleContextLost,
-      false
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | CSS FALLBACK
-    |--------------------------------------------------------------------------
-    */
-
-    const fallbackElements =
-      container.querySelectorAll(
-        ".hero-orbit-core, .hero-orbit-ring"
-      );
-
-
-    function hideCssFallback() {
-      fallbackElements.forEach(
-        (element) => {
-          element.style.transition =
-            "opacity .9s ease";
-
-          element.style.opacity =
-            "0";
-        }
-      );
-    }
-
-
-    function showCssFallback() {
-      fallbackElements.forEach(
-        (element) => {
-          element.style.opacity =
-            "";
-        }
-      );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | FIRST FRAME
-    |--------------------------------------------------------------------------
-    */
-
-    renderer.render(
-      scene,
-      camera
-    );
-
-
-    requestAnimationFrame(
-      () => {
-        if (destroyed) return;
-
-        hideCssFallback();
-
-        canvas.style.opacity =
-          "1";
-
-        previousTime =
-          performance.now();
-
-        startAnimation();
-      }
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | CLEANUP
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       CLEANUP
+       ========================================================= */
 
     function cleanup() {
-      if (destroyed) return;
-
-      destroyed = true;
-
-
-      stopAnimation();
-
+      stop();
 
       resizeObserver.disconnect();
 
       heroObserver.disconnect();
 
+      window.removeEventListener("scroll", updateScroll);
 
-      document.removeEventListener(
-        "visibilitychange",
-        handleVisibilityChange
-      );
+      window.removeEventListener("pointermove", onPointerMove);
 
+      document.removeEventListener("visibilitychange", visibilityChange);
 
-      window.removeEventListener(
-        "scroll",
-        updateScroll
-      );
+      canvas.removeEventListener("webglcontextlost", contextLost);
 
+      ribbonGeometry.dispose();
 
-      window.removeEventListener(
-        "pointermove",
-        handlePointer
-      );
+      ribbonMaterial.dispose();
 
-
-      canvas.removeEventListener(
-        "webglcontextlost",
-        handleContextLost
-      );
-
-
-      /*
-      | Geometry
-      */
-
-      sphereGeometry.dispose();
-
-      coreGeometry.dispose();
-
-      fresnelGeometry.dispose();
-
-      ringOneGeometry.dispose();
-
-      ringTwoGeometry.dispose();
-
-      haloGeometry.dispose();
-
-
-      if (wireGeometry) {
-        wireGeometry.dispose();
+      if (edgeGeometry) {
+        edgeGeometry.dispose();
       }
 
-
-      if (ringThreeGeometry) {
-        ringThreeGeometry.dispose();
+      if (edgeMaterial) {
+        edgeMaterial.dispose();
       }
 
+      glowTexture.dispose();
 
-      /*
-      | Material
-      */
-
-      sphereMaterial.dispose();
-
-      coreMaterial.dispose();
-
-      fresnelMaterial.dispose();
-
-      ringOneMaterial.dispose();
-
-      ringTwoMaterial.dispose();
-
-      haloMaterial.dispose();
-
-
-      if (wireMaterial) {
-        wireMaterial.dispose();
-      }
-
-
-      if (ringThreeMaterial) {
-        ringThreeMaterial.dispose();
-      }
-
-
-      /*
-      | Renderer
-      */
+      glowMaterial.dispose();
 
       renderer.dispose();
 
       renderer.forceContextLoss();
 
-
-      if (
-        canvas.parentNode ===
-        container
-      ) {
-        container.removeChild(
-          canvas
-        );
+      if (canvas.parentNode === host) {
+        host.removeChild(canvas);
       }
 
-
-      showCssFallback();
+      showFallback();
     }
 
-
-    window.addEventListener(
-      "pagehide",
-      cleanup,
-      {
-        once: true
-      }
-    );
+    window.addEventListener("pagehide", cleanup, {
+      once: true,
+    });
   }
 })();
