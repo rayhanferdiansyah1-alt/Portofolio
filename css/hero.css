@@ -490,6 +490,181 @@
     );
 }
 
+/* =========================================================
+   A4 — SCULPTURE × TYPOGRAPHY INTEGRATION
+   ========================================================= */
+
+.hero .hero-sculpture {
+  position: absolute;
+
+  z-index: 2;
+
+  width: min(46vw, 720px);
+
+  aspect-ratio: 1;
+
+  /*
+  | Sculpture digeser jauh lebih ke kiri
+  | agar masuk ke komposisi typography.
+  */
+
+  right: clamp(
+    120px,
+    13vw,
+    245px
+  );
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  opacity: 0.97;
+
+  isolation: isolate;
+
+  filter:
+    drop-shadow(
+      0 0 48px
+      rgba(107, 201, 238, 0.10)
+    )
+    drop-shadow(
+      0 45px 110px
+      rgba(0, 0, 0, 0.48)
+    );
+}
+
+
+/* Ambient glow behind sculpture */
+
+.hero .hero-sculpture::before {
+  content: "";
+
+  position: absolute;
+
+  z-index: 0;
+
+  width: 80%;
+  height: 80%;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(111, 203, 239, 0.09) 0%,
+      rgba(79, 157, 190, 0.045) 35%,
+      transparent 70%
+    );
+
+  filter: blur(24px);
+
+  pointer-events: none;
+}
+
+
+/* Three.js canvas above ambient glow */
+
+.hero .hero-sculpture canvas {
+  position: absolute;
+
+  z-index: 2;
+
+  inset: 0;
+}
+
+
+/* CSS fallback also stays above glow */
+
+.hero .hero-sculpture
+.hero-orbit-core,
+
+.hero .hero-sculpture
+.hero-orbit-ring {
+  z-index: 1;
+}
+
+
+/* =========================================================
+   TYPOGRAPHY DEPTH
+   ========================================================= */
+
+.hero .hero-copy {
+  position: relative;
+
+  z-index: 5;
+
+  width: 60%;
+}
+
+
+.hero .hero-title {
+  position: relative;
+
+  z-index: 6;
+}
+
+
+/*
+| FERDISNYAH transparan.
+| Sculpture yang berada di belakang bisa terlihat
+| melalui bagian dalam huruf.
+*/
+
+.hero .hero-line-outline {
+  position: relative;
+
+  color: transparent;
+
+  -webkit-text-stroke:
+    1px
+    rgba(
+      245,
+      245,
+      247,
+      0.56
+    );
+
+  text-shadow:
+    0 0 28px
+    rgba(
+      255,
+      255,
+      255,
+      0.018
+    );
+}
+
+
+/* Solid lines remain visually dominant */
+
+.hero .hero-line:not(
+  .hero-line-outline
+) {
+  position: relative;
+
+  z-index: 7;
+}
+
+
+/* Intro always in front */
+
+.hero .hero-intro {
+  position: relative;
+
+  z-index: 7;
+
+  max-width: 520px;
+}
+
 
 /* =========================================================
    CSS FALLBACK ORB

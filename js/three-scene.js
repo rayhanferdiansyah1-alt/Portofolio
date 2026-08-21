@@ -538,9 +538,11 @@
        INITIAL SCULPTURE POSE
        ========================================================= */
 
-    world.rotation.set(0.04, -0.38, -0.1);
+    world.rotation.set(0.035, -0.48, -0.085);
 
-    world.scale.setScalar(reducedQuality ? 0.94 : 1.12);
+    world.scale.setScalar(reducedQuality ? 1.02 : 1.22);
+
+    world.position.x = -0.32;
 
     /* =========================================================
        POINTER INTERACTION
@@ -561,7 +563,7 @@
 
       pointer.y = (event.clientY / window.innerHeight) * 2 - 1;
 
-      targetRotation.y = -0.38 + pointer.x * 0.14;
+      targetRotation.y = -0.48 + pointer.x * 0.12;
 
       targetRotation.x = 0.04 + pointer.y * 0.065;
     }
