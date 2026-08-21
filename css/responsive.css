@@ -660,3 +660,620 @@ video {
     scroll-behavior: auto !important;
   }
 }
+
+/* =========================================================
+   A5 — HERO + SCULPTURE RESPONSIVE
+   Desktop composition tetap dipertahankan.
+   ========================================================= */
+
+
+/* =========================================================
+   LAPTOP / SHORT DESKTOP
+   ========================================================= */
+
+@media
+(min-width: 901px)
+and (max-height: 820px) {
+
+  .hero {
+    --hero-pad-top: 88px;
+    --hero-pad-bottom: 28px;
+
+    --hero-title-size:
+      clamp(
+        4.6rem,
+        8vw,
+        7.8rem
+      );
+  }
+
+
+  .hero-stage {
+    padding:
+      24px 0
+      42px;
+  }
+
+
+  .hero-intro {
+    margin-top: 38px;
+  }
+
+
+  .hero-intro p {
+    font-size: 0.9rem;
+
+    line-height: 1.65;
+  }
+
+
+  .hero-intro .text-link {
+    margin-top: 20px;
+  }
+
+
+  .hero .hero-sculpture {
+    width:
+      min(
+        43vw,
+        620px
+      );
+
+    right:
+      clamp(
+        100px,
+        10vw,
+        180px
+      );
+  }
+
+
+  .hero-status {
+    right:
+      clamp(
+        55px,
+        6vw,
+        90px
+      );
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   701px — 900px
+   ========================================================= */
+
+@media
+(min-width: 701px)
+and (max-width: 900px) {
+
+  .hero {
+    --hero-pad-top: 110px;
+    --hero-pad-bottom: 55px;
+
+    min-height: 100svh;
+  }
+
+
+  .hero-shell {
+    min-height:
+      calc(
+        100svh -
+        var(--hero-pad-top) -
+        var(--hero-pad-bottom)
+      );
+  }
+
+
+  .hero-topline {
+    font-size: 0.52rem;
+  }
+
+
+  .hero-stage {
+    align-items: center;
+
+    padding:
+      55px 0
+      120px;
+  }
+
+
+  .hero-copy {
+    width: 76%;
+
+    max-width: 620px;
+  }
+
+
+  .hero-title {
+    font-size:
+      clamp(
+        4.8rem,
+        12vw,
+        7rem
+      );
+
+    line-height: 0.86;
+  }
+
+
+  .hero-intro {
+    max-width: 440px;
+
+    margin-top: 48px;
+  }
+
+
+  .hero-intro p {
+    max-width: 440px;
+
+    font-size: 0.92rem;
+  }
+
+
+  /*
+  |--------------------------------------------------------------------------
+  | Sculpture masih aktif,
+  | tetapi dibuat sebagai background visual.
+  |--------------------------------------------------------------------------
+  */
+
+  .hero .hero-sculpture {
+    width: 580px;
+
+    right: -190px;
+
+    top: 49%;
+
+    opacity: 0.74;
+
+    filter:
+      drop-shadow(
+        0 0 40px
+        rgba(107, 201, 238, 0.08)
+      );
+  }
+
+
+  .hero .hero-sculpture::before {
+    opacity: 0.7;
+  }
+
+
+  .hero-status {
+    right: 0;
+
+    bottom: 0;
+
+    min-width: 235px;
+  }
+
+
+  .hero-scroll {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   431px — 700px
+   ========================================================= */
+
+@media
+(min-width: 431px)
+and (max-width: 700px) {
+
+  .hero {
+    --hero-pad-top: 96px;
+    --hero-pad-bottom: 46px;
+
+    min-height: 100svh;
+  }
+
+
+  .hero-shell {
+    min-height:
+      calc(
+        100svh -
+        var(--hero-pad-top) -
+        var(--hero-pad-bottom)
+      );
+  }
+
+
+  /* -----------------------------------------
+     TOP LABEL
+     ----------------------------------------- */
+
+  .hero-topline {
+    gap: 16px;
+
+    font-size: 0.47rem;
+
+    letter-spacing: 0.09em;
+  }
+
+
+  /* -----------------------------------------
+     MAIN
+     ----------------------------------------- */
+
+  .hero-stage {
+    align-items: center;
+
+    padding:
+      55px 0
+      135px;
+  }
+
+
+  .hero-copy {
+    width: 100%;
+
+    max-width: none;
+  }
+
+
+  .hero-title {
+    width: 100%;
+
+    font-size:
+      clamp(
+        4rem,
+        15.5vw,
+        6rem
+      );
+
+    line-height: 0.87;
+
+    letter-spacing: -0.075em;
+  }
+
+
+  .hero-intro {
+    max-width: 390px;
+
+    margin-top: 44px;
+  }
+
+
+  .hero-intro p {
+    max-width: 390px;
+
+    font-size: 0.88rem;
+
+    line-height: 1.7;
+  }
+
+
+  .hero-intro .text-link {
+    margin-top: 24px;
+  }
+
+
+  /* -----------------------------------------
+     SCULPTURE
+     ----------------------------------------- */
+
+  .hero .hero-sculpture {
+    /*
+    | Di HP sculpture tidak lagi berada
+    | sebagai objek kanan penuh.
+    |
+    | Dia jadi background composition.
+    */
+
+    width: 480px;
+
+    right: -285px;
+
+    top: 47%;
+
+    opacity: 0.48;
+
+    filter:
+      drop-shadow(
+        0 0 30px
+        rgba(107, 201, 238, 0.055)
+      );
+  }
+
+
+  .hero .hero-sculpture::before {
+    opacity: 0.42;
+  }
+
+
+  /* -----------------------------------------
+     STATUS
+     ----------------------------------------- */
+
+  .hero-status {
+    position: absolute;
+
+    left: 0;
+    right: auto;
+
+    bottom: 0;
+
+    min-width: 0;
+  }
+
+
+  .status-label {
+    font-size: 0.49rem;
+  }
+
+
+  .hero-status strong {
+    font-size: 0.68rem;
+  }
+
+
+  .hero-scroll {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   <= 430px
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .hero {
+    --hero-pad-top: 90px;
+    --hero-pad-bottom: 42px;
+
+    min-height: 100svh;
+  }
+
+
+  .hero-shell {
+    min-height:
+      calc(
+        100svh -
+        var(--hero-pad-top) -
+        var(--hero-pad-bottom)
+      );
+  }
+
+
+  .hero-topline {
+    font-size: 0.43rem;
+
+    letter-spacing: 0.075em;
+  }
+
+
+  /*
+  | Label kanan boleh tetap muncul,
+  | tetapi dibuat lebih kecil.
+  */
+
+  .hero-topline span:last-child {
+    text-align: right;
+  }
+
+
+  .hero-stage {
+    align-items: center;
+
+    padding:
+      50px 0
+      130px;
+  }
+
+
+  .hero-copy {
+    width: 100%;
+  }
+
+
+  .hero-title {
+    font-size:
+      clamp(
+        3.45rem,
+        16vw,
+        4.55rem
+      );
+
+    line-height: 0.88;
+
+    letter-spacing: -0.07em;
+  }
+
+
+  .hero-line-outline {
+    -webkit-text-stroke:
+      1px
+      rgba(
+        245,
+        245,
+        247,
+        0.42
+      );
+  }
+
+
+  .hero-intro {
+    max-width: 330px;
+
+    margin-top: 40px;
+  }
+
+
+  .hero-intro p {
+    max-width: 330px;
+
+    font-size: 0.84rem;
+
+    line-height: 1.68;
+  }
+
+
+  .hero-intro .text-link {
+    margin-top: 22px;
+
+    font-size: 0.66rem;
+  }
+
+
+  /* -----------------------------------------
+     Sculpture
+     ----------------------------------------- */
+
+  .hero .hero-sculpture {
+    width: 390px;
+
+    right: -250px;
+
+    top: 45%;
+
+    opacity: 0.38;
+
+    filter: none;
+  }
+
+
+  .hero .hero-sculpture::before {
+    opacity: 0.35;
+  }
+
+
+  /* -----------------------------------------
+     Status
+     ----------------------------------------- */
+
+  .hero-status {
+    left: 0;
+
+    right: auto;
+
+    bottom: 0;
+
+    min-width: 0;
+  }
+
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+
+  .status-label {
+    font-size: 0.46rem;
+  }
+
+
+  .hero-status strong {
+    font-size: 0.64rem;
+  }
+
+
+  .hero-scroll {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE LANDSCAPE
+   ========================================================= */
+
+@media
+(max-width: 900px)
+and (max-height: 560px)
+and (orientation: landscape) {
+
+  .hero {
+    --hero-pad-top: 76px;
+    --hero-pad-bottom: 28px;
+
+    min-height: 100svh;
+  }
+
+
+  .hero-stage {
+    padding:
+      22px 0
+      32px;
+  }
+
+
+  .hero-copy {
+    width: 62%;
+  }
+
+
+  .hero-title {
+    font-size:
+      clamp(
+        3rem,
+        9vw,
+        4.8rem
+      );
+
+    line-height: 0.84;
+  }
+
+
+  .hero-intro {
+    margin-top: 25px;
+  }
+
+
+  .hero-intro p {
+    max-width: 390px;
+
+    font-size: 0.76rem;
+
+    line-height: 1.55;
+  }
+
+
+  .hero-intro .text-link {
+    margin-top: 14px;
+  }
+
+
+  .hero .hero-sculpture {
+    width: 390px;
+
+    right: -70px;
+
+    top: 50%;
+
+    opacity: 0.68;
+  }
+
+
+  .hero-status,
+  .hero-scroll {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICE
+   ========================================================= */
+
+@media (hover: none) {
+
+  .hero .hero-sculpture {
+    pointer-events: none;
+  }
+
+}

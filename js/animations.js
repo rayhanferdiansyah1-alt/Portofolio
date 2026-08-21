@@ -1,16 +1,14 @@
 (() => {
   const reducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
+    "(prefers-reduced-motion: reduce)",
   ).matches;
 
   const revealAllImmediately = () => {
-    document
-      .querySelectorAll(".reveal, .reveal-text")
-      .forEach((el) => {
-        el.classList.add("is-visible");
-        el.style.opacity = "1";
-        el.style.transform = "none";
-      });
+    document.querySelectorAll(".reveal, .reveal-text").forEach((el) => {
+      el.classList.add("is-visible");
+      el.style.opacity = "1";
+      el.style.transform = "none";
+    });
   };
 
   if (reducedMotion) {
@@ -18,10 +16,7 @@
     return;
   }
 
-  const hasGSAP = Boolean(
-    window.gsap &&
-    window.ScrollTrigger
-  );
+  const hasGSAP = Boolean(window.gsap && window.ScrollTrigger);
 
   /*
   |--------------------------------------------------------------------------
@@ -41,15 +36,13 @@
       },
       {
         threshold: 0.12,
-        rootMargin: "0px 0px -6% 0px"
-      }
+        rootMargin: "0px 0px -6% 0px",
+      },
     );
 
-    document
-      .querySelectorAll(".reveal, .reveal-text")
-      .forEach((el) => {
-        observer.observe(el);
-      });
+    document.querySelectorAll(".reveal, .reveal-text").forEach((el) => {
+      observer.observe(el);
+    });
 
     return;
   }
@@ -63,12 +56,12 @@
   gsap.registerPlugin(ScrollTrigger);
 
   gsap.defaults({
-    ease: "power3.out"
+    ease: "power3.out",
   });
 
   ScrollTrigger.config({
     limitCallbacks: true,
-    ignoreMobileResize: true
+    ignoreMobileResize: true,
   });
 
   /*
@@ -79,8 +72,8 @@
 
   const heroTimeline = gsap.timeline({
     defaults: {
-      ease: "power4.out"
-    }
+      ease: "power4.out",
+    },
   });
 
   heroTimeline
@@ -89,13 +82,13 @@
       ".hero-topline",
       {
         opacity: 0,
-        y: 18
+        y: 18,
       },
       {
         opacity: 1,
         y: 0,
-        duration: 0.85
-      }
+        duration: 0.85,
+      },
     )
 
     .fromTo(
@@ -103,7 +96,7 @@
       {
         opacity: 0,
         yPercent: 115,
-        rotate: 1.8
+        rotate: 1.8,
       },
       {
         opacity: 1,
@@ -114,56 +107,56 @@
 
         stagger: 0.11,
 
-        ease: "power4.out"
+        ease: "power4.out",
       },
 
-      "-=0.50"
+      "-=0.50",
     )
 
     .fromTo(
       ".hero-intro",
       {
         opacity: 0,
-        y: 26
+        y: 26,
       },
       {
         opacity: 1,
         y: 0,
 
-        duration: 0.9
+        duration: 0.9,
       },
 
-      "-=0.55"
+      "-=0.55",
     )
 
     .fromTo(
       ".hero-status",
       {
         opacity: 0,
-        y: 20
+        y: 20,
       },
       {
         opacity: 1,
         y: 0,
 
-        duration: 0.85
+        duration: 0.85,
       },
 
-      "-=0.75"
+      "-=0.75",
     )
 
     .fromTo(
       ".hero-scroll",
       {
-        opacity: 0
+        opacity: 0,
       },
       {
         opacity: 1,
 
-        duration: 0.8
+        duration: 0.8,
       },
 
-      "-=0.55"
+      "-=0.55",
     );
 
   /*
@@ -183,43 +176,42 @@
   |--------------------------------------------------------------------------
   */
 
-  document
-    .querySelectorAll(".reveal")
-    .forEach((el) => {
-
-      /*
+  document.querySelectorAll(".reveal").forEach((el) => {
+    /*
       Jangan jalankan ulang elemen Hero.
       Hero sudah mempunyai timeline sendiri.
       */
 
-      if (el.closest(".hero")) return;
+    if (el.closest(".hero") || el.closest(".project")) {
+      return;
+    }
 
-      gsap.fromTo(
-        el,
+    gsap.fromTo(
+      el,
 
-        {
-          opacity: 0,
-          y: 32
+      {
+        opacity: 0,
+        y: 32,
+      },
+
+      {
+        opacity: 1,
+        y: 0,
+
+        duration: 0.95,
+
+        ease: "power3.out",
+
+        scrollTrigger: {
+          trigger: el,
+
+          start: "top 88%",
+
+          once: true,
         },
-
-        {
-          opacity: 1,
-          y: 0,
-
-          duration: 0.95,
-
-          ease: "power3.out",
-
-          scrollTrigger: {
-            trigger: el,
-
-            start: "top 88%",
-
-            once: true
-          }
-        }
-      );
-    });
+      },
+    );
+  });
 
   /*
   |--------------------------------------------------------------------------
@@ -227,38 +219,35 @@
   |--------------------------------------------------------------------------
   */
 
-  document
-    .querySelectorAll(".reveal-text")
-    .forEach((el) => {
+  document.querySelectorAll(".reveal-text").forEach((el) => {
+    if (el.closest(".hero")) return;
 
-      if (el.closest(".hero")) return;
+    gsap.fromTo(
+      el,
 
-      gsap.fromTo(
-        el,
+      {
+        opacity: 0,
+        y: 52,
+      },
 
-        {
-          opacity: 0,
-          y: 52
+      {
+        opacity: 1,
+        y: 0,
+
+        duration: 1.05,
+
+        ease: "power4.out",
+
+        scrollTrigger: {
+          trigger: el,
+
+          start: "top 90%",
+
+          once: true,
         },
-
-        {
-          opacity: 1,
-          y: 0,
-
-          duration: 1.05,
-
-          ease: "power4.out",
-
-          scrollTrigger: {
-            trigger: el,
-
-            start: "top 90%",
-
-            once: true
-          }
-        }
-      );
-    });
+      },
+    );
+  });
 
   /*
   |--------------------------------------------------------------------------
@@ -266,17 +255,15 @@
   |--------------------------------------------------------------------------
   */
 
-  const aboutSection =
-    document.querySelector(".about");
+  const aboutSection = document.querySelector(".about");
 
   if (aboutSection) {
-
     gsap.fromTo(
       ".about-stats .stat",
 
       {
         opacity: 0,
-        y: 28
+        y: 28,
       },
 
       {
@@ -294,219 +281,269 @@
 
           start: "top 86%",
 
-          once: true
-        }
-      }
+          once: true,
+        },
+      },
     );
   }
 
   /*
-  |--------------------------------------------------------------------------
-  | PROJECTS
-  |--------------------------------------------------------------------------
-  */
+|--------------------------------------------------------------------------
+| PROJECTS — B2 CINEMATIC SHOWCASE
+|--------------------------------------------------------------------------
+*/
 
-  document
-    .querySelectorAll(".project")
-    .forEach((project) => {
+  const projectMobile = window.matchMedia("(max-width: 700px)").matches;
 
-      const meta =
-        project.querySelector(".project-meta");
+  gsap.utils.toArray(".project").forEach((project) => {
+    const meta = project.querySelector(".project-meta");
 
-      const copy =
-        project.querySelector(".project-copy");
+    const copy = project.querySelector(".project-copy");
 
-      const visual =
-        project.querySelector(".project-visual");
+    const visual = project.querySelector(".project-visual");
 
-      const frame =
-        project.querySelector(".browser-frame");
+    const image = project.querySelector(".project-shot img");
 
-      const placeholderTitle =
-        project.querySelector(
-          ".project-placeholder strong"
-        );
+    const overlay = project.querySelector(".project-shot-overlay");
 
-      /*
-      |--------------------------------------------------------------------------
-      | PROJECT ENTRANCE
-      |--------------------------------------------------------------------------
-      */
+    const footer = project.querySelector(".project-footer");
 
-      const projectTimeline =
-        gsap.timeline({
+    /*
+    |--------------------------------------------------------------------------
+    | PROJECT ENTRANCE
+    |--------------------------------------------------------------------------
+    */
+
+    const projectTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: project,
+
+        start: "top 82%",
+
+        once: true,
+      },
+    });
+
+    /*
+    | Meta
+    */
+
+    if (meta) {
+      projectTimeline.fromTo(
+        meta,
+
+        {
+          opacity: 0,
+          y: 18,
+        },
+
+        {
+          opacity: 1,
+          y: 0,
+
+          duration: 0.75,
+
+          ease: "power3.out",
+        },
+      );
+    }
+
+    /*
+    | Project title + description
+    */
+
+    if (copy) {
+      projectTimeline.fromTo(
+        copy,
+
+        {
+          opacity: 0,
+          y: 42,
+        },
+
+        {
+          opacity: 1,
+          y: 0,
+
+          duration: 1,
+
+          ease: "power3.out",
+        },
+
+        "-=0.42",
+      );
+    }
+
+    /*
+    | Main visual
+    |
+    | Sengaja tidak memakai transform scale
+    | supaya tidak bentrok dengan hover CSS.
+    */
+
+    if (visual) {
+      projectTimeline.fromTo(
+        visual,
+
+        {
+          opacity: 0,
+        },
+
+        {
+          opacity: 1,
+
+          duration: 1.15,
+
+          ease: "power4.out",
+        },
+
+        "-=0.58",
+      );
+    }
+
+    /*
+    | Footer
+    */
+
+    if (footer) {
+      projectTimeline.fromTo(
+        footer,
+
+        {
+          opacity: 0,
+          y: 16,
+        },
+
+        {
+          opacity: 1,
+          y: 0,
+
+          duration: 0.75,
+
+          ease: "power3.out",
+        },
+
+        "-=0.52",
+      );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | VISUAL PARALLAX
+    |--------------------------------------------------------------------------
+    |
+    | Seluruh project visual bergerak sedikit
+    | berbeda dari kecepatan halaman.
+    |
+    */
+
+    if (visual) {
+      gsap.fromTo(
+        visual,
+
+        {
+          yPercent: projectMobile ? 1.2 : 3.2,
+        },
+
+        {
+          yPercent: projectMobile ? -1.2 : -3.2,
+
+          ease: "none",
+
           scrollTrigger: {
             trigger: project,
 
-            start: "top 78%",
+            start: "top bottom",
 
-            once: true
-          }
-        });
+            end: "bottom top",
 
-      if (meta) {
+            scrub: projectMobile ? 1.6 : 1.2,
 
-        projectTimeline.fromTo(
-          meta,
-
-          {
-            opacity: 0,
-            y: 16
+            invalidateOnRefresh: true,
           },
+        },
+      );
+    }
 
-          {
-            opacity: 1,
-            y: 0,
+    /*
+    |--------------------------------------------------------------------------
+    | IMAGE INTERNAL PAN
+    |--------------------------------------------------------------------------
+    |
+    | Pakai object-position,
+    | BUKAN transform.
+    |
+    | Jadi hover scale dari projects.css
+    | tetap bisa bekerja.
+    |
+    */
 
-            duration: 0.7
-          }
-        );
-      }
+    if (image) {
+      gsap.fromTo(
+        image,
 
-      if (copy) {
+        {
+          objectPosition: "50% 42%",
+        },
 
-        projectTimeline.fromTo(
-          copy,
+        {
+          objectPosition: "50% 58%",
 
-          {
-            opacity: 0,
-            y: 34
+          ease: "none",
+
+          scrollTrigger: {
+            trigger: visual,
+
+            start: "top bottom",
+
+            end: "bottom top",
+
+            scrub: projectMobile ? 1.8 : 1.35,
+
+            invalidateOnRefresh: true,
           },
+        },
+      );
+    }
 
-          {
-            opacity: 1,
-            y: 0,
+    /*
+    |--------------------------------------------------------------------------
+    | OVERLAY DEPTH
+    |--------------------------------------------------------------------------
+    |
+    | Label di atas screenshot bergerak
+    | sedikit berbeda dari image.
+    |
+    */
 
-            duration: 0.9
+    if (overlay) {
+      gsap.fromTo(
+        overlay,
+
+        {
+          y: projectMobile ? 5 : 13,
+        },
+
+        {
+          y: projectMobile ? -3 : -9,
+
+          ease: "none",
+
+          scrollTrigger: {
+            trigger: visual,
+
+            start: "top bottom",
+
+            end: "bottom top",
+
+            scrub: 1.45,
+
+            invalidateOnRefresh: true,
           },
-
-          "-=0.38"
-        );
-      }
-
-      if (visual) {
-
-        projectTimeline.fromTo(
-          visual,
-
-          {
-            opacity: 0,
-            y: 42,
-
-            scale: 0.975
-          },
-
-          {
-            opacity: 1,
-            y: 0,
-
-            scale: 1,
-
-            duration: 1.05,
-
-            ease: "power4.out"
-          },
-
-          "-=0.72"
-        );
-      }
-
-      /*
-      |--------------------------------------------------------------------------
-      | PROJECT MOCKUP PARALLAX
-      |--------------------------------------------------------------------------
-      */
-
-      if (visual) {
-
-        gsap.fromTo(
-          visual,
-
-          {
-            y: 36
-          },
-
-          {
-            y: -28,
-
-            ease: "none",
-
-            scrollTrigger: {
-              trigger: project,
-
-              start: "top bottom",
-              end: "bottom top",
-
-              scrub: 1.05
-            }
-          }
-        );
-      }
-
-      /*
-      |--------------------------------------------------------------------------
-      | BROWSER FRAME SCALE
-      |--------------------------------------------------------------------------
-      */
-
-      if (frame) {
-
-        gsap.fromTo(
-          frame,
-
-          {
-            scale: 0.985
-          },
-
-          {
-            scale: 1.015,
-
-            ease: "none",
-
-            scrollTrigger: {
-              trigger: project,
-
-              start: "top 85%",
-              end: "bottom 20%",
-
-              scrub: 1.4
-            }
-          }
-        );
-      }
-
-      /*
-      |--------------------------------------------------------------------------
-      | MOCKUP TYPOGRAPHY PARALLAX
-      |--------------------------------------------------------------------------
-      */
-
-      if (placeholderTitle) {
-
-        gsap.fromTo(
-          placeholderTitle,
-
-          {
-            yPercent: 8
-          },
-
-          {
-            yPercent: -4,
-
-            ease: "none",
-
-            scrollTrigger: {
-              trigger: project,
-
-              start: "top bottom",
-              end: "bottom top",
-
-              scrub: 1.2
-            }
-          }
-        );
-      }
-    });
+        },
+      );
+    }
+  });
 
   /*
   |--------------------------------------------------------------------------
@@ -514,45 +551,37 @@
   |--------------------------------------------------------------------------
   */
 
-  const capabilityItems =
-    gsap.utils.toArray(".capability");
+  const capabilityItems = gsap.utils.toArray(".capability");
 
-  capabilityItems.forEach(
-    (item, index) => {
+  capabilityItems.forEach((item, index) => {
+    gsap.fromTo(
+      item,
 
-      gsap.fromTo(
-        item,
+      {
+        opacity: 0,
+        y: 24,
+      },
 
-        {
-          opacity: 0,
-          y: 24
+      {
+        opacity: 1,
+        y: 0,
+
+        duration: 0.85,
+
+        delay: Math.min(index * 0.025, 0.12),
+
+        ease: "power3.out",
+
+        scrollTrigger: {
+          trigger: item,
+
+          start: "top 90%",
+
+          once: true,
         },
-
-        {
-          opacity: 1,
-          y: 0,
-
-          duration: 0.85,
-
-          delay:
-            Math.min(
-              index * 0.025,
-              0.12
-            ),
-
-          ease: "power3.out",
-
-          scrollTrigger: {
-            trigger: item,
-
-            start: "top 90%",
-
-            once: true
-          }
-        }
-      );
-    }
-  );
+      },
+    );
+  });
 
   /*
   |--------------------------------------------------------------------------
@@ -560,19 +589,15 @@
   |--------------------------------------------------------------------------
   */
 
-  const educationCard =
-    document.querySelector(
-      ".education-card"
-    );
+  const educationCard = document.querySelector(".education-card");
 
   if (educationCard) {
-
     gsap.fromTo(
       educationCard,
 
       {
         opacity: 0,
-        y: 34
+        y: 34,
       },
 
       {
@@ -588,9 +613,9 @@
 
           start: "top 86%",
 
-          once: true
-        }
-      }
+          once: true,
+        },
+      },
     );
   }
 
@@ -600,17 +625,15 @@
   |--------------------------------------------------------------------------
   */
 
-  const contact =
-    document.querySelector(".contact");
+  const contact = document.querySelector(".contact");
 
   if (contact) {
-
     gsap.fromTo(
       ".contact-heading",
 
       {
         opacity: 0,
-        y: 60
+        y: 60,
       },
 
       {
@@ -626,9 +649,9 @@
 
           start: "top 88%",
 
-          once: true
-        }
-      }
+          once: true,
+        },
+      },
     );
 
     gsap.fromTo(
@@ -636,7 +659,7 @@
 
       {
         opacity: 0,
-        y: 22
+        y: 22,
       },
 
       {
@@ -652,9 +675,9 @@
 
           start: "top 92%",
 
-          once: true
-        }
-      }
+          once: true,
+        },
+      },
     );
   }
 
@@ -664,23 +687,14 @@
   |--------------------------------------------------------------------------
   */
 
-  const navLinks =
-    document.querySelectorAll(
-      '.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]'
-    );
+  const navLinks = document.querySelectorAll(
+    '.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]',
+  );
 
-  const navSections = [
-    "about",
-    "projects",
-    "skills",
-    "education",
-    "contact"
-  ];
+  const navSections = ["about", "projects", "skills", "education", "contact"];
 
   navSections.forEach((id) => {
-
-    const section =
-      document.getElementById(id);
+    const section = document.getElementById(id);
 
     if (!section) return;
 
@@ -691,21 +705,14 @@
       end: "bottom 45%",
 
       onToggle: (self) => {
-
         if (!self.isActive) return;
 
         navLinks.forEach((link) => {
+          const active = link.getAttribute("href") === `#${id}`;
 
-          const active =
-            link.getAttribute("href") ===
-            `#${id}`;
-
-          link.classList.toggle(
-            "is-active",
-            active
-          );
+          link.classList.toggle("is-active", active);
         });
-      }
+      },
     });
   });
 
@@ -715,16 +722,9 @@
   |--------------------------------------------------------------------------
   */
 
-  window.addEventListener(
-    "load",
-    () => {
-
-      requestAnimationFrame(
-        () => {
-          ScrollTrigger.refresh();
-        }
-      );
-    }
-  );
-
+  window.addEventListener("load", () => {
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+  });
 })();
