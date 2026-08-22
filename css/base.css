@@ -1,129 +1,627 @@
+/* =========================================================
+   RFM PORTFOLIO
+   D5 — GLOBAL VISUAL POLISH
+   FINAL
+   ========================================================= */
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
 *,
 *::before,
-*::after { box-sizing: border-box; }
+*::after {
+  box-sizing:
+    border-box;
+}
 
-html { scroll-behavior: smooth; }
+
+/* =========================================================
+   DOCUMENT
+   ========================================================= */
+
+html {
+  scroll-behavior:
+    smooth;
+
+  scrollbar-gutter:
+    stable;
+}
+
 
 body {
-  margin: 0;
-  min-height: 100%;
-  overflow-x: hidden;
-  background: var(--bg);
-  color: var(--text-soft);
-  font-family: var(--font-body);
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  margin:
+    0;
+
+  min-height:
+    100%;
+
+  overflow-x:
+    hidden;
+
+  background:
+    var(--bg);
+
+  color:
+    var(--text-soft);
+
+  font-family:
+    var(--font-body);
+
+  line-height:
+    1.65;
+
+  font-synthesis:
+    none;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
+
+  -webkit-text-size-adjust:
+    100%;
+
+  text-rendering:
+    optimizeLegibility;
 }
 
-body.menu-open { overflow: hidden; }
 
-img, svg, canvas { display: block; max-width: 100%; }
-a { color: inherit; text-decoration: none; }
-button, input, textarea, select { font: inherit; }
-button { border: 0; }
-ul { margin: 0; padding: 0; list-style: none; }
-h1, h2, h3, p { margin: 0; }
+body.menu-open {
+  overflow:
+    hidden;
+}
+
+
+/* =========================================================
+   MEDIA
+   ========================================================= */
+
+img,
+svg,
+canvas {
+  display:
+    block;
+
+  max-width:
+    100%;
+}
+
+
+img {
+  height:
+    auto;
+}
+
+
+/* =========================================================
+   ELEMENT RESET
+   ========================================================= */
+
+a {
+  color:
+    inherit;
+
+  text-decoration:
+    none;
+}
+
+
+button,
+input,
+textarea,
+select {
+  font:
+    inherit;
+}
+
+
+button {
+  border:
+    0;
+
+  padding:
+    0;
+
+  color:
+    inherit;
+
+  background:
+    none;
+}
+
+
+ul {
+  margin:
+    0;
+
+  padding:
+    0;
+
+  list-style:
+    none;
+}
+
+
+h1,
+h2,
+h3,
+p {
+  margin:
+    0;
+}
+
+
+/* =========================================================
+   TEXT POLISH
+   ========================================================= */
+
+:where(
+  .hero-title,
+  .about-heading h2,
+  .projects-heading,
+  .project-copy h3,
+  .skills-header h2,
+  .capability h3,
+  .education-heading h2,
+  .education-card h3,
+  .contact-heading
+) {
+  text-wrap:
+    balance;
+}
+
+
+:where(
+  .hero-intro p,
+  .about-copy p,
+  .projects-intro-copy p,
+  .project-copy-bottom p,
+  .education-card p,
+  .contact-note
+) {
+  text-wrap:
+    pretty;
+}
+
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
 
 ::selection {
-  background: var(--accent);
-  color: #030405;
+  background:
+    var(--accent);
+
+  color:
+    #030405;
 }
+
+
+/* =========================================================
+   TAP INTERACTION
+   ========================================================= */
+
+a,
+button {
+  -webkit-tap-highlight-color:
+    rgba(
+      168,
+      221,
+      245,
+      0.12
+    );
+}
+
+
+/* =========================================================
+   SKIP LINK
+   ========================================================= */
 
 .skip-link {
-  position: fixed;
-  left: 24px;
-  top: -100px;
-  z-index: 9999;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: var(--text);
-  color: var(--bg);
-  font-weight: 600;
+  position:
+    fixed;
+
+  z-index:
+    9999;
+
+  left:
+    24px;
+
+  top:
+    -100px;
+
+  padding:
+    10px
+    14px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    var(--text);
+
+  color:
+    var(--bg);
+
+  font-family:
+    var(--font-mono);
+
+  font-size:
+    0.58rem;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.08em;
+
+  text-transform:
+    uppercase;
+
+  box-shadow:
+    0
+    14px
+    40px
+    rgba(
+      0,
+      0,
+      0,
+      0.35
+    );
+
+  transition:
+    top
+    0.35s
+    var(--ease-out);
 }
 
-.skip-link:focus { top: 20px; }
+
+.skip-link:focus-visible {
+  top:
+    20px;
+}
+
+
+/* =========================================================
+   PAGE TEXTURE
+   ========================================================= */
 
 .page-noise {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  pointer-events: none;
-  opacity: 0.035;
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    100;
+
+  pointer-events:
+    none;
+
+  /*
+   * D5:
+   * sebelumnya terlalu terlihat pada area gelap.
+   * Tetap ada, tetapi lebih premium/subtle.
+   */
+
+  opacity:
+    0.022;
+
   background-image:
     repeating-radial-gradient(
       circle at 0 0,
-      rgba(255,255,255,.55) 0,
-      rgba(255,255,255,.55) .5px,
-      transparent .7px,
-      transparent 3px
+
+      rgba(
+        255,
+        255,
+        255,
+        0.55
+      )
+      0,
+
+      rgba(
+        255,
+        255,
+        255,
+        0.55
+      )
+      0.5px,
+
+      transparent
+      0.7px,
+
+      transparent
+      3px
     );
-  mix-blend-mode: soft-light;
+
+  mix-blend-mode:
+    soft-light;
 }
+
+
+/* =========================================================
+   GLOBAL AMBIENT LIGHT
+   ========================================================= */
 
 .ambient {
-  position: fixed;
-  z-index: -1;
-  pointer-events: none;
-  width: 42rem;
-  height: 42rem;
-  border-radius: 50%;
-  filter: blur(90px);
+  position:
+    fixed;
+
+  z-index:
+    -1;
+
+  width:
+    42rem;
+
+  height:
+    42rem;
+
+  border-radius:
+    50%;
+
+  filter:
+    blur(90px);
+
+  pointer-events:
+    none;
 }
+
 
 .ambient-one {
-  right: -14rem;
-  top: -12rem;
-  background: rgba(74,167,203,.11);
+  right:
+    -14rem;
+
+  top:
+    -12rem;
+
+  background:
+    rgba(
+      74,
+      167,
+      203,
+      0.09
+    );
 }
+
 
 .ambient-two {
-  left: -18rem;
-  top: 45vh;
-  background: rgba(90,115,150,.07);
+  left:
+    -18rem;
+
+  top:
+    45vh;
+
+  background:
+    rgba(
+      90,
+      115,
+      150,
+      0.055
+    );
 }
 
+
+/* =========================================================
+   GLOBAL SHELL
+   ========================================================= */
+
 .shell {
-  width: min(calc(100% - 72px), var(--shell));
-  margin-inline: auto;
+  width:
+    min(
+      calc(
+        100% - 72px
+      ),
+      var(--shell)
+    );
+
+  margin-inline:
+    auto;
 }
+
+
+/* =========================================================
+   MICRO TYPOGRAPHY
+   ========================================================= */
 
 .section-index,
 .eyebrow,
 .project-meta,
 .contact-topline {
-  font-family: var(--font-mono);
-  letter-spacing: .12em;
-  text-transform: uppercase;
+  font-family:
+    var(--font-mono);
+
+  letter-spacing:
+    0.12em;
+
+  text-transform:
+    uppercase;
 }
+
 
 .section-index {
-  color: var(--dim);
-  font-size: .66rem;
+  color:
+    var(--dim);
+
+  font-size:
+    0.66rem;
 }
 
+
 .eyebrow {
-  color: var(--accent);
-  font-size: .66rem;
+  color:
+    var(--accent);
+
+  font-size:
+    0.66rem;
 }
+
+
+/* =========================================================
+   INLINE LINKS
+   ========================================================= */
 
 .text-link,
 .project-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  font-family: var(--font-mono);
-  font-size: .68rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    14px;
+
+  font-family:
+    var(--font-mono);
+
+  font-size:
+    0.68rem;
+
+  letter-spacing:
+    0.08em;
+
+  text-transform:
+    uppercase;
 }
+
 
 .text-link span,
 .project-link span {
-  transition: transform .35s var(--ease-out);
+  transition:
+    transform
+    0.35s
+    var(--ease-out);
 }
 
-.text-link:hover span,
-.project-link:hover span {
-  transform: translate(4px, -3px);
+
+/* =========================================================
+   POINTER HOVER
+   ========================================================= */
+
+@media
+(hover: hover)
+and (pointer: fine) {
+
+  .text-link:hover span,
+  .project-link:hover span {
+    transform:
+      translate(
+        4px,
+        -3px
+      );
+  }
+
+}
+
+
+/* =========================================================
+   KEYBOARD ACCESSIBILITY
+   ========================================================= */
+
+:where(
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [tabindex]
+):focus-visible {
+  outline:
+    2px solid
+    var(--accent);
+
+  outline-offset:
+    4px;
+}
+
+
+/* =========================================================
+   FIXED HEADER ANCHOR OFFSET
+   ========================================================= */
+
+section[id] {
+  scroll-margin-top:
+    105px;
+}
+
+
+/* =========================================================
+   MOBILE GLOBAL POLISH
+   ========================================================= */
+
+@media
+(max-width: 900px) {
+
+  section[id] {
+    scroll-margin-top:
+      84px;
+  }
+
+}
+
+
+@media
+(max-width: 700px) {
+
+  /*
+   * Mobile tidak membutuhkan texture sekuat desktop.
+   */
+
+  .page-noise {
+    opacity:
+      0.016;
+  }
+
+
+  /*
+   * Ambient tetap hidup,
+   * tapi jangan terlalu mendominasi layar kecil.
+   */
+
+  .ambient {
+    opacity:
+      0.72;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior:
+      auto;
+  }
+
+
+  .skip-link {
+    transition:
+      none;
+  }
+
+
+  .text-link span,
+  .project-link span {
+    transition:
+      none;
+  }
+
 }
