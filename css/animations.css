@@ -1,96 +1,209 @@
 /* =========================================================
-   RFM PORTFOLIO — MOTION FALLBACKS
-   GSAP menangani motion utama melalui animations.js.
-   CSS di sini hanya untuk reveal fallback dan elemen CSS orb.
+   RFM PORTFOLIO
+   D3 — MOTION PERFORMANCE
+   FINAL CLEAN
    ========================================================= */
 
+
+/* =========================================================
+   REVEAL FALLBACK
+
+   Hanya aktif ketika GSAP tidak tersedia.
+   ========================================================= */
+
+html:not(.has-gsap)
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
+
+  transform:
+    translateY(28px);
 }
 
+
+html:not(.has-gsap)
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+
+  transform:
+    translateY(0);
+
   transition:
-    opacity .9s var(--ease-out),
-    transform .9s var(--ease-out);
+    opacity
+    0.9s
+    var(--ease-out),
+
+    transform
+    0.9s
+    var(--ease-out);
 }
 
+
+html:not(.has-gsap)
 .reveal-text {
   opacity: 0;
-  transform: translateY(50px);
+
+  transform:
+    translateY(50px);
 }
 
+
+html:not(.has-gsap)
 .reveal-text.is-visible {
   opacity: 1;
-  transform: translateY(0);
+
+  transform:
+    translateY(0);
+
   transition:
-    opacity 1.05s var(--ease-out),
-    transform 1.05s var(--ease-out);
+    opacity
+    1.05s
+    var(--ease-out),
+
+    transform
+    1.05s
+    var(--ease-out);
 }
 
-/*
-  Penting:
-  .hero-orbit tidak lagi dianimasikan melalui transform di CSS.
-  Saat Three.js aktif, floating/rotation dikontrol oleh three-scene.js.
-  Ini mencegah double transform pada container canvas.
-*/
+
+/* =========================================================
+   CSS ORBIT FALLBACK
+   ========================================================= */
 
 .ring-one {
-  animation: ringRotateOne 18s linear infinite;
+  animation:
+    ringRotateOne
+    18s
+    linear
+    infinite;
 }
+
 
 .ring-two {
-  animation: ringRotateTwo 24s linear infinite reverse;
+  animation:
+    ringRotateTwo
+    24s
+    linear
+    infinite
+    reverse;
 }
+
 
 .status-dot {
-  animation: statusPulse 2.2s ease-in-out infinite;
+  animation:
+    statusPulse
+    2.2s
+    ease-in-out
+    infinite;
 }
+
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
 
 @keyframes ringRotateOne {
+
   from {
-    transform: translate(-50%, -50%) rotate(-12deg);
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      rotate(-12deg);
   }
+
   to {
-    transform: translate(-50%, -50%) rotate(348deg);
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      rotate(348deg);
   }
+
 }
+
 
 @keyframes ringRotateTwo {
+
   from {
-    transform: translate(-50%, -50%) rotate(34deg);
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      rotate(34deg);
   }
+
   to {
-    transform: translate(-50%, -50%) rotate(394deg);
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      rotate(394deg);
   }
+
 }
 
+
 @keyframes statusPulse {
+
   0%,
   100% {
     box-shadow:
-      0 0 0 5px rgba(168, 221, 245, .05),
-      0 0 20px rgba(168, 221, 245, .32);
+      0
+      0
+      0
+      5px
+      rgba(
+        168,
+        221,
+        245,
+        0.05
+      ),
+
+      0
+      0
+      20px
+      rgba(
+        168,
+        221,
+        245,
+        0.32
+      );
   }
+
 
   50% {
     box-shadow:
-      0 0 0 8px rgba(168, 221, 245, .025),
-      0 0 32px rgba(168, 221, 245, .55);
+      0
+      0
+      0
+      8px
+      rgba(
+        168,
+        221,
+        245,
+        0.025
+      ),
+
+      0
+      0
+      32px
+      rgba(
+        168,
+        221,
+        245,
+        0.55
+      );
   }
+
 }
 
-/* =========================================================
-   C5 — SECTION TRANSITIONS
-   FINAL
-   ========================================================= */
-
 
 /* =========================================================
-   SECTION BRIDGE
-   Dibuat otomatis oleh animations.js
+   C5 — SECTION BRIDGE
    ========================================================= */
 
 .section-bridge {
@@ -105,7 +218,9 @@
 
   width:
     min(
-      calc(100% - 64px),
+      calc(
+        100% - 64px
+      ),
       var(--shell)
     );
 
@@ -119,14 +234,16 @@
   transform:
     translateX(-50%);
 
-  pointer-events: none;
+  overflow:
+    visible;
 
-  overflow: visible;
+  pointer-events:
+    none;
 }
 
 
 /* =========================================================
-   TRANSITION LINE
+   BRIDGE LINE
    ========================================================= */
 
 .section-bridge-line {
@@ -178,15 +295,11 @@
 
   transform-origin:
     center center;
-
-  will-change:
-    transform,
-    opacity;
 }
 
 
 /* =========================================================
-   AMBIENT GLOW
+   BRIDGE GLOW
    ========================================================= */
 
 .section-bridge-glow {
@@ -208,7 +321,8 @@
       180px
     );
 
-  border-radius: 50%;
+  border-radius:
+    50%;
 
   background:
     radial-gradient(
@@ -244,16 +358,13 @@
   transform:
     translateX(-50%);
 
-  will-change:
-    transform,
-    opacity;
-
-  pointer-events: none;
+  pointer-events:
+    none;
 }
 
 
 /* =========================================================
-   CENTER POINT
+   BRIDGE POINT
    ========================================================= */
 
 .section-bridge-point {
@@ -265,13 +376,16 @@
   width: 5px;
   height: 5px;
 
-  border-radius: 50%;
+  border-radius:
+    50%;
 
   background:
     var(--accent-soft);
 
   box-shadow:
-    0 0 18px
+    0
+    0
+    18px
     rgba(
       168,
       221,
@@ -285,11 +399,8 @@
     translateX(-50%)
     scale(0);
 
-  will-change:
-    transform,
-    opacity;
-
-  pointer-events: none;
+  pointer-events:
+    none;
 }
 
 
@@ -297,7 +408,8 @@
    MOBILE
    ========================================================= */
 
-@media (max-width: 700px) {
+@media
+(max-width: 700px) {
 
   .section-bridge {
     width:
@@ -337,7 +449,8 @@
    SMALL MOBILE
    ========================================================= */
 
-@media (max-width: 430px) {
+@media
+(max-width: 430px) {
 
   .section-bridge {
     width:
@@ -362,8 +475,30 @@
 @media
 (prefers-reduced-motion: reduce) {
 
+  .reveal,
+  .reveal-text {
+    opacity:
+      1 !important;
+
+    transform:
+      none !important;
+
+    transition:
+      none !important;
+  }
+
+
+  .ring-one,
+  .ring-two,
+  .status-dot {
+    animation:
+      none !important;
+  }
+
+
   .section-bridge {
-    display: none;
+    display:
+      none;
   }
 
 }
