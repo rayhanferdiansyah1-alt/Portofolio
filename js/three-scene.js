@@ -1,237 +1,109 @@
 (() => {
-  const hero =
-    document.querySelector(
-      ".hero"
-    );
+  const hero = document.querySelector(".hero");
+  const host = document.querySelector(".hero-orbit");
+  if (!hero || !host) return;
 
-  const host =
-    document.querySelector(
-      ".hero-orbit"
-    );
-
-
-  if (
-    !hero ||
-    !host
-  ) {
-    return;
-  }
-
-
-  /* =========================================================
-     DEVICE PROFILE
-     ========================================================= */
-
-  const reducedMotion =
-    window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
 
   const coarsePointer =
-    window.matchMedia(
-      "(pointer: coarse)"
-    ).matches;
-
+    window.matchMedia("(pointer: coarse)").matches;
 
   const mobile =
-    window.matchMedia(
-      "(max-width: 900px)"
-    ).matches;
-
+    window.matchMedia("(max-width: 900px)").matches;
 
   const connection =
-
     navigator.connection ||
-
     navigator.mozConnection ||
-
     navigator.webkitConnection;
 
-
   const saveData =
-    connection?.saveData ===
-    true;
-
-
-  const deviceMemory =
-    navigator.deviceMemory ||
-    8;
-
-
-  const cpuThreads =
-    navigator.hardwareConcurrency ||
-    8;
-
+    connection?.saveData === true;
 
   const lowPower =
+    (navigator.deviceMemory || 8) <= 4 ||
+    (navigator.hardwareConcurrency || 8) <= 4;
 
-    deviceMemory <= 4 ||
-
-    cpuThreads <= 4;
-
-
-  if (
-    reducedMotion ||
-    saveData
-  ) {
-    return;
-  }
-
-
-  /* =========================================================
-     LOAD THREE.JS
-     ========================================================= */
+  if (reducedMotion || saveData) return;
 
   import(
     "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
   )
-
-    .then(
-      initScene
-    )
-
-    .catch(
-      (error) => {
-
-        console.warn(
-
-          "Three.js gagal dimuat. CSS visual tetap digunakan.",
-
-          error
-
-        );
-
-      }
+    .then(initScene)
+    .catch((error) =>
+      console.warn(
+        "Three.js gagal dimuat. CSS fallback tetap digunakan.",
+        error,
+      ),
     );
 
-
-  /* =========================================================
-     SCENE
-     ========================================================= */
-
-  function initScene(
-    THREE
-  ) {
-
+  function initScene(THREE) {
     const reducedQuality =
-
       mobile ||
-
       coarsePointer ||
-
       lowPower;
 
+    const quality = reducedQuality
+      ? {
+          tubeSegments: 76,
+          radialSegments: 7,
+          helixSamples: 64,
+          rungCount: 14,
+          pixelRatio: 1,
+          fps: 30,
+          antialias: false,
+          physicalMaterial: false,
+          studioEnvironment: false,
+          precision: "mediump",
+        }
+      : {
+          tubeSegments: 132,
+          radialSegments: 10,
+          helixSamples: 110,
+          rungCount: 20,
+          pixelRatio: Math.min(
+            window.devicePixelRatio || 1,
+            1.4,
+          ),
+          fps: 50,
+          antialias: true,
+          physicalMaterial: true,
+          studioEnvironment: true,
+          precision: "highp",
+        };
 
-    /* =======================================================
-       QUALITY PROFILE
-       ======================================================= */
-
-    const quality =
-
-      reducedQuality
-
-        ? {
-
-            segments:
-              60,
-
-            pathSegments:
-              20,
-
-            pixelRatio:
-              1,
-
-            fps:
-              30,
-
-            antialias:
-              false,
-
-            edgeDetail:
-              false,
-
-            physicalMaterial:
-              false,
-
-            precision:
-              "mediump",
-
-          }
-
-        : {
-
-            segments:
-              108,
-
-            pathSegments:
-              34,
-
-            pixelRatio:
-              Math.min(
-                window.devicePixelRatio ||
-                1,
-
-                1.4
-              ),
-
-            fps:
-              50,
-
-            antialias:
-              true,
-
-            edgeDetail:
-              true,
-
-            physicalMaterial:
-              true,
-
-            precision:
-              "highp",
-
-          };
-
+    /* =========================================================
+       SCENE / CAMERA
+       ========================================================= */
 
     const scene =
       new THREE.Scene();
 
-
     const camera =
       new THREE.PerspectiveCamera(
-
-        34,
-
+        32,
         1,
-
         0.1,
-
-        100
-
+        100,
       );
-
 
     camera.position.set(
       0,
       0,
-      6.7
+      7.25,
     );
 
-
-    /* =======================================================
+    /* =========================================================
        RENDERER
-       ======================================================= */
+       ========================================================= */
 
     let renderer;
 
-
     try {
-
       renderer =
         new THREE.WebGLRenderer({
-
-          alpha:
-            true,
+          alpha: true,
 
           antialias:
             quality.antialias,
@@ -244,922 +116,987 @@
               ? "low-power"
               : "high-performance",
 
-          stencil:
-            false,
+          stencil: false,
 
           preserveDrawingBuffer:
             false,
-
         });
-
-    }
-
-    catch (error) {
-
+    } catch (error) {
       console.warn(
-
         "WebGL tidak tersedia.",
-
-        error
-
+        error,
       );
 
-
       return;
-
     }
-
 
     renderer.setClearColor(
       0x000000,
-      0
+      0,
     );
-
 
     renderer.setPixelRatio(
-      quality.pixelRatio
+      quality.pixelRatio,
     );
-
 
     renderer.outputColorSpace =
       THREE.SRGBColorSpace;
 
-
     renderer.toneMapping =
       THREE.ACESFilmicToneMapping;
 
-
     renderer.toneMappingExposure =
-      1.38;
+      reducedQuality
+        ? 1.18
+        : 1.24;
 
-
-    /* =======================================================
+    /* =========================================================
        CANVAS
-       ======================================================= */
+       ========================================================= */
 
     const canvas =
       renderer.domElement;
 
-
     canvas.setAttribute(
       "aria-hidden",
-      "true"
+      "true",
     );
 
-
     Object.assign(
-
       canvas.style,
-
       {
+        position: "absolute",
+        inset: "0",
 
-        position:
-          "absolute",
+        width: "100%",
+        height: "100%",
 
-        inset:
-          "0",
+        display: "block",
 
-        width:
-          "100%",
+        pointerEvents: "none",
 
-        height:
-          "100%",
-
-        display:
-          "block",
-
-        pointerEvents:
-          "none",
-
-        opacity:
-          "0",
+        opacity: "0",
 
         transition:
           "opacity 1.2s cubic-bezier(.16,1,.3,1)",
-
-      }
-
+      },
     );
-
 
     host.appendChild(
-      canvas
+      canvas,
     );
 
-
-    /* =======================================================
+    /* =========================================================
        WORLD
-       ======================================================= */
+       ========================================================= */
 
     const world =
       new THREE.Group();
 
+    const dna =
+      new THREE.Group();
 
-    scene.add(
-      world
+    world.add(
+      dna,
     );
 
+    scene.add(
+      world,
+    );
 
-    /* =======================================================
-       CURVE
-       ======================================================= */
+    /* =========================================================
+       DNA1 GEOMETRY — LOCKED
+       ========================================================= */
 
-    const curvePoints =
-      [];
+    const HELIX_HEIGHT =
+      3.75;
 
+    const HELIX_RADIUS =
+      0.68;
 
-    for (
-      let i = 0;
+    const HELIX_TURNS =
+      2.72;
 
-      i <=
-      quality.pathSegments;
-
-      i++
-    ) {
-
-      const t =
-
-        i /
-
-        quality.pathSegments;
-
-
+    const helixPoint = (
+      t,
+      phase = 0,
+    ) => {
       const y =
         THREE.MathUtils.lerp(
-
-          -1.55,
-
-          1.55,
-
-          t
-
+          -HELIX_HEIGHT / 2,
+          HELIX_HEIGHT / 2,
+          t,
         );
 
+      const organicRadius =
+        HELIX_RADIUS *
+        (
+          0.965 +
 
-      const x =
+          Math.sin(
+            t * Math.PI,
+          ) *
+          0.065 +
 
-        Math.sin(
-          t *
-          Math.PI *
-          1.65
-        ) *
-        0.52 +
-
-        Math.sin(
-          t *
-          Math.PI *
-          3.15 +
-          0.45
-        ) *
-        0.14 +
-
-        Math.cos(
-          t *
-          Math.PI *
-          0.82
-        ) *
-        0.1;
-
-
-      const z =
-
-        Math.cos(
-          t *
-          Math.PI *
-          1.35 +
-          0.25
-        ) *
-        0.38 +
-
-        Math.sin(
-          t *
-          Math.PI *
-          2.35
-        ) *
-        0.11;
-
-
-      curvePoints.push(
-
-        new THREE.Vector3(
-          x,
-          y,
-          z
-        )
-
-      );
-
-    }
-
-
-    const curve =
-      new THREE.CatmullRomCurve3(
-        curvePoints
-      );
-
-
-    curve.curveType =
-      "catmullrom";
-
-
-    curve.tension =
-      0.42;
-
-
-    /* =======================================================
-       RIBBON GEOMETRY
-       ======================================================= */
-
-    function createRibbonGeometry(
-      segments
-    ) {
-
-      const geometry =
-        new THREE.BufferGeometry();
-
-
-      const positions =
-        [];
-
-
-      const uvs =
-        [];
-
-
-      const indices =
-        [];
-
-
-      const frames =
-        curve.computeFrenetFrames(
-
-          segments,
-
-          false
-
+          Math.sin(
+            t *
+              Math.PI *
+              4.4 +
+              0.3,
+          ) *
+          0.018
         );
 
+      const angle =
+        t *
+          Math.PI *
+          2 *
+          HELIX_TURNS +
+
+        phase +
+
+        Math.sin(
+          t *
+            Math.PI *
+            2.2,
+        ) *
+        0.07;
+
+      return new THREE.Vector3(
+        Math.cos(angle) *
+          organicRadius,
+
+        y,
+
+        Math.sin(angle) *
+          organicRadius,
+      );
+    };
+
+    const createHelixCurve = (
+      phase,
+    ) => {
+      const points =
+        [];
 
       for (
         let i = 0;
-
-        i <= segments;
-
+        i <= quality.helixSamples;
         i++
       ) {
-
-        const u =
-          i / segments;
-
-
-        const center =
-          curve.getPointAt(
-            u
-          );
-
-
-        const normal =
-          frames
-            .normals[i]
-            .clone();
-
-
-        const binormal =
-          frames
-            .binormals[i]
-            .clone();
-
-
-        const twist =
-
-          u *
-          Math.PI *
-          3.35 +
-
-          Math.sin(
-            u *
-            Math.PI *
-            1.65
-          ) *
-          0.42 +
-
-          Math.sin(
-            u *
-            Math.PI *
-            3.2
-          ) *
-          0.1;
-
-
-        const cos =
-          Math.cos(
-            twist
-          );
-
-
-        const sin =
-          Math.sin(
-            twist
-          );
-
-
-        const widthAxis =
-
-          normal
-            .clone()
-            .multiplyScalar(
-              cos
-            )
-
-            .add(
-
-              binormal
-                .clone()
-                .multiplyScalar(
-                  sin
-                )
-
-            )
-
-            .normalize();
-
-
-        const depthAxis =
-
-          normal
-            .clone()
-            .multiplyScalar(
-              -sin
-            )
-
-            .add(
-
-              binormal
-                .clone()
-                .multiplyScalar(
-                  cos
-                )
-
-            )
-
-            .normalize();
-
-
-        const taper =
-
-          0.48 +
-
-          Math.pow(
-
-            Math.sin(
-              Math.PI *
-              u
-            ),
-
-            0.58
-
-          ) *
-
-          0.72;
-
-
-        const asymmetry =
-
-          1 +
-
-          Math.sin(
-            u *
-            Math.PI *
-            2.6 +
-            0.55
-          ) *
-
-          0.13;
-
-
-        const halfWidth =
-
-          0.96 *
-
-          taper *
-
-          asymmetry *
-
-          0.5;
-
-
-        const halfDepth =
-
-          0.085 *
-
-          0.5;
-
-
-        const corners = [
-
-          [
-            halfWidth,
-            halfDepth,
-          ],
-
-          [
-            -halfWidth,
-            halfDepth,
-          ],
-
-          [
-            -halfWidth,
-            -halfDepth,
-          ],
-
-          [
-            halfWidth,
-            -halfDepth,
-          ],
-
-        ];
-
-
-        corners.forEach(
-
-          (
-            [
-              width,
-              depth,
-            ],
-
-            index
-
-          ) => {
-
-            const point =
-
-              center
-                .clone()
-
-                .add(
-
-                  widthAxis
-                    .clone()
-                    .multiplyScalar(
-                      width
-                    )
-
-                )
-
-                .add(
-
-                  depthAxis
-                    .clone()
-                    .multiplyScalar(
-                      depth
-                    )
-
-                );
-
-
-            positions.push(
-
-              point.x,
-
-              point.y,
-
-              point.z
-
-            );
-
-
-            uvs.push(
-
-              u,
-
-              index / 3
-
-            );
-
-          }
-
+        points.push(
+          helixPoint(
+            i /
+              quality.helixSamples,
+
+            phase,
+          ),
         );
-
       }
 
+      const curve =
+        new THREE.CatmullRomCurve3(
+          points,
+          false,
+          "catmullrom",
+          0.35,
+        );
 
-      /* =====================================================
-         CONNECT SEGMENTS
-         ===================================================== */
+      curve.tension =
+        0.35;
 
-      for (
-        let i = 0;
+      return curve;
+    };
 
-        i < segments;
+    const curveA =
+      createHelixCurve(
+        0,
+      );
 
-        i++
-      ) {
+    const curveB =
+      createHelixCurve(
+        Math.PI,
+      );
 
-        for (
-          let side = 0;
+    /* =========================================================
+       DNA2 — PROCEDURAL STUDIO REFLECTION
 
-          side < 4;
+       Desktop only.
+       Dirender satu kali, bukan setiap frame.
+       ========================================================= */
 
-          side++
+    let environmentTarget =
+      null;
+
+    const createStudioEnvironment =
+      () => {
+        if (
+          !quality.studioEnvironment
         ) {
-
-          const nextSide =
-            (
-              side + 1
-            ) %
-            4;
-
-
-          const a =
-            i *
-            4 +
-            side;
-
-
-          const b =
-            i *
-            4 +
-            nextSide;
-
-
-          const c =
-            (
-              i + 1
-            ) *
-            4 +
-            nextSide;
-
-
-          const d =
-            (
-              i + 1
-            ) *
-            4 +
-            side;
-
-
-          indices.push(
-
-            a,
-            b,
-            c,
-
-            a,
-            c,
-            d
-
-          );
-
+          return null;
         }
 
+        const environmentScene =
+          new THREE.Scene();
+
+        environmentScene.background =
+          new THREE.Color(
+            0x050608,
+          );
+
+        const cardGeometry =
+          new THREE.PlaneGeometry(
+            1,
+            1,
+          );
+
+        const cardMaterials =
+          [];
+
+        const addCard = ({
+          color,
+          position,
+          scale,
+          rotation,
+        }) => {
+          const material =
+            new THREE.MeshBasicMaterial({
+              color:
+                new THREE.Color(
+                  color,
+                ),
+
+              side:
+                THREE.DoubleSide,
+            });
+
+          const card =
+            new THREE.Mesh(
+              cardGeometry,
+              material,
+            );
+
+          card.position.set(
+            ...position,
+          );
+
+          card.scale.set(
+            ...scale,
+          );
+
+          card.rotation.set(
+            ...rotation,
+          );
+
+          environmentScene.add(
+            card,
+          );
+
+          cardMaterials.push(
+            material,
+          );
+        };
+
+        /*
+         * Main white reflection strip
+         */
+        addCard({
+          color:
+            "#f7fcff",
+
+          position:
+            [3.4, 2.8, 2.2],
+
+          scale:
+            [3.7, 1.0, 1],
+
+          rotation:
+            [0.18, -0.72, -0.12],
+        });
+
+        /*
+         * Cyan vertical rim
+         */
+        addCard({
+          color:
+            "#84d7f5",
+
+          position:
+            [-3.2, 0.4, 1.7],
+
+          scale:
+            [1.1, 4.2, 1],
+
+          rotation:
+            [0.06, 0.92, 0.08],
+        });
+
+        /*
+         * Dark blue floor card
+         */
+        addCard({
+          color:
+            "#345364",
+
+          position:
+            [1.2, -3.5, 1.0],
+
+          scale:
+            [2.8, 0.72, 1],
+
+          rotation:
+            [-0.48, -0.18, 0.04],
+        });
+
+        /*
+         * Rear silver reflection
+         */
+        addCard({
+          color:
+            "#aebdc4",
+
+          position:
+            [-0.8, 2.0, -3.4],
+
+          scale:
+            [2.4, 2.4, 1],
+
+          rotation:
+            [0, Math.PI, 0],
+        });
+
+        environmentTarget =
+          new THREE.WebGLCubeRenderTarget(
+            128,
+            {
+              type:
+                THREE.HalfFloatType,
+
+              generateMipmaps:
+                true,
+
+              minFilter:
+                THREE.LinearMipmapLinearFilter,
+            },
+          );
+
+        const cubeCamera =
+          new THREE.CubeCamera(
+            0.1,
+            30,
+            environmentTarget,
+          );
+
+        cubeCamera.update(
+          renderer,
+          environmentScene,
+        );
+
+        cardGeometry.dispose();
+
+        cardMaterials.forEach(
+          (material) =>
+            material.dispose(),
+        );
+
+        environmentScene.clear();
+
+        return environmentTarget.texture;
+      };
+
+    const studioEnvironment =
+      createStudioEnvironment();
+
+    /* =========================================================
+       DNA2 — PREMIUM MATERIALS
+       ========================================================= */
+
+    const createStrandMaterial = ({
+      color,
+      roughness,
+      envIntensity,
+      sheen,
+    }) => {
+      if (
+        quality.physicalMaterial
+      ) {
+        return new THREE.MeshPhysicalMaterial({
+          color:
+            new THREE.Color(
+              color,
+            ),
+
+          metalness:
+            0.94,
+
+          roughness,
+
+          clearcoat:
+            1,
+
+          clearcoatRoughness:
+            0.075,
+
+          reflectivity:
+            1,
+
+          sheen,
+
+          sheenRoughness:
+            0.34,
+
+          sheenColor:
+            new THREE.Color(
+              "#dff7ff",
+            ),
+
+          envMap:
+            studioEnvironment,
+
+          envMapIntensity:
+            envIntensity,
+        });
       }
 
+      return new THREE.MeshStandardMaterial({
+        color:
+          new THREE.Color(
+            color,
+          ),
 
-      /* =====================================================
-         CAPS
-         ===================================================== */
+        metalness:
+          0.82,
 
-      indices.push(
+        roughness:
+          Math.min(
+            roughness +
+              0.07,
 
-        0,
-        2,
-        1,
+            0.34,
+          ),
+      });
+    };
 
-        0,
-        3,
-        2
+    /*
+     * Strand A:
+     * polished silver chrome.
+     */
 
-      );
+    const strandMaterialA =
+      createStrandMaterial({
+        color:
+          "#909aa1",
 
+        roughness:
+          0.165,
 
-      const end =
-        segments *
-        4;
+        envIntensity:
+          1.28,
 
+        sheen:
+          0.24,
+      });
 
-      indices.push(
+    /*
+     * Strand B:
+     * darker blue / gunmetal.
+     */
 
-        end,
+    const strandMaterialB =
+      createStrandMaterial({
+        color:
+          "#3f525e",
 
-        end + 1,
+        roughness:
+          0.205,
 
-        end + 2,
+        envIntensity:
+          1.12,
 
-        end,
+        sheen:
+          0.16,
+      });
 
-        end + 2,
+    /*
+     * Base pairs:
+     * translucent cyan metal.
+     */
 
-        end + 3
-
-      );
-
-
-      geometry.setAttribute(
-
-        "position",
-
-        new THREE.Float32BufferAttribute(
-
-          positions,
-
-          3
-
-        )
-
-      );
-
-
-      geometry.setAttribute(
-
-        "uv",
-
-        new THREE.Float32BufferAttribute(
-
-          uvs,
-
-          2
-
-        )
-
-      );
-
-
-      geometry.setIndex(
-        indices
-      );
-
-
-      geometry.computeVertexNormals();
-
-
-      geometry.computeBoundingSphere();
-
-
-      return geometry;
-
-    }
-
-
-    /* =======================================================
-       RIBBON
-       ======================================================= */
-
-    const ribbonGeometry =
-      createRibbonGeometry(
-        quality.segments
-      );
-
-
-    const ribbonMaterial =
-
+    const rungMaterial =
       quality.physicalMaterial
 
         ? new THREE.MeshPhysicalMaterial({
-
             color:
               new THREE.Color(
-                "#8f9da6"
+                "#7bb9d0",
               ),
 
+            emissive:
+              new THREE.Color(
+                "#123746",
+              ),
+
+            emissiveIntensity:
+              0.42,
+
             metalness:
-              0.82,
+              0.7,
 
             roughness:
-              0.22,
+              0.24,
 
             clearcoat:
               1,
 
             clearcoatRoughness:
-              0.11,
+              0.12,
 
-            reflectivity:
-              0.88,
+            envMap:
+              studioEnvironment,
 
-            sheen:
-              0.22,
+            envMapIntensity:
+              0.9,
 
-            sheenColor:
-              new THREE.Color(
-                "#d9f4ff"
-              ),
+            transparent:
+              true,
 
-            side:
-              THREE.DoubleSide,
-
+            opacity:
+              0.72,
           })
 
         : new THREE.MeshStandardMaterial({
-
             color:
               new THREE.Color(
-                "#8f9da6"
+                "#6fa9c0",
               ),
 
+            emissive:
+              new THREE.Color(
+                "#102c37",
+              ),
+
+            emissiveIntensity:
+              0.28,
+
             metalness:
-              0.82,
+              0.48,
 
             roughness:
-              0.24,
+              0.3,
 
-            side:
-              THREE.DoubleSide,
+            transparent:
+              true,
 
+            opacity:
+              0.64,
           });
 
+    /* =========================================================
+       STRANDS
+       ========================================================= */
 
-    const ribbon =
-      new THREE.Mesh(
+    const strandGeometryA =
+      new THREE.TubeGeometry(
+        curveA,
 
-        ribbonGeometry,
+        quality.tubeSegments,
 
-        ribbonMaterial
+        reducedQuality
+          ? 0.052
+          : 0.058,
 
+        quality.radialSegments,
+
+        false,
       );
 
+    const strandGeometryB =
+      new THREE.TubeGeometry(
+        curveB,
 
-    world.add(
-      ribbon
+        quality.tubeSegments,
+
+        reducedQuality
+          ? 0.052
+          : 0.058,
+
+        quality.radialSegments,
+
+        false,
+      );
+
+    const strandA =
+      new THREE.Mesh(
+        strandGeometryA,
+        strandMaterialA,
+      );
+
+    const strandB =
+      new THREE.Mesh(
+        strandGeometryB,
+        strandMaterialB,
+      );
+
+    dna.add(
+      strandA,
+      strandB,
     );
 
+    /* =========================================================
+       DNA2 — SUBTLE CYAN EDGE SHELL
 
-    /* =======================================================
-       EDGE DETAIL
-       Desktop only
-       ======================================================= */
+       Desktop only.
+       Bukan cartoon outline.
+       ========================================================= */
 
-    let edgeGeometry =
+    let shellMaterialA =
       null;
 
-
-    let edgeMaterial =
+    let shellMaterialB =
       null;
 
-
-    if (
-      quality.edgeDetail
-    ) {
-
-      edgeGeometry =
-        new THREE.EdgesGeometry(
-
-          ribbonGeometry,
-
-          28
-
-        );
-
-
-      edgeMaterial =
-        new THREE.LineBasicMaterial({
-
+    if (!reducedQuality) {
+      shellMaterialA =
+        new THREE.MeshBasicMaterial({
           color:
             new THREE.Color(
-              "#bcecff"
+              "#bfeeff",
             ),
 
           transparent:
             true,
 
           opacity:
-            0.075,
+            0.055,
+
+          side:
+            THREE.BackSide,
+
+          blending:
+            THREE.AdditiveBlending,
 
           depthWrite:
             false,
-
         });
 
+      shellMaterialB =
+        shellMaterialA.clone();
 
-      ribbon.add(
+      shellMaterialB.opacity =
+        0.038;
 
-        new THREE.LineSegments(
+      const shellA =
+        new THREE.Mesh(
+          strandGeometryA,
+          shellMaterialA,
+        );
 
-          edgeGeometry,
+      const shellB =
+        new THREE.Mesh(
+          strandGeometryB,
+          shellMaterialB,
+        );
 
-          edgeMaterial
-
-        )
-
+      shellA.scale.setScalar(
+        1.055,
       );
 
+      shellB.scale.setScalar(
+        1.05,
+      );
+
+      dna.add(
+        shellA,
+        shellB,
+      );
     }
 
+    /* =========================================================
+       BASE PAIRS — INSTANCED
+       ========================================================= */
 
-    /* =======================================================
-       HALO
-       ======================================================= */
+    const rungGeometry =
+      new THREE.CylinderGeometry(
+        reducedQuality
+          ? 0.018
+          : 0.021,
+
+        reducedQuality
+          ? 0.018
+          : 0.021,
+
+        1,
+
+        reducedQuality
+          ? 6
+          : 8,
+
+        1,
+
+        false,
+      );
+
+    const rungMesh =
+      new THREE.InstancedMesh(
+        rungGeometry,
+        rungMaterial,
+        quality.rungCount,
+      );
+
+    rungMesh.instanceMatrix.setUsage(
+      THREE.StaticDrawUsage,
+    );
+
+    const dummy =
+      new THREE.Object3D();
+
+    const up =
+      new THREE.Vector3(
+        0,
+        1,
+        0,
+      );
+
+    const direction =
+      new THREE.Vector3();
+
+    const midpoint =
+      new THREE.Vector3();
+
+    for (
+      let i = 0;
+      i < quality.rungCount;
+      i++
+    ) {
+      const t =
+        THREE.MathUtils.lerp(
+          0.055,
+          0.945,
+
+          quality.rungCount === 1
+            ? 0.5
+            : i /
+              (
+                quality.rungCount -
+                1
+              ),
+        );
+
+      const pointA =
+        helixPoint(
+          t,
+          0,
+        );
+
+      const pointB =
+        helixPoint(
+          t,
+          Math.PI,
+        );
+
+      direction.subVectors(
+        pointB,
+        pointA,
+      );
+
+      const distance =
+        direction.length();
+
+      direction.normalize();
+
+      midpoint
+        .addVectors(
+          pointA,
+          pointB,
+        )
+        .multiplyScalar(
+          0.5,
+        );
+
+      dummy.position.copy(
+        midpoint,
+      );
+
+      dummy.quaternion
+        .setFromUnitVectors(
+          up,
+          direction,
+        );
+
+      dummy.scale.set(
+        1,
+        distance * 0.9,
+        1,
+      );
+
+      dummy.updateMatrix();
+
+      rungMesh.setMatrixAt(
+        i,
+        dummy.matrix,
+      );
+    }
+
+    rungMesh.instanceMatrix.needsUpdate =
+      true;
+
+    dna.add(
+      rungMesh,
+    );
+
+    /* =========================================================
+       END CAPS
+       ========================================================= */
+
+    const capGeometry =
+      new THREE.SphereGeometry(
+        reducedQuality
+          ? 0.072
+          : 0.078,
+
+        reducedQuality
+          ? 10
+          : 16,
+
+        reducedQuality
+          ? 8
+          : 12,
+      );
+
+    const caps = [
+      [
+        0,
+        0,
+        strandMaterialA,
+      ],
+
+      [
+        1,
+        0,
+        strandMaterialA,
+      ],
+
+      [
+        0,
+        Math.PI,
+        strandMaterialB,
+      ],
+
+      [
+        1,
+        Math.PI,
+        strandMaterialB,
+      ],
+    ].map(
+      ([
+        t,
+        phase,
+        material,
+      ]) => {
+        const cap =
+          new THREE.Mesh(
+            capGeometry,
+            material,
+          );
+
+        cap.position.copy(
+          helixPoint(
+            t,
+            phase,
+          ),
+        );
+
+        dna.add(
+          cap,
+        );
+
+        return cap;
+      },
+    );
+
+    /* =========================================================
+       AMBIENT HALO
+       ========================================================= */
 
     const glowCanvas =
       document.createElement(
-        "canvas"
+        "canvas",
       );
-
 
     const glowSize =
       reducedQuality
         ? 128
         : 192;
 
-
     glowCanvas.width =
       glowSize;
-
 
     glowCanvas.height =
       glowSize;
 
-
     const glowContext =
       glowCanvas.getContext(
-        "2d"
+        "2d",
       );
 
-
     if (!glowContext) {
-
       renderer.dispose();
 
       return;
-
     }
 
-
-    const glowCenter =
-      glowSize /
-      2;
-
+    const center =
+      glowSize / 2;
 
     const gradient =
       glowContext
         .createRadialGradient(
-
-          glowCenter,
-
-          glowCenter,
-
+          center,
+          center,
           0,
 
-          glowCenter,
-
-          glowCenter,
-
-          glowCenter
-
+          center,
+          center,
+          center,
         );
 
-
     gradient.addColorStop(
-
       0,
-
-      "rgba(130, 215, 245, .16)"
-
+      "rgba(175, 236, 255, .17)",
     );
 
-
     gradient.addColorStop(
-
-      0.35,
-
-      "rgba(105, 190, 225, .07)"
-
+      0.28,
+      "rgba(95, 190, 226, .072)",
     );
 
+    gradient.addColorStop(
+      0.62,
+      "rgba(61, 129, 155, .025)",
+    );
 
     gradient.addColorStop(
-
       1,
-
-      "rgba(0, 0, 0, 0)"
-
+      "rgba(0, 0, 0, 0)",
     );
-
 
     glowContext.fillStyle =
       gradient;
 
-
     glowContext.fillRect(
-
       0,
       0,
-
       glowSize,
-      glowSize
-
+      glowSize,
     );
-
 
     const glowTexture =
       new THREE.CanvasTexture(
-        glowCanvas
+        glowCanvas,
       );
-
 
     const glowMaterial =
       new THREE.SpriteMaterial({
-
         map:
           glowTexture,
 
@@ -1168,1117 +1105,770 @@
 
         opacity:
           reducedQuality
-            ? 0.34
-            : 0.48,
+            ? 0.27
+            : 0.38,
 
         depthWrite:
           false,
 
+        blending:
+          THREE.AdditiveBlending,
       });
-
 
     const glow =
       new THREE.Sprite(
-        glowMaterial
+        glowMaterial,
       );
 
-
     glow.scale.set(
-      5.2,
-      5.2,
-      1
+      5.15,
+      5.15,
+      1,
     );
-
 
     glow.position.set(
-      0.25,
+      0.16,
       0,
-      -1.3
+      -1.4,
     );
-
 
     scene.add(
-      glow
+      glow,
     );
 
-
-    /* =======================================================
-       LIGHTING
-       ======================================================= */
+    /* =========================================================
+       DNA2 — CINEMATIC LIGHT RIG
+       ========================================================= */
 
     const ambient =
       new THREE.AmbientLight(
-
-        0xc8e4ef,
+        0xc5d6dd,
 
         reducedQuality
-          ? 0.58
-          : 0.48
-
+          ? 0.5
+          : 0.32,
       );
 
+    /*
+     * Main studio white.
+     */
 
     const keyLight =
       new THREE.PointLight(
-
-        0xf4fcff,
+        0xf9fdff,
 
         reducedQuality
-          ? 22
-          : 26,
+          ? 18
+          : 23,
 
         15,
 
-        2
-
+        2,
       );
 
+    /*
+     * Ice-blue rim.
+     */
 
-    const rimLight =
+    const cyanRim =
       new THREE.PointLight(
-
-        0x8bdcff,
+        0x7fdcff,
 
         reducedQuality
-          ? 15
+          ? 13
           : 19,
 
         14,
 
-        2
-
+        2,
       );
-
-
-    keyLight.position.set(
-      3.5,
-      3.3,
-      4
-    );
-
-
-    rimLight.position.set(
-      -3.7,
-      0.5,
-      2
-    );
-
-
-    scene.add(
-
-      ambient,
-
-      keyLight,
-
-      rimLight
-
-    );
-
 
     /*
-     * Dua lampu tambahan hanya desktop.
+     * Deep blue lower fill.
      */
 
-    if (
-      !reducedQuality
-    ) {
+    const blueFill =
+      new THREE.PointLight(
+        0x315d71,
 
-      const lowerLight =
-        new THREE.PointLight(
+        reducedQuality
+          ? 7
+          : 9,
 
-          0x3a7895,
+        12,
 
-          8,
-
-          11,
-
-          2
-
-        );
-
-
-      const rearLight =
-        new THREE.PointLight(
-
-          0xffffff,
-
-          8,
-
-          11,
-
-          2
-
-        );
-
-
-      lowerLight.position.set(
-        1,
-        -4,
-        2.5
+        2,
       );
 
+    keyLight.position.set(
+      3.4,
+      3.7,
+      4.4,
+    );
+
+    cyanRim.position.set(
+      -3.7,
+      0.35,
+      2.15,
+    );
+
+    blueFill.position.set(
+      1.0,
+      -3.7,
+      2.3,
+    );
+
+    scene.add(
+      ambient,
+      keyLight,
+      cyanRim,
+      blueFill,
+    );
+
+    /*
+     * Rear highlight desktop only.
+     */
+
+    let rearLight =
+      null;
+
+    if (!reducedQuality) {
+      rearLight =
+        new THREE.PointLight(
+          0xffffff,
+          6,
+          12,
+          2,
+        );
 
       rearLight.position.set(
-        -1,
-        2,
-        -4
+        -1.4,
+        2.2,
+        -4.1,
       );
-
 
       scene.add(
-
-        lowerLight,
-
-        rearLight
-
+        rearLight,
       );
-
     }
 
-
-    /* =======================================================
+    /* =========================================================
        INITIAL POSE
-       ======================================================= */
-
-    world.rotation.set(
-
-      0.035,
-
-      -0.48,
-
-      -0.085
-
-    );
-
+       ========================================================= */
 
     world.scale.setScalar(
-
       reducedQuality
         ? 1.02
-        : 1.22
-
+        : 1.16,
     );
 
+    world.position.set(
+      -0.18,
+      0,
+      0,
+    );
 
-    world.position.x =
-      -0.32;
+    world.rotation.set(
+      0.16,
+      -0.38,
+      -0.08,
+    );
 
+    dna.rotation.y =
+      0.24;
 
-    /* =======================================================
-       POINTER
-       ======================================================= */
+    /* =========================================================
+       POINTER RESPONSE
+       ========================================================= */
 
     const pointer = {
-
       x: 0,
-
       y: 0,
-
     };
 
-
     const targetRotation = {
-
       x:
         world.rotation.x,
 
       y:
         world.rotation.y,
-
     };
 
-
-    function onPointerMove(
-      event
-    ) {
-
+    const onPointerMove = (
+      event,
+    ) => {
       pointer.x =
-
         (
           event.clientX /
           window.innerWidth
         ) *
-
-        2 -
-
+          2 -
         1;
 
-
       pointer.y =
-
         (
           event.clientY /
           window.innerHeight
         ) *
-
-        2 -
-
+          2 -
         1;
 
-
       targetRotation.y =
-
-        -0.48 +
-
+        -0.38 +
         pointer.x *
-        0.12;
-
+          0.11;
 
       targetRotation.x =
-
-        0.04 +
-
+        0.16 +
         pointer.y *
-        0.065;
+          0.055;
+    };
 
-    }
-
-
-    if (
-      !coarsePointer
-    ) {
-
+    if (!coarsePointer) {
       window.addEventListener(
-
         "pointermove",
-
         onPointerMove,
-
         {
-          passive:
-            true,
-        }
-
+          passive: true,
+        },
       );
-
     }
 
-
-    /* =======================================================
+    /* =========================================================
        RESIZE
-       ======================================================= */
+       ========================================================= */
 
     let lastWidth =
       0;
 
-
     let lastHeight =
       0;
-
 
     let resizeRaf =
       null;
 
-
-    let heroTop =
-      0;
-
-
-    let heroHeight =
-      1;
-
-
-    function updateMetrics() {
-
-      const rect =
-        hero.getBoundingClientRect();
-
-
-      heroTop =
-
-        rect.top +
-
-        window.scrollY;
-
-
-      heroHeight =
-        Math.max(
-
-          rect.height,
-
-          1
-
-        );
-
-    }
-
-
-    function resize() {
-
+    const resize = () => {
       resizeRaf =
         null;
-
 
       const rect =
         host.getBoundingClientRect();
 
-
       const width =
         Math.max(
-
           Math.round(
-            rect.width
+            rect.width,
           ),
-
-          1
-
+          1,
         );
-
 
       const height =
         Math.max(
-
           Math.round(
-            rect.height
+            rect.height,
           ),
-
-          1
-
+          1,
         );
 
-
-      updateMetrics();
-
-
-      /*
-       * Tidak menjalankan renderer.setSize
-       * kalau ukuran tidak berubah.
-       */
-
       if (
-
-        width ===
-          lastWidth &&
-
-        height ===
-          lastHeight
-
+        width === lastWidth &&
+        height === lastHeight
       ) {
         return;
       }
-
 
       lastWidth =
         width;
 
-
       lastHeight =
         height;
 
-
       renderer.setSize(
-
         width,
-
         height,
-
-        false
-
+        false,
       );
 
-
       camera.aspect =
-
-        width /
-
-        height;
-
+        width / height;
 
       camera.updateProjectionMatrix();
 
-
       renderer.render(
-
         scene,
-
-        camera
-
+        camera,
       );
+    };
 
-    }
+    const scheduleResize =
+      () => {
+        if (
+          resizeRaf !== null
+        ) {
+          return;
+        }
 
+        resizeRaf =
+          requestAnimationFrame(
+            resize,
+          );
+      };
 
-    function scheduleResize() {
+    let resizeObserver =
+      null;
 
-      if (
-        resizeRaf !==
-        null
-      ) {
-        return;
-      }
-
-
-      resizeRaf =
-        requestAnimationFrame(
-          resize
+    if (
+      "ResizeObserver" in window
+    ) {
+      resizeObserver =
+        new ResizeObserver(
+          scheduleResize,
         );
 
-    }
-
-
-    const resizeObserver =
-      new ResizeObserver(
-        scheduleResize
+      resizeObserver.observe(
+        host,
       );
-
-
-    resizeObserver.observe(
-      host
-    );
-
+    } else {
+      window.addEventListener(
+        "resize",
+        scheduleResize,
+        {
+          passive: true,
+        },
+      );
+    }
 
     resize();
 
-
-    /* =======================================================
-       SCROLL
-
-       Tidak ada getBoundingClientRect()
-       setiap scroll event.
-       ======================================================= */
-
-    let currentScrollY =
-      window.scrollY;
-
-
-    let scrollDirty =
-      true;
-
-
-    let scrollProgress =
-      0;
-
-
-    function onScroll() {
-
-      currentScrollY =
-        window.scrollY;
-
-
-      scrollDirty =
-        true;
-
-    }
-
-
-    window.addEventListener(
-
-      "scroll",
-
-      onScroll,
-
-      {
-        passive:
-          true,
-      }
-
-    );
-
-
-    /* =======================================================
-       VISIBILITY
-       ======================================================= */
+    /* =========================================================
+       VISIBILITY / RAF
+       ========================================================= */
 
     let heroVisible =
       true;
 
-
     let documentVisible =
       !document.hidden;
-
 
     let raf =
       null;
 
-
     let previousTime =
       performance.now();
 
-
     const frameDuration =
-
       1000 /
-
       quality.fps;
 
-
-    function start() {
-
+    const start = () => {
       if (
-
         raf !== null ||
-
         !heroVisible ||
-
         !documentVisible
-
       ) {
         return;
       }
 
-
       previousTime =
         performance.now();
 
-
       raf =
         requestAnimationFrame(
-          animate
+          animate,
         );
+    };
 
-    }
-
-
-    function stop() {
-
+    const stop = () => {
       if (
         raf === null
       ) {
         return;
       }
 
-
       cancelAnimationFrame(
-        raf
+        raf,
       );
-
 
       raf =
         null;
-
-    }
-
+    };
 
     const heroObserver =
       new IntersectionObserver(
-
         (entries) => {
-
           heroVisible =
-
             entries[0]
               ?.isIntersecting
+              ?? true;
 
-            ?? true;
-
-
-          if (
-            heroVisible
-          ) {
-            start();
-          }
-
-          else {
-            stop();
-          }
-
+          heroVisible
+            ? start()
+            : stop();
         },
 
         {
           threshold:
             0.01,
-        }
-
+        },
       );
 
-
     heroObserver.observe(
-      hero
+      hero,
     );
 
+    const onVisibilityChange =
+      () => {
+        documentVisible =
+          !document.hidden;
 
-    function onVisibilityChange() {
-
-      documentVisible =
-        !document.hidden;
-
-
-      if (
         documentVisible
-      ) {
-        start();
-      }
-
-      else {
-        stop();
-      }
-
-    }
-
+          ? start()
+          : stop();
+      };
 
     document.addEventListener(
-
       "visibilitychange",
-
-      onVisibilityChange
-
+      onVisibilityChange,
     );
 
-
-    /* =======================================================
-       RENDER LOOP
-       ======================================================= */
+    /* =========================================================
+       DNA2 — IDLE MATERIAL / LIGHT MOTION
+       ========================================================= */
 
     function animate(
-      timestamp
+      timestamp,
     ) {
-
       raf =
         null;
 
-
       if (
-
         !heroVisible ||
-
         !documentVisible
-
       ) {
         return;
       }
 
-
       const elapsed =
-
         timestamp -
-
         previousTime;
-
-
-      /*
-       * FPS limiter.
-       */
 
       if (
         elapsed <
         frameDuration
       ) {
-
         raf =
           requestAnimationFrame(
-            animate
+            animate,
           );
-
 
         return;
       }
 
-
       const delta =
         Math.min(
-
           elapsed /
-          16.667,
+            16.667,
 
-          2
-
+          2,
         );
-
-
-      previousTime =
-        timestamp;
-
 
       const time =
         timestamp *
         0.001;
 
+      previousTime =
+        timestamp;
 
-      /* =====================================================
-         SCROLL CALCULATION
-         ===================================================== */
-
-      if (
-        scrollDirty
-      ) {
-
-        scrollProgress =
-          THREE.MathUtils.clamp(
-
-            (
-              currentScrollY -
-              heroTop
-            ) /
-
-            heroHeight,
-
-            0,
-
-            1
-
-          );
-
-
-        scrollDirty =
-          false;
-
-      }
-
-
-      /* =====================================================
-         HEAVY POINTER RESPONSE
-         ===================================================== */
+      /*
+       * Mouse / pointer response.
+       */
 
       world.rotation.x +=
-
         (
           targetRotation.x -
           world.rotation.x
         ) *
-
-        0.025 *
-
+        0.024 *
         delta;
 
-
       world.rotation.y +=
-
         (
           targetRotation.y -
           world.rotation.y
         ) *
-
-        0.025 *
-
+        0.024 *
         delta;
 
+      /*
+       * Slow DNA turn.
+       */
 
-      /* =====================================================
-         AUTONOMOUS ROTATION
-         ===================================================== */
-
-      world.rotation.y +=
-
-        0.0007 *
-
+      dna.rotation.y +=
+        0.0009 *
         delta;
 
+      dna.rotation.z =
+        Math.sin(
+          time *
+          0.27,
+        ) *
+        0.022;
 
-      /* =====================================================
-         FLOATING
-         ===================================================== */
+      /*
+       * Tiny floating movement.
+       */
 
       world.position.y =
-
         Math.sin(
           time *
-          0.42
+          0.4,
         ) *
+        0.04;
 
-        0.035 -
+      /*
+       * Interactive studio lights.
+       */
 
-        scrollProgress *
-
-        0.18;
-
-
-      /* =====================================================
-         SCROLL ROTATION
-         ===================================================== */
-
-      world.rotation.z =
-
-        -0.14 +
-
-        scrollProgress *
-
-        0.1;
-
-
-      /* =====================================================
-         LIGHT POINTER
-         ===================================================== */
-
-      if (
-        !coarsePointer
-      ) {
-
+      if (!coarsePointer) {
         keyLight.position.x =
-
-          3.5 +
-
+          3.4 +
           pointer.x *
-
-          0.85;
-
+            0.78;
 
         keyLight.position.y =
-
-          3.3 -
-
+          3.7 -
           pointer.y *
+            0.38;
 
-          0.45;
-
+        cyanRim.position.y =
+          0.35 +
+          pointer.y *
+            0.22;
       }
 
+      /*
+       * Very subtle light breathing.
+       */
 
-      /* =====================================================
-         GLOW BREATHING
-         ===================================================== */
-
-      const glowScale =
-
-        5.2 +
-
+      const lightBreath =
+        1 +
         Math.sin(
           time *
-          0.48
+          0.56,
         ) *
+        0.035;
 
-        0.08;
+      keyLight.intensity =
+        (
+          reducedQuality
+            ? 18
+            : 23
+        ) *
+        lightBreath;
 
+      cyanRim.intensity =
+        (
+          reducedQuality
+            ? 13
+            : 19
+        ) *
+        (
+          1 +
+          Math.cos(
+            time *
+            0.48,
+          ) *
+          0.045
+        );
+
+      /*
+       * Halo breathing.
+       */
+
+      const glowScale =
+        5.15 +
+        Math.sin(
+          time *
+          0.44,
+        ) *
+        0.07;
 
       glow.scale.set(
-
         glowScale,
-
         glowScale,
-
-        1
-
+        1,
       );
-
 
       renderer.render(
-
         scene,
-
-        camera
-
+        camera,
       );
-
 
       raf =
         requestAnimationFrame(
-          animate
+          animate,
         );
-
     }
 
-
-    /* =======================================================
+    /* =========================================================
        CSS FALLBACK
-       ======================================================= */
+       ========================================================= */
 
     const fallback =
       host.querySelectorAll(
-
-        ".hero-orbit-core, .hero-orbit-ring"
-
+        ".hero-orbit-core, .hero-orbit-ring",
       );
 
+    const hideFallback =
+      () => {
+        fallback.forEach(
+          (element) => {
+            element.style.transition =
+              "opacity .8s ease";
 
-    function hideFallback() {
+            element.style.opacity =
+              "0";
+          },
+        );
+      };
 
-      fallback.forEach(
-        (element) => {
-
-          element.style.transition =
-            "opacity .8s ease";
-
-
-          element.style.opacity =
-            "0";
-
-        }
-      );
-
-    }
-
-
-    function showFallback() {
-
-      fallback.forEach(
-        (element) => {
-
-          element.style.opacity =
-            "";
-
-        }
-      );
-
-    }
-
-
-    /* =======================================================
-       READY
-       ======================================================= */
+    const showFallback =
+      () => {
+        fallback.forEach(
+          (element) => {
+            element.style.opacity =
+              "";
+          },
+        );
+      };
 
     renderer.render(
-
       scene,
-
-      camera
-
+      camera,
     );
-
 
     requestAnimationFrame(
       () => {
-
         hideFallback();
-
 
         canvas.style.opacity =
           "1";
 
-
         start();
-
-      }
+      },
     );
 
-
-    /* =======================================================
+    /* =========================================================
        CONTEXT LOSS
-       ======================================================= */
+       ========================================================= */
 
-    function contextLost(
-      event
-    ) {
-
+    const onContextLost = (
+      event,
+    ) => {
       event.preventDefault();
 
-
       stop();
-
 
       canvas.style.opacity =
         "0";
 
-
       showFallback();
-
-    }
-
+    };
 
     canvas.addEventListener(
-
       "webglcontextlost",
-
-      contextLost,
-
-      false
-
+      onContextLost,
+      false,
     );
 
-
-    /* =======================================================
+    /* =========================================================
        CLEANUP
-       ======================================================= */
+       ========================================================= */
 
-    function cleanup() {
+    const cleanup =
+      () => {
+        stop();
 
-      stop();
+        if (
+          resizeRaf !== null
+        ) {
+          cancelAnimationFrame(
+            resizeRaf,
+          );
+        }
 
+        resizeObserver?.disconnect();
 
-      if (
-        resizeRaf !== null
-      ) {
+        heroObserver.disconnect();
 
-        cancelAnimationFrame(
-          resizeRaf
+        if (!resizeObserver) {
+          window.removeEventListener(
+            "resize",
+            scheduleResize,
+          );
+        }
+
+        window.removeEventListener(
+          "pointermove",
+          onPointerMove,
         );
 
-      }
-
-
-      resizeObserver.disconnect();
-
-
-      heroObserver.disconnect();
-
-
-      window.removeEventListener(
-
-        "scroll",
-
-        onScroll
-
-      );
-
-
-      window.removeEventListener(
-
-        "pointermove",
-
-        onPointerMove
-
-      );
-
-
-      document.removeEventListener(
-
-        "visibilitychange",
-
-        onVisibilityChange
-
-      );
-
-
-      canvas.removeEventListener(
-
-        "webglcontextlost",
-
-        contextLost
-
-      );
-
-
-      ribbonGeometry.dispose();
-
-
-      ribbonMaterial.dispose();
-
-
-      edgeGeometry?.dispose();
-
-
-      edgeMaterial?.dispose();
-
-
-      glowTexture.dispose();
-
-
-      glowMaterial.dispose();
-
-
-      renderer.dispose();
-
-
-      renderer.forceContextLoss();
-
-
-      if (
-        canvas.parentNode ===
-        host
-      ) {
-
-        host.removeChild(
-          canvas
+        document.removeEventListener(
+          "visibilitychange",
+          onVisibilityChange,
         );
 
-      }
+        canvas.removeEventListener(
+          "webglcontextlost",
+          onContextLost,
+        );
 
+        strandGeometryA.dispose();
 
-      showFallback();
+        strandGeometryB.dispose();
 
-    }
+        rungGeometry.dispose();
 
+        capGeometry.dispose();
+
+        strandMaterialA.dispose();
+
+        strandMaterialB.dispose();
+
+        rungMaterial.dispose();
+
+        shellMaterialA?.dispose();
+
+        shellMaterialB?.dispose();
+
+        glowTexture.dispose();
+
+        glowMaterial.dispose();
+
+        environmentTarget?.dispose();
+
+        renderer.dispose();
+
+        renderer.forceContextLoss();
+
+        if (
+          canvas.parentNode ===
+          host
+        ) {
+          host.removeChild(
+            canvas,
+          );
+        }
+
+        showFallback();
+      };
 
     window.addEventListener(
-
       "pagehide",
-
       cleanup,
-
       {
-        once:
-          true,
-      }
-
+        once: true,
+      },
     );
-
   }
 })();
