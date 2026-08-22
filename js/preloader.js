@@ -27,6 +27,8 @@
 
   const minimumVisibleDuration = reducedMotion ? 250 : 650;
 
+  const maximumWaitDuration = reducedMotion ? 2000 : 4200;
+
   const completionHoldDuration = reducedMotion ? 0 : 180;
 
   const exitAnimationDuration = reducedMotion ? 0 : 720;
@@ -65,12 +67,18 @@
 
   let exitStarted = false;
 
+  let previousProgressFrame = performance.now();
+
   /*
    * PRE3 mulai menampilkan loader.
    */
   preloader.hidden = false;
 
+  preloader.removeAttribute("aria-hidden");
+
   root.classList.add("is-preloading");
+
+  document.body.setAttribute("aria-busy", "true");
 
   /* =========================================================
      PROGRESS RENDERER
@@ -239,6 +247,8 @@
 
     root.classList.remove("is-preloading");
 
+    document.body.removeAttribute("aria-busy");
+
     window.dispatchEvent(
       new CustomEvent("rfm:preloader-complete", {
         detail: {
@@ -299,19 +309,43 @@
      ANIMATION LOOP
      ========================================================= */
 
-  const updateProgress = () => {
+  /* =========================================================
+   PRE7 — FRAME-STABLE PROGRESS LOOP
+   ========================================================= */
+
+  const updateProgress = (timestamp) => {
     if (finished || exitStarted) {
       return;
     }
 
+    const frameElapsed = timestamp - previousProgressFrame;
+
+    /*
+     * Progress ring cukup diperbarui sekitar 30 FPS.
+     * Three.js dan GSAP tetap mendapatkan frame lebih banyak.
+     */
+    if (!reducedMotion && frameElapsed < 30) {
+      animationFrame = requestAnimationFrame(updateProgress);
+
+      return;
+    }
+
+    previousProgressFrame = timestamp;
+
+    const deltaTime = Math.min(Math.max(frameElapsed, 1) / 1000, 0.1);
+
     const distance = targetProgress - currentProgress;
 
     if (distance > 0.01) {
-      const speed = reducedMotion
-        ? Math.max(0.45, distance * 0.2)
-        : Math.max(0.12, distance * 0.075);
+      const smoothing = 1 - Math.exp(-(reducedMotion ? 13 : 6.5) * deltaTime);
 
-      currentProgress = Math.min(targetProgress, currentProgress + speed);
+      const minimumStep = (reducedMotion ? 22 : 4) * deltaTime;
+
+      currentProgress = Math.min(
+        targetProgress,
+
+        currentProgress + Math.max(minimumStep, distance * smoothing),
+      );
     }
 
     renderProgress();
@@ -324,6 +358,7 @@
       elapsed >= minimumVisibleDuration
     ) {
       startPreloaderExit();
+
       return;
     }
 
@@ -404,4 +439,32 @@
   renderProgress();
 
   animationFrame = requestAnimationFrame(updateProgress);
+
+  /* =========================================================
+   PRE7 — BACK/FORWARD CACHE SAFETY
+   ========================================================= */
+
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) {
+      return;
+    }
+
+    /*
+     * Saat halaman dipulihkan dari cache browser,
+     * preloader tidak perlu diputar ulang.
+     */
+    if (!finished) {
+      finalizePreloader();
+
+      return;
+    }
+
+    preloader.hidden = true;
+
+    preloader.setAttribute("aria-hidden", "true");
+
+    root.classList.remove("is-preloading");
+
+    document.body.removeAttribute("aria-busy");
+  });
 })();

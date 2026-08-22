@@ -495,3 +495,139 @@ html.is-preloading
     transition: none !important;
   }
 }
+
+/* =========================================================
+   PRE7 — FINAL RESPONSIVE AUDIT
+   ========================================================= */
+
+.site-preloader {
+  box-sizing: border-box;
+
+  padding:
+    max(
+      24px,
+      env(safe-area-inset-top)
+    )
+    max(
+      24px,
+      env(safe-area-inset-right)
+    )
+    max(
+      24px,
+      env(safe-area-inset-bottom)
+    )
+    max(
+      24px,
+      env(safe-area-inset-left)
+    );
+}
+
+/* SMALL MOBILE */
+@media (max-width: 380px) {
+  .site-preloader__inner {
+    width:
+      min(
+        calc(100% - 32px),
+        250px
+      );
+
+    gap: 21px;
+  }
+
+  .site-preloader__meter {
+    width: 96px;
+  }
+
+  .site-preloader__copy {
+    gap: 14px;
+
+    padding-top: 11px;
+  }
+
+  .site-preloader__label,
+  .site-preloader__value {
+    font-size: 0.42rem;
+
+    letter-spacing: 0.09em;
+  }
+}
+
+/* SHORT LANDSCAPE SCREEN */
+@media
+(max-height: 520px)
+and
+(orientation: landscape) {
+  .site-preloader__inner {
+    width: 240px;
+
+    gap: 16px;
+  }
+
+  .site-preloader__meter {
+    width: 82px;
+  }
+
+  .site-preloader__copy {
+    padding-top: 9px;
+  }
+
+  .site-preloader::after {
+    width: 48vh;
+  }
+}
+
+/* HIGH CONTRAST */
+@media (prefers-contrast: more) {
+  .site-preloader__track {
+    stroke:
+      rgba(
+        245,
+        245,
+        247,
+        0.32
+      );
+  }
+
+  .site-preloader__indicator {
+    stroke: #c8efff;
+  }
+
+  .site-preloader__label {
+    color:
+      rgba(
+        245,
+        245,
+        247,
+        0.72
+      );
+  }
+
+  .site-preloader__value {
+    color: #c8efff;
+  }
+}
+
+/* WINDOWS FORCED COLORS */
+@media (forced-colors: active) {
+  .site-preloader {
+    background: Canvas;
+
+    color: CanvasText;
+
+    forced-color-adjust: auto;
+  }
+
+  .site-preloader__track {
+    stroke: GrayText;
+  }
+
+  .site-preloader__indicator {
+    stroke: Highlight;
+  }
+
+  .site-preloader__monogram,
+  .site-preloader__label,
+  .site-preloader__value {
+    color: CanvasText;
+  }
+}
