@@ -1,9 +1,46 @@
 (() => {
+  /* =========================================================
+     PRE4 — DNA READINESS SIGNAL
+     ========================================================= */
+
+  let dnaReadinessSignaled = false;
+
+  const signalDnaReadiness = (eventName, mode) => {
+    if (dnaReadinessSignaled) {
+      return;
+    }
+
+    dnaReadinessSignaled = true;
+
+    window.dispatchEvent(
+      new CustomEvent(eventName, {
+        detail: {
+          mode,
+          timestamp: performance.now(),
+        },
+      }),
+    );
+  };
+
+  const signalDnaReady = () => {
+    signalDnaReadiness("rfm:dna-ready", "webgl");
+  };
+
+  const signalDnaFallback = (reason) => {
+    signalDnaReadiness("rfm:dna-fallback", reason);
+  };
+
   const hero = document.querySelector(".hero");
+
   const host = document.querySelector(".hero-orbit");
+
   const main = document.querySelector("main");
 
-  if (!hero || !host || !main) return;
+  if (!hero || !host || !main) {
+    signalDnaFallback("missing-scene-host");
+
+    return;
+  }
 
   /* =========================================================
      DNA10 FINAL
@@ -11,16 +48,12 @@
      ========================================================= */
 
   const reducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
+    "(prefers-reduced-motion: reduce)",
   ).matches;
 
-  const coarsePointer = window.matchMedia(
-    "(pointer: coarse)"
-  ).matches;
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
 
-  const mobileAtLoad = window.matchMedia(
-    "(max-width: 900px)"
-  ).matches;
+  const mobileAtLoad = window.matchMedia("(max-width: 900px)").matches;
 
   const connection =
     navigator.connection ||
@@ -37,20 +70,24 @@
    * Data Saver sengaja memakai CSS fallback.
    * Reduced motion TIDAK lagi menghilangkan DNA.
    */
-  if (saveData) return;
+  if (saveData) {
+    signalDnaFallback("data-saver");
+
+    return;
+  }
 
   /* =========================================================
      LOAD THREE.JS
      ========================================================= */
 
-  import(
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
-  )
+  import("https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js")
     .then(initScene)
     .catch((error) => {
+      signalDnaFallback("three-load-error");
+
       console.warn(
         "DNA scene gagal diinisialisasi. CSS fallback tetap digunakan.",
-        error
+        error,
       );
     });
 
@@ -59,20 +96,13 @@
      ========================================================= */
 
   function initScene(THREE) {
-    const constrainedQuality =
-      reducedMotion ||
-      lowPower;
+    const constrainedQuality = reducedMotion || lowPower;
 
-    const mobileQuality =
-      mobileAtLoad &&
-      !constrainedQuality;
+    const mobileQuality = mobileAtLoad && !constrainedQuality;
 
-    const reducedQuality =
-      constrainedQuality ||
-      mobileQuality;
+    const reducedQuality = constrainedQuality || mobileQuality;
 
-    const devicePixelRatio =
-      window.devicePixelRatio || 1;
+    const devicePixelRatio = window.devicePixelRatio || 1;
 
     const quality = constrainedQuality
       ? {
@@ -81,10 +111,7 @@
           helixSamples: 64,
           rungCount: 14,
 
-          pixelRatio: Math.min(
-            devicePixelRatio,
-            1.25
-          ),
+          pixelRatio: Math.min(devicePixelRatio, 1.25),
 
           antialias: false,
 
@@ -100,10 +127,7 @@
             helixSamples: 80,
             rungCount: 16,
 
-            pixelRatio: Math.min(
-              devicePixelRatio,
-              1.5
-            ),
+            pixelRatio: Math.min(devicePixelRatio, 1.5),
 
             antialias: false,
 
@@ -112,52 +136,38 @@
 
             precision: "highp",
           }
-      : {
-          tubeSegments: 132,
-          radialSegments: 10,
-          helixSamples: 110,
-          rungCount: 20,
+        : {
+            tubeSegments: 132,
+            radialSegments: 10,
+            helixSamples: 110,
+            rungCount: 20,
 
-          /*
-           * DNA10:
-           * 1.40 -> 1.25.
-           *
-           * Sedikit lebih ringan,
-           * hampir tidak terlihat bedanya.
-           */
-          pixelRatio: Math.min(
-            devicePixelRatio,
-            1.25
-          ),
+            /*
+             * DNA10:
+             * 1.40 -> 1.25.
+             *
+             * Sedikit lebih ringan,
+             * hampir tidak terlihat bedanya.
+             */
+            pixelRatio: Math.min(devicePixelRatio, 1.25),
 
-          antialias: true,
+            antialias: true,
 
-          physicalMaterial: true,
-          studioEnvironment: true,
+            physicalMaterial: true,
+            studioEnvironment: true,
 
-          precision: "highp",
-        };
+            precision: "highp",
+          };
 
     /* =========================================================
        SCENE / CAMERA
        ========================================================= */
 
-    const scene =
-      new THREE.Scene();
+    const scene = new THREE.Scene();
 
-    const camera =
-      new THREE.PerspectiveCamera(
-        32,
-        1,
-        0.1,
-        100
-      );
+    const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
 
-    camera.position.set(
-      0,
-      0,
-      7.25
-    );
+    camera.position.set(0, 0, 7.25);
 
     /* =========================================================
        RENDERER
@@ -166,444 +176,275 @@
     let renderer;
 
     try {
-      renderer =
-        new THREE.WebGLRenderer({
-          alpha: true,
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
 
-          antialias:
-            quality.antialias,
+        antialias: quality.antialias,
 
-          precision:
-            quality.precision,
+        precision: quality.precision,
 
-          powerPreference:
-            constrainedQuality
-              ? "low-power"
-              : "high-performance",
+        powerPreference: constrainedQuality ? "low-power" : "high-performance",
 
-          stencil: false,
+        stencil: false,
 
-          preserveDrawingBuffer:
-            false,
-        });
+        preserveDrawingBuffer: false,
+      });
     } catch (error) {
+      signalDnaFallback("webgl-unavailable");
+
       console.warn(
         "WebGL tidak tersedia. CSS fallback tetap digunakan.",
-        error
+        error,
       );
 
       return;
     }
 
-    renderer.setClearColor(
-      0x000000,
-      0
-    );
+    renderer.setClearColor(0x000000, 0);
 
-    let currentPixelRatio =
-      quality.pixelRatio;
+    let currentPixelRatio = quality.pixelRatio;
 
-    const minimumPixelRatio =
-      mobileAtLoad
-        ? Math.min(
-            devicePixelRatio,
-            lowPower
-              ? 1.1
-              : 1.25
-          )
-        : currentPixelRatio;
+    const minimumPixelRatio = mobileAtLoad
+      ? Math.min(devicePixelRatio, lowPower ? 1.1 : 1.25)
+      : currentPixelRatio;
 
-    renderer.setPixelRatio(
-      currentPixelRatio
-    );
+    renderer.setPixelRatio(currentPixelRatio);
 
-    renderer.outputColorSpace =
-      THREE.SRGBColorSpace;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    renderer.toneMapping =
-      THREE.ACESFilmicToneMapping;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
-    renderer.toneMappingExposure =
-      reducedQuality
-        ? 1.18
-        : 1.24;
+    renderer.toneMappingExposure = reducedQuality ? 1.18 : 1.24;
 
     /* =========================================================
        CANVAS
        ========================================================= */
 
-    const canvas =
-      renderer.domElement;
+    const canvas = renderer.domElement;
 
-    canvas.setAttribute(
-      "aria-hidden",
-      "true"
-    );
+    canvas.setAttribute("aria-hidden", "true");
 
-    Object.assign(
-      canvas.style,
-      {
-        position: "absolute",
+    Object.assign(canvas.style, {
+      position: "absolute",
 
-        inset: "0",
+      inset: "0",
 
-        width: "100%",
-        height: "100%",
+      width: "100%",
+      height: "100%",
 
-        display: "block",
+      display: "block",
 
-        pointerEvents:
-          "none",
+      pointerEvents: "none",
 
-        opacity: "0",
+      opacity: "0",
 
-        transition:
-          "opacity 1.2s cubic-bezier(.16,1,.3,1)",
-      }
-    );
+      transition: "opacity 1.2s cubic-bezier(.16,1,.3,1)",
+    });
 
-    host.appendChild(
-      canvas
-    );
+    host.appendChild(canvas);
 
     /* =========================================================
        WORLD
        ========================================================= */
 
-    const world =
-      new THREE.Group();
+    const world = new THREE.Group();
 
-    const dna =
-      new THREE.Group();
+    const dna = new THREE.Group();
 
-    world.add(
-      dna
-    );
+    world.add(dna);
 
-    scene.add(
-      world
-    );
+    scene.add(world);
 
     /* =========================================================
        DNA GEOMETRY
        ========================================================= */
 
-    const HELIX_HEIGHT =
-      3.75;
+    const HELIX_HEIGHT = 3.75;
 
-    const HELIX_RADIUS =
-      0.68;
+    const HELIX_RADIUS = 0.68;
 
-    const HELIX_TURNS =
-      2.72;
+    const HELIX_TURNS = 2.72;
 
-    const helixPoint = (
-      t,
-      phase = 0
-    ) => {
-      const y =
-        THREE.MathUtils.lerp(
-          -HELIX_HEIGHT / 2,
+    const helixPoint = (t, phase = 0) => {
+      const y = THREE.MathUtils.lerp(
+        -HELIX_HEIGHT / 2,
 
-          HELIX_HEIGHT / 2,
+        HELIX_HEIGHT / 2,
 
-          t
-        );
+        t,
+      );
 
       const organicRadius =
         HELIX_RADIUS *
-        (
-          0.965 +
-
-          Math.sin(
-            t *
-            Math.PI
-          ) *
-          0.065 +
-
-          Math.sin(
-            t *
-            Math.PI *
-            4.4 +
-            0.3
-          ) *
-          0.018
-        );
+        (0.965 +
+          Math.sin(t * Math.PI) * 0.065 +
+          Math.sin(t * Math.PI * 4.4 + 0.3) * 0.018);
 
       const angle =
-        t *
-        Math.PI *
-        2 *
-        HELIX_TURNS +
-
+        t * Math.PI * 2 * HELIX_TURNS +
         phase +
-
-        Math.sin(
-          t *
-          Math.PI *
-          2.2
-        ) *
-        0.07;
+        Math.sin(t * Math.PI * 2.2) * 0.07;
 
       return new THREE.Vector3(
-        Math.cos(
-          angle
-        ) *
-        organicRadius,
+        Math.cos(angle) * organicRadius,
 
         y,
 
-        Math.sin(
-          angle
-        ) *
-        organicRadius
+        Math.sin(angle) * organicRadius,
       );
     };
 
-    const createHelixCurve = (
-      phase
-    ) => {
-      const points =
-        [];
+    const createHelixCurve = (phase) => {
+      const points = [];
 
-      for (
-        let i = 0;
-
-        i <=
-        quality.helixSamples;
-
-        i += 1
-      ) {
+      for (let i = 0; i <= quality.helixSamples; i += 1) {
         points.push(
           helixPoint(
-            i /
-              quality.helixSamples,
+            i / quality.helixSamples,
 
-            phase
-          )
+            phase,
+          ),
         );
       }
 
-      const curve =
-        new THREE.CatmullRomCurve3(
-          points,
+      const curve = new THREE.CatmullRomCurve3(
+        points,
 
-          false,
+        false,
 
-          "catmullrom",
+        "catmullrom",
 
-          0.35
-        );
+        0.35,
+      );
 
-      curve.tension =
-        0.35;
+      curve.tension = 0.35;
 
       return curve;
     };
 
-    const curveA =
-      createHelixCurve(
-        0
-      );
+    const curveA = createHelixCurve(0);
 
-    const curveB =
-      createHelixCurve(
-        Math.PI
-      );
+    const curveB = createHelixCurve(Math.PI);
 
     /* =========================================================
        STUDIO ENVIRONMENT
        ========================================================= */
 
-    let environmentTarget =
-      null;
+    let environmentTarget = null;
 
-    const createStudioEnvironment =
-      () => {
-        if (
-          !quality.studioEnvironment
-        ) {
-          return null;
-        }
+    const createStudioEnvironment = () => {
+      if (!quality.studioEnvironment) {
+        return null;
+      }
 
-        /*
-         * Kalau GPU tertentu gagal
-         * membuat cube environment,
-         * DNA tetap dirender.
-         */
-        try {
-          const environmentScene =
-            new THREE.Scene();
+      /*
+       * Kalau GPU tertentu gagal
+       * membuat cube environment,
+       * DNA tetap dirender.
+       */
+      try {
+        const environmentScene = new THREE.Scene();
 
-          environmentScene.background =
-            new THREE.Color(
-              0x050608
-            );
+        environmentScene.background = new THREE.Color(0x050608);
 
-          const cardGeometry =
-            new THREE.PlaneGeometry(
-              1,
-              1
-            );
+        const cardGeometry = new THREE.PlaneGeometry(1, 1);
 
-          const cardMaterials =
-            [];
+        const cardMaterials = [];
 
-          const addCard = ({
-            color,
-            position,
-            scale,
-            rotation,
-          }) => {
-            const material =
-              new THREE.MeshBasicMaterial({
-                color:
-                  new THREE.Color(
-                    color
-                  ),
+        const addCard = ({ color, position, scale, rotation }) => {
+          const material = new THREE.MeshBasicMaterial({
+            color: new THREE.Color(color),
 
-                side:
-                  THREE.DoubleSide,
-              });
-
-            const card =
-              new THREE.Mesh(
-                cardGeometry,
-                material
-              );
-
-            card.position.set(
-              ...position
-            );
-
-            card.scale.set(
-              ...scale
-            );
-
-            card.rotation.set(
-              ...rotation
-            );
-
-            environmentScene.add(
-              card
-            );
-
-            cardMaterials.push(
-              material
-            );
-          };
-
-          addCard({
-            color:
-              "#f7fcff",
-
-            position:
-              [3.4, 2.8, 2.2],
-
-            scale:
-              [3.7, 1, 1],
-
-            rotation:
-              [0.18, -0.72, -0.12],
+            side: THREE.DoubleSide,
           });
 
-          addCard({
-            color:
-              "#84d7f5",
+          const card = new THREE.Mesh(cardGeometry, material);
 
-            position:
-              [-3.2, 0.4, 1.7],
+          card.position.set(...position);
 
-            scale:
-              [1.1, 4.2, 1],
+          card.scale.set(...scale);
 
-            rotation:
-              [0.06, 0.92, 0.08],
-          });
+          card.rotation.set(...rotation);
 
-          addCard({
-            color:
-              "#345364",
+          environmentScene.add(card);
 
-            position:
-              [1.2, -3.5, 1],
+          cardMaterials.push(material);
+        };
 
-            scale:
-              [2.8, 0.72, 1],
+        addCard({
+          color: "#f7fcff",
 
-            rotation:
-              [-0.48, -0.18, 0.04],
-          });
+          position: [3.4, 2.8, 2.2],
 
-          addCard({
-            color:
-              "#aebdc4",
+          scale: [3.7, 1, 1],
 
-            position:
-              [-0.8, 2, -3.4],
+          rotation: [0.18, -0.72, -0.12],
+        });
 
-            scale:
-              [2.4, 2.4, 1],
+        addCard({
+          color: "#84d7f5",
 
-            rotation:
-              [0, Math.PI, 0],
-          });
+          position: [-3.2, 0.4, 1.7],
 
-          environmentTarget =
-            new THREE.WebGLCubeRenderTarget(
-              128,
-              {
-                type:
-                  THREE.HalfFloatType,
+          scale: [1.1, 4.2, 1],
 
-                generateMipmaps:
-                  true,
+          rotation: [0.06, 0.92, 0.08],
+        });
 
-                minFilter:
-                  THREE.LinearMipmapLinearFilter,
-              }
-            );
+        addCard({
+          color: "#345364",
 
-          const cubeCamera =
-            new THREE.CubeCamera(
-              0.1,
-              30,
-              environmentTarget
-            );
+          position: [1.2, -3.5, 1],
 
-          cubeCamera.update(
-            renderer,
-            environmentScene
-          );
+          scale: [2.8, 0.72, 1],
 
-          cardGeometry.dispose();
+          rotation: [-0.48, -0.18, 0.04],
+        });
 
-          cardMaterials.forEach(
-            (material) =>
-              material.dispose()
-          );
+        addCard({
+          color: "#aebdc4",
 
-          environmentScene.clear();
+          position: [-0.8, 2, -3.4],
 
-          return environmentTarget.texture;
-        } catch (error) {
-          console.warn(
-            "Studio reflection tidak tersedia. DNA tetap dirender tanpa environment map.",
-            error
-          );
+          scale: [2.4, 2.4, 1],
 
-          environmentTarget
-            ?.dispose();
+          rotation: [0, Math.PI, 0],
+        });
 
-          environmentTarget =
-            null;
+        environmentTarget = new THREE.WebGLCubeRenderTarget(128, {
+          type: THREE.HalfFloatType,
 
-          return null;
-        }
-      };
+          generateMipmaps: true,
 
-    const studioEnvironment =
-      createStudioEnvironment();
+          minFilter: THREE.LinearMipmapLinearFilter,
+        });
+
+        const cubeCamera = new THREE.CubeCamera(0.1, 30, environmentTarget);
+
+        cubeCamera.update(renderer, environmentScene);
+
+        cardGeometry.dispose();
+
+        cardMaterials.forEach((material) => material.dispose());
+
+        environmentScene.clear();
+
+        return environmentTarget.texture;
+      } catch (error) {
+        console.warn(
+          "Studio reflection tidak tersedia. DNA tetap dirender tanpa environment map.",
+          error,
+        );
+
+        environmentTarget?.dispose();
+
+        environmentTarget = null;
+
+        return null;
+      }
+    };
+
+    const studioEnvironment = createStudioEnvironment();
 
     /* =========================================================
        MATERIALS
@@ -615,875 +456,500 @@
       envIntensity,
       sheen,
     }) => {
-      if (
-        quality.physicalMaterial
-      ) {
+      if (quality.physicalMaterial) {
         return new THREE.MeshPhysicalMaterial({
-          color:
-            new THREE.Color(
-              color
-            ),
+          color: new THREE.Color(color),
 
-          metalness:
-            0.94,
+          metalness: 0.94,
 
           roughness,
 
-          clearcoat:
-            1,
+          clearcoat: 1,
 
-          clearcoatRoughness:
-            0.075,
+          clearcoatRoughness: 0.075,
 
-          reflectivity:
-            1,
+          reflectivity: 1,
 
           sheen,
 
-          sheenRoughness:
-            0.34,
+          sheenRoughness: 0.34,
 
-          sheenColor:
-            new THREE.Color(
-              "#dff7ff"
-            ),
+          sheenColor: new THREE.Color("#dff7ff"),
 
-          envMap:
-            studioEnvironment,
+          envMap: studioEnvironment,
 
-          envMapIntensity:
-            studioEnvironment
-              ? envIntensity
-              : 0,
+          envMapIntensity: studioEnvironment ? envIntensity : 0,
         });
       }
 
       return new THREE.MeshStandardMaterial({
-        color:
-          new THREE.Color(
-            color
-          ),
+        color: new THREE.Color(color),
 
-        metalness:
-          0.82,
+        metalness: 0.82,
 
-        roughness:
-          Math.min(
-            roughness +
-            0.07,
+        roughness: Math.min(
+          roughness + 0.07,
 
-            0.34
-          ),
+          0.34,
+        ),
       });
     };
 
-    const strandMaterialA =
-      createStrandMaterial({
-        color:
-          "#909aa1",
+    const strandMaterialA = createStrandMaterial({
+      color: "#909aa1",
 
-        roughness:
-          0.165,
+      roughness: 0.165,
 
-        envIntensity:
-          1.28,
+      envIntensity: 1.28,
 
-        sheen:
-          0.24,
-      });
+      sheen: 0.24,
+    });
 
-    const strandMaterialB =
-      createStrandMaterial({
-        color:
-          "#3f525e",
+    const strandMaterialB = createStrandMaterial({
+      color: "#3f525e",
 
-        roughness:
-          0.205,
+      roughness: 0.205,
 
-        envIntensity:
-          1.12,
+      envIntensity: 1.12,
 
-        sheen:
-          0.16,
-      });
+      sheen: 0.16,
+    });
 
-    const rungMaterial =
-      quality.physicalMaterial
+    const rungMaterial = quality.physicalMaterial
+      ? new THREE.MeshPhysicalMaterial({
+          color: new THREE.Color("#7bb9d0"),
 
-        ? new THREE.MeshPhysicalMaterial({
-            color:
-              new THREE.Color(
-                "#7bb9d0"
-              ),
+          emissive: new THREE.Color("#123746"),
 
-            emissive:
-              new THREE.Color(
-                "#123746"
-              ),
+          emissiveIntensity: 0.42,
 
-            emissiveIntensity:
-              0.42,
+          metalness: 0.7,
 
-            metalness:
-              0.7,
+          roughness: 0.24,
 
-            roughness:
-              0.24,
+          clearcoat: 1,
 
-            clearcoat:
-              1,
+          clearcoatRoughness: 0.12,
 
-            clearcoatRoughness:
-              0.12,
+          envMap: studioEnvironment,
 
-            envMap:
-              studioEnvironment,
+          envMapIntensity: studioEnvironment ? 0.9 : 0,
 
-            envMapIntensity:
-              studioEnvironment
-                ? 0.9
-                : 0,
+          transparent: true,
 
-            transparent:
-              true,
+          opacity: 0.72,
+        })
+      : new THREE.MeshStandardMaterial({
+          color: new THREE.Color("#6fa9c0"),
 
-            opacity:
-              0.72,
-          })
+          emissive: new THREE.Color("#102c37"),
 
-        : new THREE.MeshStandardMaterial({
-            color:
-              new THREE.Color(
-                "#6fa9c0"
-              ),
+          emissiveIntensity: 0.28,
 
-            emissive:
-              new THREE.Color(
-                "#102c37"
-              ),
+          metalness: 0.48,
 
-            emissiveIntensity:
-              0.28,
+          roughness: 0.3,
 
-            metalness:
-              0.48,
+          transparent: true,
 
-            roughness:
-              0.3,
-
-            transparent:
-              true,
-
-            opacity:
-              0.64,
-          });
+          opacity: 0.64,
+        });
 
     /* =========================================================
        STRANDS
        ========================================================= */
 
-    const strandGeometryA =
-      new THREE.TubeGeometry(
-        curveA,
+    const strandGeometryA = new THREE.TubeGeometry(
+      curveA,
 
-        quality.tubeSegments,
+      quality.tubeSegments,
 
-        reducedQuality
-          ? 0.052
-          : 0.058,
+      reducedQuality ? 0.052 : 0.058,
 
-        quality.radialSegments,
+      quality.radialSegments,
 
-        false
-      );
-
-    const strandGeometryB =
-      new THREE.TubeGeometry(
-        curveB,
-
-        quality.tubeSegments,
-
-        reducedQuality
-          ? 0.052
-          : 0.058,
-
-        quality.radialSegments,
-
-        false
-      );
-
-    const strandA =
-      new THREE.Mesh(
-        strandGeometryA,
-        strandMaterialA
-      );
-
-    const strandB =
-      new THREE.Mesh(
-        strandGeometryB,
-        strandMaterialB
-      );
-
-    dna.add(
-      strandA,
-      strandB
+      false,
     );
+
+    const strandGeometryB = new THREE.TubeGeometry(
+      curveB,
+
+      quality.tubeSegments,
+
+      reducedQuality ? 0.052 : 0.058,
+
+      quality.radialSegments,
+
+      false,
+    );
+
+    const strandA = new THREE.Mesh(strandGeometryA, strandMaterialA);
+
+    const strandB = new THREE.Mesh(strandGeometryB, strandMaterialB);
+
+    dna.add(strandA, strandB);
 
     /* =========================================================
        EDGE SHELL
        ========================================================= */
 
-    let shellMaterialA =
-      null;
+    let shellMaterialA = null;
 
-    let shellMaterialB =
-      null;
+    let shellMaterialB = null;
 
     if (!reducedQuality) {
-      shellMaterialA =
-        new THREE.MeshBasicMaterial({
-          color:
-            new THREE.Color(
-              "#bfeeff"
-            ),
+      shellMaterialA = new THREE.MeshBasicMaterial({
+        color: new THREE.Color("#bfeeff"),
 
-          transparent:
-            true,
+        transparent: true,
 
-          opacity:
-            0.055,
+        opacity: 0.055,
 
-          side:
-            THREE.BackSide,
+        side: THREE.BackSide,
 
-          blending:
-            THREE.AdditiveBlending,
+        blending: THREE.AdditiveBlending,
 
-          depthWrite:
-            false,
-        });
+        depthWrite: false,
+      });
 
-      shellMaterialB =
-        shellMaterialA.clone();
+      shellMaterialB = shellMaterialA.clone();
 
-      shellMaterialB.opacity =
-        0.038;
+      shellMaterialB.opacity = 0.038;
 
-      const shellA =
-        new THREE.Mesh(
-          strandGeometryA,
-          shellMaterialA
-        );
+      const shellA = new THREE.Mesh(strandGeometryA, shellMaterialA);
 
-      const shellB =
-        new THREE.Mesh(
-          strandGeometryB,
-          shellMaterialB
-        );
+      const shellB = new THREE.Mesh(strandGeometryB, shellMaterialB);
 
-      shellA.scale.setScalar(
-        1.055
-      );
+      shellA.scale.setScalar(1.055);
 
-      shellB.scale.setScalar(
-        1.05
-      );
+      shellB.scale.setScalar(1.05);
 
-      dna.add(
-        shellA,
-        shellB
-      );
+      dna.add(shellA, shellB);
     }
 
     /* =========================================================
        BASE PAIRS
        ========================================================= */
 
-    const rungGeometry =
-      new THREE.CylinderGeometry(
-        reducedQuality
-          ? 0.018
-          : 0.021,
+    const rungGeometry = new THREE.CylinderGeometry(
+      reducedQuality ? 0.018 : 0.021,
 
-        reducedQuality
-          ? 0.018
-          : 0.021,
+      reducedQuality ? 0.018 : 0.021,
 
-        1,
+      1,
 
-        reducedQuality
-          ? 6
-          : 8,
+      reducedQuality ? 6 : 8,
 
-        1,
+      1,
 
-        false
-      );
-
-    const rungMesh =
-      new THREE.InstancedMesh(
-        rungGeometry,
-        rungMaterial,
-        quality.rungCount
-      );
-
-    rungMesh.instanceMatrix.setUsage(
-      THREE.StaticDrawUsage
+      false,
     );
 
-    const dummy =
-      new THREE.Object3D();
+    const rungMesh = new THREE.InstancedMesh(
+      rungGeometry,
+      rungMaterial,
+      quality.rungCount,
+    );
 
-    const up =
-      new THREE.Vector3(
-        0,
-        1,
-        0
+    rungMesh.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+
+    const dummy = new THREE.Object3D();
+
+    const up = new THREE.Vector3(0, 1, 0);
+
+    const direction = new THREE.Vector3();
+
+    const midpoint = new THREE.Vector3();
+
+    for (let i = 0; i < quality.rungCount; i += 1) {
+      const t = THREE.MathUtils.lerp(
+        0.055,
+
+        0.945,
+
+        quality.rungCount === 1 ? 0.5 : i / (quality.rungCount - 1),
       );
 
-    const direction =
-      new THREE.Vector3();
+      const pointA = helixPoint(t, 0);
 
-    const midpoint =
-      new THREE.Vector3();
+      const pointB = helixPoint(t, Math.PI);
 
-    for (
-      let i = 0;
+      direction.subVectors(pointB, pointA);
 
-      i <
-      quality.rungCount;
-
-      i += 1
-    ) {
-      const t =
-        THREE.MathUtils.lerp(
-          0.055,
-
-          0.945,
-
-          quality.rungCount === 1
-            ? 0.5
-            : i /
-              (
-                quality.rungCount -
-                1
-              )
-        );
-
-      const pointA =
-        helixPoint(
-          t,
-          0
-        );
-
-      const pointB =
-        helixPoint(
-          t,
-          Math.PI
-        );
-
-      direction.subVectors(
-        pointB,
-        pointA
-      );
-
-      const distance =
-        direction.length();
+      const distance = direction.length();
 
       direction.normalize();
 
-      midpoint
-        .addVectors(
-          pointA,
-          pointB
-        )
-        .multiplyScalar(
-          0.5
-        );
+      midpoint.addVectors(pointA, pointB).multiplyScalar(0.5);
 
-      dummy.position.copy(
-        midpoint
-      );
+      dummy.position.copy(midpoint);
 
-      dummy.quaternion
-        .setFromUnitVectors(
-          up,
-          direction
-        );
+      dummy.quaternion.setFromUnitVectors(up, direction);
 
-      dummy.scale.set(
-        1,
-        distance * 0.9,
-        1
-      );
+      dummy.scale.set(1, distance * 0.9, 1);
 
       dummy.updateMatrix();
 
-      rungMesh.setMatrixAt(
-        i,
-        dummy.matrix
-      );
+      rungMesh.setMatrixAt(i, dummy.matrix);
     }
 
-    rungMesh.instanceMatrix.needsUpdate =
-      true;
+    rungMesh.instanceMatrix.needsUpdate = true;
 
-    dna.add(
-      rungMesh
-    );
+    dna.add(rungMesh);
 
     /* =========================================================
        CAPS
        ========================================================= */
 
-    const capGeometry =
-      new THREE.SphereGeometry(
-        reducedQuality
-          ? 0.072
-          : 0.078,
+    const capGeometry = new THREE.SphereGeometry(
+      reducedQuality ? 0.072 : 0.078,
 
-        reducedQuality
-          ? 10
-          : 16,
+      reducedQuality ? 10 : 16,
 
-        reducedQuality
-          ? 8
-          : 12
-      );
+      reducedQuality ? 8 : 12,
+    );
 
     [
       [0, 0, strandMaterialA],
       [1, 0, strandMaterialA],
 
-      [
-        0,
-        Math.PI,
-        strandMaterialB,
-      ],
+      [0, Math.PI, strandMaterialB],
 
-      [
-        1,
-        Math.PI,
-        strandMaterialB,
-      ],
-    ].forEach(
-      ([
-        t,
-        phase,
-        material,
-      ]) => {
-        const cap =
-          new THREE.Mesh(
-            capGeometry,
-            material
-          );
+      [1, Math.PI, strandMaterialB],
+    ].forEach(([t, phase, material]) => {
+      const cap = new THREE.Mesh(capGeometry, material);
 
-        cap.position.copy(
-          helixPoint(
-            t,
-            phase
-          )
-        );
+      cap.position.copy(helixPoint(t, phase));
 
-        dna.add(
-          cap
-        );
-      }
-    );
+      dna.add(cap);
+    });
 
     /* =========================================================
        HALO
        ========================================================= */
 
-    let glowTexture =
-      null;
+    let glowTexture = null;
 
-    let glowMaterial =
-      null;
+    let glowMaterial = null;
 
-    let glow =
-      null;
+    let glow = null;
 
     try {
-      const glowCanvas =
-        document.createElement(
-          "canvas"
-        );
+      const glowCanvas = document.createElement("canvas");
 
-      const glowSize =
-        reducedQuality
-          ? 128
-          : 192;
+      const glowSize = reducedQuality ? 128 : 192;
 
-      glowCanvas.width =
-        glowSize;
+      glowCanvas.width = glowSize;
 
-      glowCanvas.height =
-        glowSize;
+      glowCanvas.height = glowSize;
 
-      const glowContext =
-        glowCanvas.getContext(
-          "2d"
-        );
+      const glowContext = glowCanvas.getContext("2d");
 
       if (glowContext) {
-        const center =
-          glowSize / 2;
+        const center = glowSize / 2;
 
-        const gradient =
-          glowContext
-            .createRadialGradient(
-              center,
-              center,
-              0,
-
-              center,
-              center,
-              center
-            );
-
-        gradient.addColorStop(
+        const gradient = glowContext.createRadialGradient(
+          center,
+          center,
           0,
-          "rgba(175, 236, 255, .17)"
+
+          center,
+          center,
+          center,
         );
 
-        gradient.addColorStop(
-          0.28,
-          "rgba(95, 190, 226, .072)"
-        );
+        gradient.addColorStop(0, "rgba(175, 236, 255, .17)");
 
-        gradient.addColorStop(
-          0.62,
-          "rgba(61, 129, 155, .025)"
-        );
+        gradient.addColorStop(0.28, "rgba(95, 190, 226, .072)");
 
-        gradient.addColorStop(
-          1,
-          "rgba(0, 0, 0, 0)"
-        );
+        gradient.addColorStop(0.62, "rgba(61, 129, 155, .025)");
 
-        glowContext.fillStyle =
-          gradient;
+        gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
-        glowContext.fillRect(
-          0,
-          0,
-          glowSize,
-          glowSize
-        );
+        glowContext.fillStyle = gradient;
 
-        glowTexture =
-          new THREE.CanvasTexture(
-            glowCanvas
-          );
+        glowContext.fillRect(0, 0, glowSize, glowSize);
 
-        glowMaterial =
-          new THREE.SpriteMaterial({
-            map:
-              glowTexture,
+        glowTexture = new THREE.CanvasTexture(glowCanvas);
 
-            transparent:
-              true,
+        glowMaterial = new THREE.SpriteMaterial({
+          map: glowTexture,
 
-            opacity:
-              reducedQuality
-                ? 0.27
-                : 0.38,
+          transparent: true,
 
-            depthWrite:
-              false,
+          opacity: reducedQuality ? 0.27 : 0.38,
 
-            blending:
-              THREE.AdditiveBlending,
-          });
+          depthWrite: false,
 
-        glow =
-          new THREE.Sprite(
-            glowMaterial
-          );
+          blending: THREE.AdditiveBlending,
+        });
 
-        glow.scale.set(
-          5.15,
-          5.15,
-          1
-        );
+        glow = new THREE.Sprite(glowMaterial);
 
-        glow.position.set(
-          0.16,
-          0,
-          -1.4
-        );
+        glow.scale.set(5.15, 5.15, 1);
 
-        scene.add(
-          glow
-        );
+        glow.position.set(0.16, 0, -1.4);
+
+        scene.add(glow);
       }
     } catch (error) {
-      console.warn(
-        "Halo DNA dilewati karena tidak tersedia.",
-        error
-      );
+      console.warn("Halo DNA dilewati karena tidak tersedia.", error);
     }
 
     /* =========================================================
        LIGHTING
        ========================================================= */
 
-    const ambient =
-      new THREE.AmbientLight(
-        0xc5d6dd,
+    const ambient = new THREE.AmbientLight(
+      0xc5d6dd,
 
-        reducedQuality
-          ? 0.5
-          : 0.32
-      );
-
-    const keyLight =
-      new THREE.PointLight(
-        0xf9fdff,
-
-        reducedQuality
-          ? 18
-          : 23,
-
-        15,
-        2
-      );
-
-    const cyanRim =
-      new THREE.PointLight(
-        0x7fdcff,
-
-        reducedQuality
-          ? 13
-          : 19,
-
-        14,
-        2
-      );
-
-    const blueFill =
-      new THREE.PointLight(
-        0x315d71,
-
-        reducedQuality
-          ? 7
-          : 9,
-
-        12,
-        2
-      );
-
-    keyLight.position.set(
-      3.4,
-      3.7,
-      4.4
+      reducedQuality ? 0.5 : 0.32,
     );
 
-    cyanRim.position.set(
-      -3.7,
-      0.35,
-      2.15
+    const keyLight = new THREE.PointLight(
+      0xf9fdff,
+
+      reducedQuality ? 18 : 23,
+
+      15,
+      2,
     );
 
-    blueFill.position.set(
-      1,
-      -3.7,
-      2.3
+    const cyanRim = new THREE.PointLight(
+      0x7fdcff,
+
+      reducedQuality ? 13 : 19,
+
+      14,
+      2,
     );
 
-    scene.add(
-      ambient,
-      keyLight,
-      cyanRim,
-      blueFill
+    const blueFill = new THREE.PointLight(
+      0x315d71,
+
+      reducedQuality ? 7 : 9,
+
+      12,
+      2,
     );
 
-    let rearLight =
-      null;
+    keyLight.position.set(3.4, 3.7, 4.4);
+
+    cyanRim.position.set(-3.7, 0.35, 2.15);
+
+    blueFill.position.set(1, -3.7, 2.3);
+
+    scene.add(ambient, keyLight, cyanRim, blueFill);
+
+    let rearLight = null;
 
     if (!reducedQuality) {
-      rearLight =
-        new THREE.PointLight(
-          0xffffff,
-          6,
-          12,
-          2
-        );
+      rearLight = new THREE.PointLight(0xffffff, 6, 12, 2);
 
-      rearLight.position.set(
-        -1.4,
-        2.2,
-        -4.1
-      );
+      rearLight.position.set(-1.4, 2.2, -4.1);
 
-      scene.add(
-        rearLight
-      );
+      scene.add(rearLight);
     }
 
     /* =========================================================
        GLOBAL DNA STAGE
        ========================================================= */
 
-    const originalParent =
-      host.parentNode;
+    const originalParent = host.parentNode;
 
-    const originalNextSibling =
-      host.nextSibling;
+    const originalNextSibling = host.nextSibling;
 
-    const originalHostStyle =
-      host.getAttribute(
-        "style"
-      );
+    const originalHostStyle = host.getAttribute("style");
 
-    document.body.classList.add(
-      "dna-experience"
-    );
+    document.body.classList.add("dna-experience");
 
-    host.classList.add(
-      "dna-stage"
-    );
+    host.classList.add("dna-stage");
 
-    Object.assign(
-      host.style,
-      {
-        position:
-          "fixed",
+    Object.assign(host.style, {
+      position: "fixed",
 
-        left:
-          "50%",
+      left: "50%",
 
-        top:
-          "50%",
+      top: "50%",
 
-        right:
-          "auto",
+      right: "auto",
 
-        bottom:
-          "auto",
+      bottom: "auto",
 
-        margin:
-          "0",
+      margin: "0",
 
-        zIndex:
-          "2",
+      zIndex: "2",
 
-        pointerEvents:
-          "none",
+      pointerEvents: "none",
 
-        transform:
-          "translate(-50%, -50%)",
+      transform: "translate(-50%, -50%)",
 
-        transformOrigin:
-          "50% 50%",
+      transformOrigin: "50% 50%",
 
-        willChange:
-          reducedMotion
-            ? "auto"
-            : "transform, opacity",
-      }
-    );
+      willChange: reducedMotion ? "auto" : "transform, opacity",
+    });
 
-    document.body.appendChild(
-      host
-    );
+    document.body.appendChild(host);
 
     /* =========================================================
        DNA9 + DNA10
        RESPONSIVE STAGE
        ========================================================= */
 
-    const getStageWidth =
-      () => {
-        const viewportWidth =
-          window.innerWidth;
+    const getStageWidth = () => {
+      const viewportWidth = window.innerWidth;
 
-        if (
-          viewportWidth <=
-          430
-        ) {
-          return Math.min(
-            430,
-
-            viewportWidth *
-            1.12
-          );
-        }
-
-        if (
-          viewportWidth <=
-          700
-        ) {
-          return Math.min(
-            520,
-
-            viewportWidth *
-            1.08
-          );
-        }
-
-        if (
-          viewportWidth <=
-          900
-        ) {
-          return Math.min(
-            640,
-
-            viewportWidth *
-            0.78
-          );
-        }
-
+      if (viewportWidth <= 430) {
         return Math.min(
-          viewportWidth *
-          0.56,
+          430,
 
-          860
+          viewportWidth * 1.12,
         );
-      };
+      }
+
+      if (viewportWidth <= 700) {
+        return Math.min(
+          520,
+
+          viewportWidth * 1.08,
+        );
+      }
+
+      if (viewportWidth <= 900) {
+        return Math.min(
+          640,
+
+          viewportWidth * 0.78,
+        );
+      }
+
+      return Math.min(
+        viewportWidth * 0.56,
+
+        860,
+      );
+    };
 
     /* =========================================================
        PAGE ELEMENTS
        ========================================================= */
 
-    const aboutSection =
-      document.querySelector(
-        ".about"
-      );
+    const aboutSection = document.querySelector(".about");
 
-    const projectsSection =
-      document.querySelector(
-        ".projects"
-      );
+    const projectsSection = document.querySelector(".projects");
 
     const projectsIntro =
-      document.querySelector(
-        ".projects-intro"
-      ) ||
-      projectsSection;
+      document.querySelector(".projects-intro") || projectsSection;
 
-    const projectCards =
-      Array.from(
-        document.querySelectorAll(
-          ".projects .project"
-        )
-      );
+    const projectCards = Array.from(
+      document.querySelectorAll(".projects .project"),
+    );
 
-    const skillsSection =
-      document.querySelector(
-        ".skills"
-      );
+    const skillsSection = document.querySelector(".skills");
 
-    const educationSection =
-      document.querySelector(
-        ".education"
-      );
+    const educationSection = document.querySelector(".education");
 
-    const contactSection =
-      document.querySelector(
-        ".contact"
-      );
+    const contactSection = document.querySelector(".contact");
 
     /* =========================================================
        DESKTOP SCENES
@@ -1491,588 +957,405 @@
 
     const SCENE_DEFINITIONS = [
       {
-        id:
-          "hero",
+        id: "hero",
 
-        element:
-          hero,
+        element: hero,
 
-        anchorRatio:
-          0.45,
+        anchorRatio: 0.45,
 
-        x:
-          0.09,
+        x: 0.09,
 
-        y:
-          -0.02,
+        y: -0.02,
 
-        scale:
-          1,
+        scale: 1,
 
-        opacity:
-          1,
+        opacity: 1,
 
-        rotX:
-          0.16,
+        rotX: 0.16,
 
-        rotY:
-          -0.38,
+        rotY: -0.38,
 
-        rotZ:
-          -0.08,
+        rotZ: -0.08,
       },
 
       {
-        id:
-          "about-entry",
+        id: "about-entry",
 
-        element:
-          aboutSection,
+        element: aboutSection,
 
-        anchorRatio:
-          0.06,
+        anchorRatio: 0.06,
 
-        x:
-          0.15,
+        x: 0.15,
 
-        y:
-          -0.025,
+        y: -0.025,
 
-        scale:
-          0.98,
+        scale: 0.98,
 
-        opacity:
-          0.94,
+        opacity: 0.94,
 
-        rotX:
-          0.22,
+        rotX: 0.22,
 
-        rotY:
-          -0.02,
+        rotY: -0.02,
 
-        rotZ:
-          -0.2,
+        rotZ: -0.2,
       },
 
       {
-        id:
-          "about-focus",
+        id: "about-focus",
 
-        element:
-          aboutSection,
+        element: aboutSection,
 
-        anchorRatio:
-          0.34,
+        anchorRatio: 0.34,
 
-        x:
-          0.27,
+        x: 0.27,
 
-        y:
-          0.005,
+        y: 0.005,
 
-        scale:
-          0.94,
+        scale: 0.94,
 
-        opacity:
-          0.88,
+        opacity: 0.88,
 
-        rotX:
-          0.34,
+        rotX: 0.34,
 
-        rotY:
-          0.4,
+        rotY: 0.4,
 
-        rotZ:
-          -0.62,
+        rotZ: -0.62,
       },
 
       {
-        id:
-          "about-exit",
+        id: "about-exit",
 
-        element:
-          aboutSection,
+        element: aboutSection,
 
-        anchorRatio:
-          0.73,
+        anchorRatio: 0.73,
 
-        x:
-          0.18,
+        x: 0.18,
 
-        y:
-          0.045,
+        y: 0.045,
 
-        scale:
-          0.85,
+        scale: 0.85,
 
         /*
          * Dinaikkan.
          * Jangan sampai DNA terasa hilang.
          */
-        opacity:
-          0.72,
+        opacity: 0.72,
 
-        rotX:
-          0.28,
+        rotX: 0.28,
 
-        rotY:
-          0.72,
+        rotY: 0.72,
 
-        rotZ:
-          -0.36,
+        rotZ: -0.36,
       },
 
       {
-        id:
-          "projects-intro",
+        id: "projects-intro",
 
-        element:
-          projectsIntro,
+        element: projectsIntro,
 
-        anchorRatio:
-          0.24,
+        anchorRatio: 0.24,
 
-        x:
-          -0.05,
+        x: -0.05,
 
-        y:
-          0.015,
+        y: 0.015,
 
-        scale:
-          0.92,
+        scale: 0.92,
 
-        opacity:
-          0.72,
+        opacity: 0.72,
 
-        rotX:
-          0.28,
+        rotX: 0.28,
 
-        rotY:
-          0.9,
+        rotY: 0.9,
 
-        rotZ:
-          0.2,
+        rotZ: 0.2,
       },
 
       {
-        id:
-          "project-01",
+        id: "project-01",
 
-        element:
-          projectCards[0],
+        element: projectCards[0],
 
-        anchorRatio:
-          0.3,
+        anchorRatio: 0.3,
 
-        x:
-          0.25,
+        x: 0.25,
 
-        y:
-          -0.025,
+        y: -0.025,
 
-        scale:
-          1.12,
+        scale: 1.12,
 
-        opacity:
-          0.78,
+        opacity: 0.78,
 
-        rotX:
-          0.18,
+        rotX: 0.18,
 
-        rotY:
-          1.14,
+        rotY: 1.14,
 
-        rotZ:
-          -0.52,
+        rotZ: -0.52,
       },
 
       {
-        id:
-          "project-02",
+        id: "project-02",
 
-        element:
-          projectCards[1],
+        element: projectCards[1],
 
-        anchorRatio:
-          0.3,
+        anchorRatio: 0.3,
 
-        x:
-          -0.26,
+        x: -0.26,
 
-        y:
-          0.015,
+        y: 0.015,
 
-        scale:
-          1.18,
+        scale: 1.18,
 
-        opacity:
-          0.74,
+        opacity: 0.74,
 
-        rotX:
-          0.42,
+        rotX: 0.42,
 
-        rotY:
-          1.64,
+        rotY: 1.64,
 
-        rotZ:
-          0.58,
+        rotZ: 0.58,
       },
 
       {
-        id:
-          "project-03",
+        id: "project-03",
 
-        element:
-          projectCards[2],
+        element: projectCards[2],
 
-        anchorRatio:
-          0.3,
+        anchorRatio: 0.3,
 
-        x:
-          0.27,
+        x: 0.27,
 
-        y:
-          0.02,
+        y: 0.02,
 
-        scale:
-          1.27,
+        scale: 1.27,
 
-        opacity:
-          0.8,
+        opacity: 0.8,
 
-        rotX:
-          0.24,
+        rotX: 0.24,
 
-        rotY:
-          2.2,
+        rotY: 2.2,
 
-        rotZ:
-          -0.78,
+        rotZ: -0.78,
       },
 
       {
-        id:
-          "project-04",
+        id: "project-04",
 
-        element:
-          projectCards[3],
+        element: projectCards[3],
 
-        anchorRatio:
-          0.31,
+        anchorRatio: 0.31,
 
-        x:
-          -0.23,
+        x: -0.23,
 
-        y:
-          0.035,
+        y: 0.035,
 
-        scale:
-          1.16,
+        scale: 1.16,
 
-        opacity:
-          0.74,
+        opacity: 0.74,
 
-        rotX:
-          0.48,
+        rotX: 0.48,
 
-        rotY:
-          2.74,
+        rotY: 2.74,
 
-        rotZ:
-          0.46,
+        rotZ: 0.46,
       },
 
       {
-        id:
-          "skills-entry",
+        id: "skills-entry",
 
-        element:
-          skillsSection,
+        element: skillsSection,
 
-        anchorRatio:
-          0.08,
+        anchorRatio: 0.08,
 
-        x:
-          -0.08,
+        x: -0.08,
 
-        y:
-          0.02,
+        y: 0.02,
 
-        scale:
-          1.12,
+        scale: 1.12,
 
-        opacity:
-          0.72,
+        opacity: 0.72,
 
-        rotX:
-          0.48,
+        rotX: 0.48,
 
-        rotY:
-          3.12,
+        rotY: 3.12,
 
-        rotZ:
-          0.64,
+        rotZ: 0.64,
       },
 
       {
-        id:
-          "skills-focus",
+        id: "skills-focus",
 
-        element:
-          skillsSection,
+        element: skillsSection,
 
-        anchorRatio:
-          0.4,
+        anchorRatio: 0.4,
 
-        x:
-          0.015,
+        x: 0.015,
 
-        y:
-          0,
+        y: 0,
 
-        scale:
-          1.48,
+        scale: 1.48,
 
-        opacity:
-          0.7,
+        opacity: 0.7,
 
-        rotX:
-          0.64,
+        rotX: 0.64,
 
-        rotY:
-          3.58,
+        rotY: 3.58,
 
-        rotZ:
-          1.08,
+        rotZ: 1.08,
       },
 
       {
-        id:
-          "skills-exit",
+        id: "skills-exit",
 
-        element:
-          skillsSection,
+        element: skillsSection,
 
-        anchorRatio:
-          0.78,
+        anchorRatio: 0.78,
 
-        x:
-          0.13,
+        x: 0.13,
 
-        y:
-          0.035,
+        y: 0.035,
 
-        scale:
-          1.16,
+        scale: 1.16,
 
-        opacity:
-          0.72,
+        opacity: 0.72,
 
-        rotX:
-          0.46,
+        rotX: 0.46,
 
-        rotY:
-          4.02,
+        rotY: 4.02,
 
-        rotZ:
-          0.58,
+        rotZ: 0.58,
       },
 
       {
-        id:
-          "education-entry",
+        id: "education-entry",
 
-        element:
-          educationSection,
+        element: educationSection,
 
-        anchorRatio:
-          0.08,
+        anchorRatio: 0.08,
 
-        x:
-          0.18,
+        x: 0.18,
 
-        y:
-          -0.015,
+        y: -0.015,
 
-        scale:
-          1,
+        scale: 1,
 
-        opacity:
-          0.74,
+        opacity: 0.74,
 
-        rotX:
-          0.36,
+        rotX: 0.36,
 
-        rotY:
-          4.22,
+        rotY: 4.22,
 
-        rotZ:
-          0.26,
+        rotZ: 0.26,
       },
 
       {
-        id:
-          "education-focus",
+        id: "education-focus",
 
-        element:
-          educationSection,
+        element: educationSection,
 
-        anchorRatio:
-          0.4,
+        anchorRatio: 0.4,
 
-        x:
-          0.27,
+        x: 0.27,
 
-        y:
-          0.025,
+        y: 0.025,
 
-        scale:
-          0.82,
+        scale: 0.82,
 
-        opacity:
-          0.78,
+        opacity: 0.78,
 
-        rotX:
-          0.24,
+        rotX: 0.24,
 
-        rotY:
-          4.55,
+        rotY: 4.55,
 
-        rotZ:
-          -0.34,
+        rotZ: -0.34,
       },
 
       {
-        id:
-          "education-exit",
+        id: "education-exit",
 
-        element:
-          educationSection,
+        element: educationSection,
 
-        anchorRatio:
-          0.76,
+        anchorRatio: 0.76,
 
-        x:
-          0.17,
+        x: 0.17,
 
-        y:
-          0.045,
+        y: 0.045,
 
-        scale:
-          0.9,
+        scale: 0.9,
 
-        opacity:
-          0.74,
+        opacity: 0.74,
 
-        rotX:
-          0.3,
+        rotX: 0.3,
 
-        rotY:
-          4.86,
+        rotY: 4.86,
 
-        rotZ:
-          -0.08,
+        rotZ: -0.08,
       },
 
       {
-        id:
-          "contact-entry",
+        id: "contact-entry",
 
-        element:
-          contactSection,
+        element: contactSection,
 
-        anchorRatio:
-          0.08,
+        anchorRatio: 0.08,
 
-        x:
-          0.18,
+        x: 0.18,
 
-        y:
-          0.02,
+        y: 0.02,
 
-        scale:
-          0.96,
+        scale: 0.96,
 
-        opacity:
-          0.82,
+        opacity: 0.82,
 
-        rotX:
-          0.22,
+        rotX: 0.22,
 
-        rotY:
-          5.16,
+        rotY: 5.16,
 
-        rotZ:
-          -0.08,
+        rotZ: -0.08,
       },
 
       {
-        id:
-          "contact-focus",
+        id: "contact-focus",
 
-        element:
-          contactSection,
+        element: contactSection,
 
-        anchorRatio:
-          0.38,
+        anchorRatio: 0.38,
 
-        x:
-          0.25,
+        x: 0.25,
 
-        y:
-          -0.015,
+        y: -0.015,
 
-        scale:
-          1.16,
+        scale: 1.16,
 
-        opacity:
-          0.92,
+        opacity: 0.92,
 
-        rotX:
-          0.12,
+        rotX: 0.12,
 
-        rotY:
-          5.62,
+        rotY: 5.62,
 
-        rotZ:
-          -0.48,
+        rotZ: -0.48,
       },
 
       {
-        id:
-          "contact-final",
+        id: "contact-final",
 
-        element:
-          contactSection,
+        element: contactSection,
 
-        anchorRatio:
-          0.76,
+        anchorRatio: 0.76,
 
-        x:
-          0.09,
+        x: 0.09,
 
-        y:
-          0.025,
+        y: 0.025,
 
-        scale:
-          1.3,
+        scale: 1.3,
 
-        opacity:
-          1,
+        opacity: 1,
 
-        rotX:
-          0.18,
+        rotX: 0.18,
 
-        rotY:
-          6.16,
+        rotY: 6.16,
 
-        rotZ:
-          0.14,
+        rotZ: 0.14,
       },
-    ].filter(
-      (sceneItem) =>
-        sceneItem.element
-    );
+    ].filter((sceneItem) => sceneItem.element);
 
     /* =========================================================
        TABLET OVERRIDES
@@ -2474,174 +1757,94 @@
        RESPONSIVE RESOLVER
        ========================================================= */
 
-    const resolveSceneDefinition =
-      (sceneItem) => {
-        const width =
-          window.innerWidth;
+    const resolveSceneDefinition = (sceneItem) => {
+      const width = window.innerWidth;
 
-        let overrides =
-          null;
+      let overrides = null;
 
-        if (
-          width <=
-          430
-        ) {
-          overrides =
-            SMALL_MOBILE_SCENE_OVERRIDES;
-        }
+      if (width <= 430) {
+        overrides = SMALL_MOBILE_SCENE_OVERRIDES;
+      } else if (width <= 700) {
+        overrides = MOBILE_SCENE_OVERRIDES;
+      } else if (width <= 900) {
+        overrides = TABLET_SCENE_OVERRIDES;
+      }
 
-        else if (
-          width <=
-          700
-        ) {
-          overrides =
-            MOBILE_SCENE_OVERRIDES;
-        }
+      if (!overrides) {
+        return sceneItem;
+      }
 
-        else if (
-          width <=
-          900
-        ) {
-          overrides =
-            TABLET_SCENE_OVERRIDES;
-        }
+      const override = overrides[sceneItem.id];
 
-        if (!overrides) {
-          return sceneItem;
-        }
-
-        const override =
-          overrides[
-            sceneItem.id
-          ];
-
-        return override
-          ? {
-              ...sceneItem,
-              ...override,
-            }
-          : sceneItem;
-      };
+      return override
+        ? {
+            ...sceneItem,
+            ...override,
+          }
+        : sceneItem;
+    };
 
     /* =========================================================
        SCENE STATE
        ========================================================= */
 
-    const sceneMetrics =
-      [];
+    const sceneMetrics = [];
 
-    const firstScene =
-      resolveSceneDefinition(
-        SCENE_DEFINITIONS[0]
-      );
+    const firstScene = resolveSceneDefinition(SCENE_DEFINITIONS[0]);
 
     const currentScene = {
-      x:
-        firstScene?.x ??
-        0.09,
+      x: firstScene?.x ?? 0.09,
 
-      y:
-        firstScene?.y ??
-        -0.02,
+      y: firstScene?.y ?? -0.02,
 
-      scale:
-        firstScene?.scale ??
-        1,
+      scale: firstScene?.scale ?? 1,
 
-      opacity:
-        firstScene?.opacity ??
-        1,
+      opacity: firstScene?.opacity ?? 1,
 
-      rotX:
-        firstScene?.rotX ??
-        0.16,
+      rotX: firstScene?.rotX ?? 0.16,
 
-      rotY:
-        firstScene?.rotY ??
-        -0.38,
+      rotY: firstScene?.rotY ?? -0.38,
 
-      rotZ:
-        firstScene?.rotZ ??
-        -0.08,
+      rotZ: firstScene?.rotZ ?? -0.08,
     };
 
     const targetScene = {
       ...currentScene,
     };
 
-    let activeSceneId =
-      "hero";
+    let activeSceneId = "hero";
 
-    let lastStageWidth =
-      0;
+    let lastStageWidth = 0;
 
-    let scrollDirty =
-      true;
+    let scrollDirty = true;
 
     /* =========================================================
        MATH
        ========================================================= */
 
-    const clamp01 =
-      (value) =>
-        Math.min(
-          1,
+    const clamp01 = (value) =>
+      Math.min(
+        1,
 
-          Math.max(
-            0,
-            value
-          )
-        );
+        Math.max(0, value),
+      );
 
-    const smoothstep =
-      (value) => {
-        const t =
-          clamp01(
-            value
-          );
+    const smoothstep = (value) => {
+      const t = clamp01(value);
 
-        return (
-          t *
-          t *
-          (
-            3 -
-            2 *
-            t
-          )
-        );
-      };
+      return t * t * (3 - 2 * t);
+    };
 
-    const mix =
-      (
-        a,
-        b,
-        t
-      ) =>
-        a +
-        (
-          b -
-          a
-        ) *
-        t;
+    const mix = (a, b, t) => a + (b - a) * t;
 
-    const damp =
-      (
+    const damp = (current, target, speed, dt) =>
+      THREE.MathUtils.lerp(
         current,
+
         target,
-        speed,
-        dt
-      ) =>
-        THREE.MathUtils.lerp(
-          current,
 
-          target,
-
-          1 -
-          Math.exp(
-            -speed *
-            dt
-          )
-        );
+        1 - Math.exp(-speed * dt),
+      );
 
     /* =========================================================
        DNA10 CRITICAL FIX
@@ -2658,356 +1861,186 @@
      * - CSS fallback muncul
      */
 
-    const updateSceneMetrics =
-      () => {
-        sceneMetrics.length =
-          0;
+    const updateSceneMetrics = () => {
+      sceneMetrics.length = 0;
 
-        const viewportHeight =
-          Math.max(
-            window.innerHeight,
-            1
-          );
+      const viewportHeight = Math.max(window.innerHeight, 1);
 
-        SCENE_DEFINITIONS.forEach(
-          (sceneItem) => {
-            const resolvedScene =
-              resolveSceneDefinition(
-                sceneItem
-              );
+      SCENE_DEFINITIONS.forEach((sceneItem) => {
+        const resolvedScene = resolveSceneDefinition(sceneItem);
 
-            const rect =
-              resolvedScene
-                .element
-                .getBoundingClientRect();
+        const rect = resolvedScene.element.getBoundingClientRect();
 
-            const top =
-              rect.top +
-              window.scrollY;
+        const top = rect.top + window.scrollY;
 
-            const height =
-              Math.max(
-                rect.height,
-                1
-              );
+        const height = Math.max(rect.height, 1);
 
-            const anchorOffset =
-              Math.min(
-                height *
-                resolvedScene.anchorRatio,
+        const anchorOffset = Math.min(
+          height * resolvedScene.anchorRatio,
 
-                viewportHeight *
-                0.82
-              );
-
-            sceneMetrics.push({
-              ...resolvedScene,
-
-              anchor:
-                top +
-                anchorOffset,
-            });
-          }
+          viewportHeight * 0.82,
         );
 
-        scrollDirty =
-          true;
-      };
+        sceneMetrics.push({
+          ...resolvedScene,
+
+          anchor: top + anchorOffset,
+        });
+      });
+
+      scrollDirty = true;
+    };
 
     /* =========================================================
        ACTIVE CSS STATES
        ========================================================= */
 
-    const syncSceneStateClasses =
-      (sceneId) => {
-        host.dataset.dnaScene =
-          sceneId;
+    const syncSceneStateClasses = (sceneId) => {
+      host.dataset.dnaScene = sceneId;
 
-        document.body.dataset.dnaScene =
-          sceneId;
+      document.body.dataset.dnaScene = sceneId;
 
-        /* ABOUT */
+      /* ABOUT */
 
-        const aboutActive =
-          sceneId.startsWith(
-            "about"
-          );
+      const aboutActive = sceneId.startsWith("about");
 
-        document.body.classList.toggle(
-          "dna-about-active",
-          aboutActive
+      document.body.classList.toggle("dna-about-active", aboutActive);
+
+      document.body.classList.toggle(
+        "dna-about-entry",
+
+        sceneId === "about-entry",
+      );
+
+      document.body.classList.toggle(
+        "dna-about-focus",
+
+        sceneId === "about-focus",
+      );
+
+      document.body.classList.toggle(
+        "dna-about-exit",
+
+        sceneId === "about-exit",
+      );
+
+      /* PROJECTS */
+
+      const projectMatch = sceneId.match(/^project-(\d{2})$/);
+
+      const activeProjectIndex = projectMatch
+        ? Number(projectMatch[1]) - 1
+        : -1;
+
+      const projectsActive =
+        sceneId === "projects-intro" || activeProjectIndex >= 0;
+
+      projectsSection?.classList.toggle("dna-projects-active", projectsActive);
+
+      projectCards.forEach((project, index) => {
+        project.classList.toggle(
+          "dna-project-active",
+
+          index === activeProjectIndex,
         );
-
-        document.body.classList.toggle(
-          "dna-about-entry",
-
-          sceneId ===
-          "about-entry"
-        );
-
-        document.body.classList.toggle(
-          "dna-about-focus",
-
-          sceneId ===
-          "about-focus"
-        );
-
-        document.body.classList.toggle(
-          "dna-about-exit",
-
-          sceneId ===
-          "about-exit"
-        );
-
-        /* PROJECTS */
-
-        const projectMatch =
-          sceneId.match(
-            /^project-(\d{2})$/
-          );
-
-        const activeProjectIndex =
-          projectMatch
-            ? Number(
-                projectMatch[1]
-              ) - 1
-            : -1;
-
-        const projectsActive =
-          sceneId ===
-            "projects-intro" ||
-
-          activeProjectIndex >=
-            0;
-
-        projectsSection
-          ?.classList.toggle(
-            "dna-projects-active",
-            projectsActive
-          );
-
-        projectCards.forEach(
-          (
-            project,
-            index
-          ) => {
-            project.classList.toggle(
-              "dna-project-active",
-
-              index ===
-              activeProjectIndex
-            );
-          }
-        );
-      };
+      });
+    };
 
     /* =========================================================
        TARGET SCENE
        ========================================================= */
 
-    const updateTargetScene =
-      () => {
-        if (
-          !sceneMetrics.length
-        ) {
-          return;
-        }
+    const updateTargetScene = () => {
+      if (!sceneMetrics.length) {
+        return;
+      }
 
-        const viewportProbe =
-          window.scrollY +
-          window.innerHeight *
-          0.5;
+      const viewportProbe = window.scrollY + window.innerHeight * 0.5;
 
-        let from =
-          sceneMetrics[0];
+      let from = sceneMetrics[0];
 
-        let to =
-          sceneMetrics[0];
+      let to = sceneMetrics[0];
 
-        let t =
-          0;
+      let t = 0;
 
-        if (
-          viewportProbe <=
-          sceneMetrics[0].anchor
-        ) {
-          from =
-            sceneMetrics[0];
+      if (viewportProbe <= sceneMetrics[0].anchor) {
+        from = sceneMetrics[0];
 
-          to =
-            from;
-        }
+        to = from;
+      } else if (
+        viewportProbe >= sceneMetrics[sceneMetrics.length - 1].anchor
+      ) {
+        from = sceneMetrics[sceneMetrics.length - 1];
 
-        else if (
-          viewportProbe >=
-          sceneMetrics[
-            sceneMetrics.length -
-            1
-          ].anchor
-        ) {
-          from =
-            sceneMetrics[
-              sceneMetrics.length -
-              1
-            ];
+        to = from;
+      } else {
+        for (let i = 0; i < sceneMetrics.length - 1; i += 1) {
+          const a = sceneMetrics[i];
 
-          to =
-            from;
-        }
+          const b = sceneMetrics[i + 1];
 
-        else {
-          for (
-            let i = 0;
+          if (viewportProbe >= a.anchor && viewportProbe <= b.anchor) {
+            from = a;
 
-            i <
-            sceneMetrics.length -
-            1;
+            to = b;
 
-            i += 1
-          ) {
-            const a =
-              sceneMetrics[i];
+            const range = Math.max(
+              b.anchor - a.anchor,
 
-            const b =
-              sceneMetrics[
-                i + 1
-              ];
+              1,
+            );
 
-            if (
-              viewportProbe >=
-                a.anchor &&
+            t = smoothstep((viewportProbe - a.anchor) / range);
 
-              viewportProbe <=
-                b.anchor
-            ) {
-              from =
-                a;
-
-              to =
-                b;
-
-              const range =
-                Math.max(
-                  b.anchor -
-                  a.anchor,
-
-                  1
-                );
-
-              t =
-                smoothstep(
-                  (
-                    viewportProbe -
-                    a.anchor
-                  ) /
-                  range
-                );
-
-              break;
-            }
+            break;
           }
         }
+      }
 
-        targetScene.x =
-          mix(
-            from.x,
-            to.x,
-            t
-          );
+      targetScene.x = mix(from.x, to.x, t);
 
-        targetScene.y =
-          mix(
-            from.y,
-            to.y,
-            t
-          );
+      targetScene.y = mix(from.y, to.y, t);
 
-        targetScene.scale =
-          mix(
-            from.scale,
-            to.scale,
-            t
-          );
+      targetScene.scale = mix(from.scale, to.scale, t);
 
-        /*
-         * DNA10 safety:
-         *
-         * DNA tidak akan pernah
-         * interpolasi di bawah 55%.
-         */
-        targetScene.opacity =
-          Math.max(
-            0.55,
+      /*
+       * DNA10 safety:
+       *
+       * DNA tidak akan pernah
+       * interpolasi di bawah 55%.
+       */
+      targetScene.opacity = Math.max(
+        0.55,
 
-            mix(
-              from.opacity,
-              to.opacity,
-              t
-            )
-          );
+        mix(from.opacity, to.opacity, t),
+      );
 
-        targetScene.rotX =
-          mix(
-            from.rotX,
-            to.rotX,
-            t
-          );
+      targetScene.rotX = mix(from.rotX, to.rotX, t);
 
-        targetScene.rotY =
-          mix(
-            from.rotY,
-            to.rotY,
-            t
-          );
+      targetScene.rotY = mix(from.rotY, to.rotY, t);
 
-        targetScene.rotZ =
-          mix(
-            from.rotZ,
-            to.rotZ,
-            t
-          );
+      targetScene.rotZ = mix(from.rotZ, to.rotZ, t);
 
-        activeSceneId =
-          t <
-          0.5
-            ? from.id
-            : to.id;
+      activeSceneId = t < 0.5 ? from.id : to.id;
 
-        syncSceneStateClasses(
-          activeSceneId
-        );
+      syncSceneStateClasses(activeSceneId);
 
-        scrollDirty =
-          false;
-      };
+      scrollDirty = false;
+    };
 
     /* =========================================================
        INITIAL 3D POSE
        ========================================================= */
 
-    const baseWorldScale =
-      reducedQuality
-        ? 1.02
-        : 1.16;
+    const baseWorldScale = reducedQuality ? 1.02 : 1.16;
 
-    world.scale.setScalar(
-      baseWorldScale
-    );
+    world.scale.setScalar(baseWorldScale);
 
-    world.position.set(
-      -0.18,
-      0,
-      0
-    );
+    world.position.set(-0.18, 0, 0);
 
-    world.rotation.set(
-      currentScene.rotX,
-      currentScene.rotY,
-      currentScene.rotZ
-    );
+    world.rotation.set(currentScene.rotX, currentScene.rotY, currentScene.rotZ);
 
-    dna.rotation.y =
-      0.24;
+    dna.rotation.y = 0.24;
 
     /* =========================================================
        POINTER
@@ -3018,196 +2051,100 @@
       y: 0,
     };
 
-    const onPointerMove =
-      (event) => {
-        pointer.x =
-          (
-            event.clientX /
-            window.innerWidth
-          ) *
-          2 -
-          1;
+    const onPointerMove = (event) => {
+      pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
 
-        pointer.y =
-          (
-            event.clientY /
-            window.innerHeight
-          ) *
-          2 -
-          1;
-      };
+      pointer.y = (event.clientY / window.innerHeight) * 2 - 1;
+    };
 
-    if (
-      !coarsePointer &&
-      !reducedMotion
-    ) {
-      window.addEventListener(
-        "pointermove",
-        onPointerMove,
-        {
-          passive:
-            true,
-        }
-      );
+    if (!coarsePointer && !reducedMotion) {
+      window.addEventListener("pointermove", onPointerMove, {
+        passive: true,
+      });
     }
 
     /* =========================================================
        RESIZE
        ========================================================= */
 
-    let lastWidth =
-      0;
+    let lastWidth = 0;
 
-    let lastHeight =
-      0;
+    let lastHeight = 0;
 
-    const applyPixelRatio =
-      (nextPixelRatio) => {
-        const normalizedPixelRatio =
-          Math.max(
-            minimumPixelRatio,
-            Math.min(
-              quality.pixelRatio,
-              nextPixelRatio
-            )
-          );
+    const applyPixelRatio = (nextPixelRatio) => {
+      const normalizedPixelRatio = Math.max(
+        minimumPixelRatio,
+        Math.min(quality.pixelRatio, nextPixelRatio),
+      );
 
-        if (
-          Math.abs(
-            normalizedPixelRatio -
-            currentPixelRatio
-          ) < 0.01
-        ) {
-          return;
-        }
+      if (Math.abs(normalizedPixelRatio - currentPixelRatio) < 0.01) {
+        return;
+      }
 
-        currentPixelRatio =
-          normalizedPixelRatio;
+      currentPixelRatio = normalizedPixelRatio;
 
-        renderer.setPixelRatio(
-          currentPixelRatio
-        );
+      renderer.setPixelRatio(currentPixelRatio);
 
-        if (
-          lastWidth > 0 &&
-          lastHeight > 0
-        ) {
-          renderer.setSize(
-            lastWidth,
-            lastHeight,
-            false
-          );
-        }
-      };
+      if (lastWidth > 0 && lastHeight > 0) {
+        renderer.setSize(lastWidth, lastHeight, false);
+      }
+    };
 
-    let resizeRaf =
-      null;
+    let resizeRaf = null;
 
-    const resize =
-      () => {
-        resizeRaf =
-          null;
+    const resize = () => {
+      resizeRaf = null;
 
-        const stageWidth =
-          getStageWidth();
+      const stageWidth = getStageWidth();
 
-        if (
-          stageWidth !==
-          lastStageWidth
-        ) {
-          lastStageWidth =
-            stageWidth;
+      if (stageWidth !== lastStageWidth) {
+        lastStageWidth = stageWidth;
 
-          host.style.width =
-            `${stageWidth}px`;
+        host.style.width = `${stageWidth}px`;
 
-          host.style.height =
-            `${stageWidth}px`;
-        }
+        host.style.height = `${stageWidth}px`;
+      }
 
-        const rect =
-          host.getBoundingClientRect();
+      const rect = host.getBoundingClientRect();
 
-        const width =
-          Math.max(
-            Math.round(
-              rect.width
-            ),
-            1
-          );
+      const width = Math.max(Math.round(rect.width), 1);
 
-        const height =
-          Math.max(
-            Math.round(
-              rect.height
-            ),
-            1
-          );
+      const height = Math.max(Math.round(rect.height), 1);
 
-        if (
-          width !==
-            lastWidth ||
+      if (width !== lastWidth || height !== lastHeight) {
+        lastWidth = width;
 
-          height !==
-            lastHeight
-        ) {
-          lastWidth =
-            width;
+        lastHeight = height;
 
-          lastHeight =
-            height;
+        renderer.setSize(width, height, false);
 
-          renderer.setSize(
-            width,
-            height,
-            false
-          );
+        camera.aspect = width / height;
 
-          camera.aspect =
-            width /
-            height;
+        camera.updateProjectionMatrix();
+      }
 
-          camera.updateProjectionMatrix();
-        }
+      /*
+       * FIX penting.
+       */
+      updateSceneMetrics();
 
-        /*
-         * FIX penting.
-         */
-        updateSceneMetrics();
+      updateTargetScene();
 
-        updateTargetScene();
+      renderer.render(scene, camera);
+    };
 
-        renderer.render(
-          scene,
-          camera
-        );
-      };
+    const scheduleResize = () => {
+      if (resizeRaf !== null) {
+        return;
+      }
 
-    const scheduleResize =
-      () => {
-        if (
-          resizeRaf !==
-          null
-        ) {
-          return;
-        }
+      resizeRaf = requestAnimationFrame(resize);
+    };
 
-        resizeRaf =
-          requestAnimationFrame(
-            resize
-          );
-      };
+    let resizeObserver = null;
 
-    let resizeObserver =
-      null;
-
-    if (
-      "ResizeObserver" in window
-    ) {
-      resizeObserver =
-        new ResizeObserver(
-          scheduleResize
-        );
+    if ("ResizeObserver" in window) {
+      resizeObserver = new ResizeObserver(scheduleResize);
 
       /*
        * Observe MAIN,
@@ -3217,552 +2154,322 @@
        * tinggi halaman, anchor DNA
        * dihitung ulang.
        */
-      resizeObserver.observe(
-        main
-      );
+      resizeObserver.observe(main);
     }
 
-    window.addEventListener(
-      "resize",
-      scheduleResize,
-      {
-        passive:
-          true,
-      }
-    );
+    window.addEventListener("resize", scheduleResize, {
+      passive: true,
+    });
 
     /* =========================================================
        SCROLL
        ========================================================= */
 
-    const onScroll =
-      () => {
-        scrollDirty =
-          true;
+    const onScroll = () => {
+      scrollDirty = true;
 
-        /*
-         * Reduced motion:
-         * update DNA tanpa continuous RAF.
-         */
-        if (reducedMotion) {
-          requestAnimationFrame(
-            () => {
-              updateTargetScene();
+      /*
+       * Reduced motion:
+       * update DNA tanpa continuous RAF.
+       */
+      if (reducedMotion) {
+        requestAnimationFrame(() => {
+          updateTargetScene();
 
-              Object.assign(
-                currentScene,
-                targetScene
-              );
+          Object.assign(currentScene, targetScene);
 
-              applySceneToObjects(
-                performance.now(),
-                0
-              );
+          applySceneToObjects(performance.now(), 0);
 
-              renderer.render(
-                scene,
-                camera
-              );
-            }
-          );
-        }
-      };
-
-    window.addEventListener(
-      "scroll",
-      onScroll,
-      {
-        passive:
-          true,
+          renderer.render(scene, camera);
+        });
       }
-    );
+    };
+
+    window.addEventListener("scroll", onScroll, {
+      passive: true,
+    });
 
     /* =========================================================
        VISIBILITY
        ========================================================= */
 
-    let mainVisible =
-      true;
+    let mainVisible = true;
 
-    let documentVisible =
-      !document.hidden;
+    let documentVisible = !document.hidden;
 
-    let raf =
-      null;
+    let raf = null;
 
-    let previousTime =
-      performance.now();
+    let previousTime = performance.now();
 
-    let previousRafTime =
-      previousTime;
+    let previousRafTime = previousTime;
 
-    let cadenceSampleTotal =
-      0;
+    let cadenceSampleTotal = 0;
 
-    let cadenceSampleCount =
-      0;
+    let cadenceSampleCount = 0;
 
-    let cadenceCalibrated =
-      false;
+    let cadenceCalibrated = false;
 
-    let renderStride =
-      1;
+    let renderStride = 1;
 
-    let renderFrameIndex =
-      0;
+    let renderFrameIndex = 0;
 
-    let frameSampleTotal =
-      0;
+    let frameSampleTotal = 0;
 
-    let frameSampleCount =
-      0;
+    let frameSampleCount = 0;
 
-    let lastQualityAdjustment =
-      performance.now();
+    let lastQualityAdjustment = performance.now();
 
-    const start =
-      () => {
-        if (
-          reducedMotion ||
-          raf !== null ||
-          !mainVisible ||
-          !documentVisible
-        ) {
-          return;
-        }
+    const start = () => {
+      if (reducedMotion || raf !== null || !mainVisible || !documentVisible) {
+        return;
+      }
 
-        previousTime =
-          performance.now();
+      previousTime = performance.now();
 
-        previousRafTime =
-          previousTime;
+      previousRafTime = previousTime;
 
-        renderFrameIndex =
-          0;
+      renderFrameIndex = 0;
 
-        frameSampleTotal =
-          0;
+      frameSampleTotal = 0;
 
-        frameSampleCount =
-          0;
+      frameSampleCount = 0;
 
-        raf =
-          requestAnimationFrame(
-            animate
-          );
-      };
+      raf = requestAnimationFrame(animate);
+    };
 
-    const stop =
-      () => {
-        if (
-          raf ===
-          null
-        ) {
-          return;
-        }
+    const stop = () => {
+      if (raf === null) {
+        return;
+      }
 
-        cancelAnimationFrame(
-          raf
-        );
+      cancelAnimationFrame(raf);
 
-        raf =
-          null;
-      };
+      raf = null;
+    };
 
-    const mainObserver =
-      new IntersectionObserver(
-        (entries) => {
-          mainVisible =
-            entries[0]
-              ?.isIntersecting
-              ?? true;
+    const mainObserver = new IntersectionObserver(
+      (entries) => {
+        mainVisible = entries[0]?.isIntersecting ?? true;
 
-          mainVisible
-            ? start()
-            : stop();
-        },
+        mainVisible ? start() : stop();
+      },
 
-        {
-          threshold:
-            0.001,
-        }
-      );
-
-    mainObserver.observe(
-      main
+      {
+        threshold: 0.001,
+      },
     );
 
-    const onVisibilityChange =
-      () => {
-        documentVisible =
-          !document.hidden;
+    mainObserver.observe(main);
 
-        documentVisible
-          ? start()
-          : stop();
-      };
+    const onVisibilityChange = () => {
+      documentVisible = !document.hidden;
 
-    document.addEventListener(
-      "visibilitychange",
-      onVisibilityChange
-    );
+      documentVisible ? start() : stop();
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     /* =========================================================
        DNA10 DOM WRITE CACHE
        ========================================================= */
 
-    let lastHostTransform =
-      "";
+    let lastHostTransform = "";
 
-    let lastHostOpacity =
-      "";
+    let lastHostOpacity = "";
 
     /* =========================================================
        APPLY SCENE
        ========================================================= */
 
-    const applySceneToObjects =
-      (
-        timestamp,
-        dt
-      ) => {
-        const stageX =
-          currentScene.x *
-          window.innerWidth;
+    const applySceneToObjects = (timestamp, dt) => {
+      const stageX = currentScene.x * window.innerWidth;
 
-        const stageY =
-          currentScene.y *
-          window.innerHeight;
+      const stageY = currentScene.y * window.innerHeight;
 
-        const nextHostTransform =
-          `translate(-50%, -50%) ` +
+      const nextHostTransform =
+        `translate(-50%, -50%) ` +
+        `translate3d(` +
+        `${stageX.toFixed(2)}px, ` +
+        `${stageY.toFixed(2)}px, ` +
+        `0) ` +
+        `scale(` +
+        `${currentScene.scale.toFixed(4)}` +
+        `)`;
 
-          `translate3d(` +
-          `${stageX.toFixed(2)}px, ` +
-          `${stageY.toFixed(2)}px, ` +
-          `0) ` +
+      if (nextHostTransform !== lastHostTransform) {
+        host.style.transform = nextHostTransform;
 
-          `scale(` +
-          `${currentScene.scale.toFixed(4)}` +
-          `)`;
+        lastHostTransform = nextHostTransform;
+      }
 
-        if (
-          nextHostTransform !==
-          lastHostTransform
-        ) {
-          host.style.transform =
-            nextHostTransform;
+      /*
+       * Safety kedua:
+       * host sendiri minimal opacity 55%.
+       */
+      const nextHostOpacity = Math.max(
+        0.55,
 
-          lastHostTransform =
-            nextHostTransform;
-        }
+        currentScene.opacity,
+      ).toFixed(3);
 
-        /*
-         * Safety kedua:
-         * host sendiri minimal opacity 55%.
-         */
-        const nextHostOpacity =
-          Math.max(
-            0.55,
+      if (nextHostOpacity !== lastHostOpacity) {
+        host.style.opacity = nextHostOpacity;
 
-            currentScene.opacity
-          ).toFixed(
-            3
-          );
+        lastHostOpacity = nextHostOpacity;
+      }
 
-        if (
-          nextHostOpacity !==
-          lastHostOpacity
-        ) {
-          host.style.opacity =
-            nextHostOpacity;
+      const pointerX = coarsePointer || reducedMotion ? 0 : pointer.x * 0.09;
 
-          lastHostOpacity =
-            nextHostOpacity;
-        }
+      const pointerY = coarsePointer || reducedMotion ? 0 : pointer.y * 0.045;
 
-        const pointerX =
-          coarsePointer ||
-          reducedMotion
-            ? 0
-            : pointer.x *
-              0.09;
+      /*
+       * Reduced motion:
+       * pose ada, idle motion mati.
+       */
+      if (reducedMotion) {
+        world.rotation.set(
+          currentScene.rotX,
+          currentScene.rotY,
+          currentScene.rotZ,
+        );
 
-        const pointerY =
-          coarsePointer ||
-          reducedMotion
-            ? 0
-            : pointer.y *
-              0.045;
+        world.position.y = 0;
 
-        /*
-         * Reduced motion:
-         * pose ada, idle motion mati.
-         */
-        if (reducedMotion) {
-          world.rotation.set(
-            currentScene.rotX,
-            currentScene.rotY,
-            currentScene.rotZ
-          );
+        return;
+      }
 
-          world.position.y =
-            0;
+      world.rotation.x = damp(
+        world.rotation.x,
 
-          return;
-        }
+        currentScene.rotX + pointerY,
 
-        world.rotation.x =
-          damp(
-            world.rotation.x,
+        5.2,
 
-            currentScene.rotX +
-            pointerY,
+        dt,
+      );
 
-            5.2,
+      world.rotation.y = damp(
+        world.rotation.y,
 
-            dt
-          );
+        currentScene.rotY + pointerX,
 
-        world.rotation.y =
-          damp(
-            world.rotation.y,
+        5.2,
 
-            currentScene.rotY +
-            pointerX,
+        dt,
+      );
 
-            5.2,
+      world.rotation.z = damp(
+        world.rotation.z,
 
-            dt
-          );
+        currentScene.rotZ,
 
-        world.rotation.z =
-          damp(
-            world.rotation.z,
+        5.2,
 
-            currentScene.rotZ,
+        dt,
+      );
 
-            5.2,
+      const time = timestamp * 0.001;
 
-            dt
-          );
-
-        const time =
-          timestamp *
-          0.001;
-
-        /* =====================================================
+      /* =====================================================
            DNA10 — FINAL IDLE MOTION
            ===================================================== */
 
-        const idleSpeed =
-          reducedQuality
-            ? 0.00055
-            : 0.00078;
+      const idleSpeed = reducedQuality ? 0.00055 : 0.00078;
 
-        const delta60 =
-          Math.min(
-            dt *
-            60,
+      const delta60 = Math.min(
+        dt * 60,
 
-            2
-          );
+        2,
+      );
 
-        dna.rotation.y +=
-          idleSpeed *
-          delta60;
+      dna.rotation.y += idleSpeed * delta60;
 
-        dna.rotation.z =
-          Math.sin(
-            time *
-            0.25
-          ) *
-          (
-            reducedQuality
-              ? 0.016
-              : 0.02
-          );
+      dna.rotation.z = Math.sin(time * 0.25) * (reducedQuality ? 0.016 : 0.02);
 
-        world.position.y =
-          Math.sin(
-            time *
-            0.36
-          ) *
-          (
-            reducedQuality
-              ? 0.026
-              : 0.036
-          );
+      world.position.y =
+        Math.sin(time * 0.36) * (reducedQuality ? 0.026 : 0.036);
 
-        /* =====================================================
+      /* =====================================================
            LIGHT POINTER RESPONSE
            ===================================================== */
 
-        if (!coarsePointer) {
-          keyLight.position.x =
-            3.4 +
-            pointer.x *
-            0.78;
+      if (!coarsePointer) {
+        keyLight.position.x = 3.4 + pointer.x * 0.78;
 
-          keyLight.position.y =
-            3.7 -
-            pointer.y *
-            0.38;
+        keyLight.position.y = 3.7 - pointer.y * 0.38;
 
-          cyanRim.position.y =
-            0.35 +
-            pointer.y *
-            0.22;
-        }
+        cyanRim.position.y = 0.35 + pointer.y * 0.22;
+      }
 
-        /* =====================================================
+      /* =====================================================
            DNA10 — SUBTLE LIGHT BREATHING
            ===================================================== */
 
-        const lightBreath =
-          1 +
-          Math.sin(
-            time *
-            0.42
-          ) *
-          0.022;
+      const lightBreath = 1 + Math.sin(time * 0.42) * 0.022;
 
-        keyLight.intensity =
-          (
-            reducedQuality
-              ? 18
-              : 23
-          ) *
-          lightBreath;
+      keyLight.intensity = (reducedQuality ? 18 : 23) * lightBreath;
 
-        cyanRim.intensity =
-          (
-            reducedQuality
-              ? 13
-              : 19
-          ) *
-          (
-            1 +
-            Math.cos(
-              time *
-              0.38
-            ) *
-            0.032
-          );
+      cyanRim.intensity =
+        (reducedQuality ? 13 : 19) * (1 + Math.cos(time * 0.38) * 0.032);
 
-        /* =====================================================
+      /* =====================================================
            DNA10 — SUBTLE HALO
            ===================================================== */
 
-        if (glow) {
-          const glowScale =
-            5.15 +
-            Math.sin(
-              time *
-              0.34
-            ) *
-            0.045;
+      if (glow) {
+        const glowScale = 5.15 + Math.sin(time * 0.34) * 0.045;
 
-          glow.scale.set(
-            glowScale,
-            glowScale,
-            1
-          );
-        }
-      };
+        glow.scale.set(glowScale, glowScale, 1);
+      }
+    };
 
     /* =========================================================
        MAIN ANIMATION LOOP
        ========================================================= */
 
-    function animate(
-      timestamp
-    ) {
-      raf =
-        null;
+    function animate(timestamp) {
+      raf = null;
 
-      if (
-        !mainVisible ||
-        !documentVisible
-      ) {
+      if (!mainVisible || !documentVisible) {
         return;
       }
 
-      const rafElapsed =
-        Math.min(
-          Math.max(
-            timestamp -
-            previousRafTime,
-            0
-          ),
-          100
-        );
+      const rafElapsed = Math.min(
+        Math.max(timestamp - previousRafTime, 0),
+        100,
+      );
 
-      previousRafTime =
-        timestamp;
+      previousRafTime = timestamp;
 
-      if (
-        !cadenceCalibrated &&
-        rafElapsed > 0 &&
-        rafElapsed < 25
-      ) {
-        cadenceSampleTotal +=
-          rafElapsed;
+      if (!cadenceCalibrated && rafElapsed > 0 && rafElapsed < 25) {
+        cadenceSampleTotal += rafElapsed;
 
-        cadenceSampleCount +=
-          1;
+        cadenceSampleCount += 1;
 
-        if (
-          cadenceSampleCount >= 24
-        ) {
-          const averageRafTime =
-            cadenceSampleTotal /
-            cadenceSampleCount;
+        if (cadenceSampleCount >= 24) {
+          const averageRafTime = cadenceSampleTotal / cadenceSampleCount;
 
           /*
            * Panel 120/144 Hz cukup dirender setiap dua callback.
            * Hasilnya cadence stabil sekitar 60/72 FPS tanpa timer gate.
            */
-          renderStride =
-            averageRafTime < 10.5
-              ? 2
-              : 1;
+          renderStride = averageRafTime < 10.5 ? 2 : 1;
 
-          cadenceCalibrated =
-            true;
+          cadenceCalibrated = true;
         }
       }
 
-      renderFrameIndex =
-        (
-          renderFrameIndex +
-          1
-        ) %
-        renderStride;
+      renderFrameIndex = (renderFrameIndex + 1) % renderStride;
 
-      if (
-        renderFrameIndex !== 0
-      ) {
-        raf =
-          requestAnimationFrame(
-            animate
-          );
+      if (renderFrameIndex !== 0) {
+        raf = requestAnimationFrame(animate);
 
         return;
       }
 
-      const elapsed =
-        Math.min(
-          Math.max(
-            timestamp -
-            previousTime,
-            0
-          ),
-          100
-        );
+      const elapsed = Math.min(Math.max(timestamp - previousTime, 0), 100);
 
-      previousTime =
-        timestamp;
+      previousTime = timestamp;
 
       /*
        * Gunakan cadence native browser.
@@ -3772,59 +2479,37 @@
       if (
         mobileAtLoad &&
         !reducedMotion &&
-        currentPixelRatio >
-          minimumPixelRatio + 0.01
+        currentPixelRatio > minimumPixelRatio + 0.01
       ) {
-        frameSampleTotal +=
-          elapsed;
+        frameSampleTotal += elapsed;
 
-        frameSampleCount +=
-          1;
+        frameSampleCount += 1;
 
         if (
           frameSampleCount >= 90 &&
-          timestamp -
-            lastQualityAdjustment >= 2000
+          timestamp - lastQualityAdjustment >= 2000
         ) {
-          const averageFrameTime =
-            frameSampleTotal /
-            frameSampleCount;
+          const averageFrameTime = frameSampleTotal / frameSampleCount;
 
-          if (
-            averageFrameTime > 20
-          ) {
-            applyPixelRatio(
-              Number(
-                (
-                  currentPixelRatio -
-                  0.15
-                ).toFixed(2)
-              )
-            );
+          if (averageFrameTime > 20) {
+            applyPixelRatio(Number((currentPixelRatio - 0.15).toFixed(2)));
 
-            lastQualityAdjustment =
-              timestamp;
+            lastQualityAdjustment = timestamp;
           }
 
-          frameSampleTotal =
-            0;
+          frameSampleTotal = 0;
 
-          frameSampleCount =
-            0;
+          frameSampleCount = 0;
         }
       }
 
-      const dt =
-        Math.min(
-          elapsed /
-          1000,
+      const dt = Math.min(
+        elapsed / 1000,
 
-          0.05
-        );
+        0.05,
+      );
 
-      if (
-        scrollDirty
-      ) {
+      if (scrollDirty) {
         updateTargetScene();
       }
 
@@ -3832,109 +2517,53 @@
          SCENE DAMPING
          ===================================================== */
 
-      currentScene.x =
-        damp(
-          currentScene.x,
-          targetScene.x,
-          5.8,
-          dt
-        );
+      currentScene.x = damp(currentScene.x, targetScene.x, 5.8, dt);
 
-      currentScene.y =
-        damp(
-          currentScene.y,
-          targetScene.y,
-          5.8,
-          dt
-        );
+      currentScene.y = damp(currentScene.y, targetScene.y, 5.8, dt);
 
-      currentScene.scale =
-        damp(
-          currentScene.scale,
-          targetScene.scale,
-          5.4,
-          dt
-        );
+      currentScene.scale = damp(currentScene.scale, targetScene.scale, 5.4, dt);
 
-      currentScene.opacity =
-        damp(
-          currentScene.opacity,
-          targetScene.opacity,
-          6.2,
-          dt
-        );
-
-      currentScene.rotX =
-        damp(
-          currentScene.rotX,
-          targetScene.rotX,
-          4.6,
-          dt
-        );
-
-      currentScene.rotY =
-        damp(
-          currentScene.rotY,
-          targetScene.rotY,
-          4.6,
-          dt
-        );
-
-      currentScene.rotZ =
-        damp(
-          currentScene.rotZ,
-          targetScene.rotZ,
-          4.6,
-          dt
-        );
-
-      applySceneToObjects(
-        timestamp,
-        dt
+      currentScene.opacity = damp(
+        currentScene.opacity,
+        targetScene.opacity,
+        6.2,
+        dt,
       );
 
-      renderer.render(
-        scene,
-        camera
-      );
+      currentScene.rotX = damp(currentScene.rotX, targetScene.rotX, 4.6, dt);
 
-      raf =
-        requestAnimationFrame(
-          animate
-        );
+      currentScene.rotY = damp(currentScene.rotY, targetScene.rotY, 4.6, dt);
+
+      currentScene.rotZ = damp(currentScene.rotZ, targetScene.rotZ, 4.6, dt);
+
+      applySceneToObjects(timestamp, dt);
+
+      renderer.render(scene, camera);
+
+      raf = requestAnimationFrame(animate);
     }
 
     /* =========================================================
        FALLBACK
        ========================================================= */
 
-    const fallback =
-      host.querySelectorAll(
-        ".hero-orbit-core, .hero-orbit-ring"
-      );
+    const fallback = host.querySelectorAll(
+      ".hero-orbit-core, .hero-orbit-ring",
+    );
 
-    const hideFallback =
-      () => {
-        fallback.forEach(
-          (element) => {
-            element.style.transition =
-              "opacity .8s ease";
+    const hideFallback = () => {
+      fallback.forEach((element) => {
+        element.style.transition = "opacity .8s ease";
 
-            element.style.opacity =
-              "0";
-          }
-        );
-      };
+        element.style.opacity = "0";
+      });
+    };
 
-    const showFallback =
-      () => {
-        fallback.forEach(
-          (element) => {
-            element.style.opacity =
-              "";
-          }
-        );
-      };
+    const showFallback = () => {
+      fallback.forEach((element) => {
+        element.style.opacity = "";
+      });
+    };
 
     /* =========================================================
        READY
@@ -3950,249 +2579,161 @@
     /*
      * Tidak tunggu damping pada frame pertama.
      */
-    Object.assign(
-      currentScene,
-      targetScene
-    );
+    Object.assign(currentScene, targetScene);
 
-    applySceneToObjects(
-      performance.now(),
-      0
-    );
+    applySceneToObjects(performance.now(), 0);
 
-    renderer.render(
-      scene,
-      camera
-    );
+    renderer.render(scene, camera);
 
-    requestAnimationFrame(
-      () => {
-        hideFallback();
+    requestAnimationFrame(() => {
+      hideFallback();
 
-        /*
-         * Pastikan host sendiri
-         * tidak tersembunyi.
-         */
-        host.style.opacity =
-          Math.max(
-            0.55,
-            currentScene.opacity
-          ).toFixed(
-            3
-          );
+      host.style.opacity = Math.max(0.55, currentScene.opacity).toFixed(3);
 
-        canvas.style.opacity =
-          "1";
+      canvas.style.opacity = "1";
 
-        if (!reducedMotion) {
-          start();
-        }
+      /*
+       * Frame pertama DNA sudah berhasil
+       * dirender dan siap ditampilkan.
+       */
+      signalDnaReady();
+
+      if (!reducedMotion) {
+        start();
       }
-    );
-
+    });
     /* =========================================================
        WEBGL CONTEXT LOSS
        ========================================================= */
 
-    const onContextLost =
-      (event) => {
-        event.preventDefault();
+    const onContextLost = (event) => {
+      event.preventDefault();
 
-        stop();
+      stop();
 
-        canvas.style.opacity =
-          "0";
+      canvas.style.opacity = "0";
 
-        /*
-         * PENTING:
-         *
-         * Fallback adalah anak host.
-         * Jadi host TIDAK boleh opacity 0.
-         */
-        host.style.opacity =
-          "1";
+      /*
+       * PENTING:
+       *
+       * Fallback adalah anak host.
+       * Jadi host TIDAK boleh opacity 0.
+       */
+      host.style.opacity = "1";
 
-        showFallback();
-      };
+      showFallback();
 
-    canvas.addEventListener(
-      "webglcontextlost",
-      onContextLost,
-      false
-    );
+      signalDnaFallback("webgl-context-lost");
+    };
+
+    canvas.addEventListener("webglcontextlost", onContextLost, false);
 
     /* =========================================================
        CLEANUP
        ========================================================= */
 
-    const cleanup =
-      () => {
-        stop();
+    const cleanup = () => {
+      stop();
 
-        if (
-          resizeRaf !==
-          null
-        ) {
-          cancelAnimationFrame(
-            resizeRaf
-          );
-        }
-
-        resizeObserver
-          ?.disconnect();
-
-        mainObserver.disconnect();
-
-        window.removeEventListener(
-          "resize",
-          scheduleResize
-        );
-
-        window.removeEventListener(
-          "scroll",
-          onScroll
-        );
-
-        window.removeEventListener(
-          "pointermove",
-          onPointerMove
-        );
-
-        document.removeEventListener(
-          "visibilitychange",
-          onVisibilityChange
-        );
-
-        canvas.removeEventListener(
-          "webglcontextlost",
-          onContextLost
-        );
-
-        strandGeometryA.dispose();
-        strandGeometryB.dispose();
-
-        rungGeometry.dispose();
-        capGeometry.dispose();
-
-        strandMaterialA.dispose();
-        strandMaterialB.dispose();
-
-        rungMaterial.dispose();
-
-        shellMaterialA
-          ?.dispose();
-
-        shellMaterialB
-          ?.dispose();
-
-        glowTexture
-          ?.dispose();
-
-        glowMaterial
-          ?.dispose();
-
-        environmentTarget
-          ?.dispose();
-
-        renderer.dispose();
-
-        renderer.forceContextLoss();
-
-        if (
-          canvas.parentNode ===
-          host
-        ) {
-          host.removeChild(
-            canvas
-          );
-        }
-
-        /* BODY STATES */
-
-        document.body.classList.remove(
-          "dna-experience",
-          "dna-about-active",
-          "dna-about-entry",
-          "dna-about-focus",
-          "dna-about-exit"
-        );
-
-        delete document.body.dataset.dnaScene;
-
-        /* HOST */
-
-        host.classList.remove(
-          "dna-stage"
-        );
-
-        host.removeAttribute(
-          "data-dna-scene"
-        );
-
-        /* PROJECT STATE */
-
-        projectCards.forEach(
-          (project) => {
-            project.classList.remove(
-              "dna-project-active"
-            );
-          }
-        );
-
-        projectsSection
-          ?.classList.remove(
-            "dna-projects-active"
-          );
-
-        /* RESTORE STYLE */
-
-        if (
-          originalHostStyle ===
-          null
-        ) {
-          host.removeAttribute(
-            "style"
-          );
-        }
-
-        else {
-          host.setAttribute(
-            "style",
-            originalHostStyle
-          );
-        }
-
-        /* RESTORE DOM POSITION */
-
-        if (originalParent) {
-          if (
-            originalNextSibling &&
-
-            originalNextSibling.parentNode ===
-              originalParent
-          ) {
-            originalParent.insertBefore(
-              host,
-              originalNextSibling
-            );
-          }
-
-          else {
-            originalParent.appendChild(
-              host
-            );
-          }
-        }
-
-        showFallback();
-      };
-
-    window.addEventListener(
-      "pagehide",
-      cleanup,
-      {
-        once: true,
+      if (resizeRaf !== null) {
+        cancelAnimationFrame(resizeRaf);
       }
-    );
+
+      resizeObserver?.disconnect();
+
+      mainObserver.disconnect();
+
+      window.removeEventListener("resize", scheduleResize);
+
+      window.removeEventListener("scroll", onScroll);
+
+      window.removeEventListener("pointermove", onPointerMove);
+
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+
+      canvas.removeEventListener("webglcontextlost", onContextLost);
+
+      strandGeometryA.dispose();
+      strandGeometryB.dispose();
+
+      rungGeometry.dispose();
+      capGeometry.dispose();
+
+      strandMaterialA.dispose();
+      strandMaterialB.dispose();
+
+      rungMaterial.dispose();
+
+      shellMaterialA?.dispose();
+
+      shellMaterialB?.dispose();
+
+      glowTexture?.dispose();
+
+      glowMaterial?.dispose();
+
+      environmentTarget?.dispose();
+
+      renderer.dispose();
+
+      renderer.forceContextLoss();
+
+      if (canvas.parentNode === host) {
+        host.removeChild(canvas);
+      }
+
+      /* BODY STATES */
+
+      document.body.classList.remove(
+        "dna-experience",
+        "dna-about-active",
+        "dna-about-entry",
+        "dna-about-focus",
+        "dna-about-exit",
+      );
+
+      delete document.body.dataset.dnaScene;
+
+      /* HOST */
+
+      host.classList.remove("dna-stage");
+
+      host.removeAttribute("data-dna-scene");
+
+      /* PROJECT STATE */
+
+      projectCards.forEach((project) => {
+        project.classList.remove("dna-project-active");
+      });
+
+      projectsSection?.classList.remove("dna-projects-active");
+
+      /* RESTORE STYLE */
+
+      if (originalHostStyle === null) {
+        host.removeAttribute("style");
+      } else {
+        host.setAttribute("style", originalHostStyle);
+      }
+
+      /* RESTORE DOM POSITION */
+
+      if (originalParent) {
+        if (
+          originalNextSibling &&
+          originalNextSibling.parentNode === originalParent
+        ) {
+          originalParent.insertBefore(host, originalNextSibling);
+        } else {
+          originalParent.appendChild(host);
+        }
+      }
+
+      showFallback();
+    };
+
+    window.addEventListener("pagehide", cleanup, {
+      once: true,
+    });
   }
 })();
