@@ -3,13 +3,20 @@
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
+  const revealElements = () =>
+    document.querySelectorAll(".reveal, .reveal-text");
+
   const revealAllImmediately = () => {
-    document.querySelectorAll(".reveal, .reveal-text").forEach((el) => {
+    revealElements().forEach((el) => {
       el.classList.add("is-visible");
       el.style.opacity = "1";
       el.style.transform = "none";
     });
   };
+
+  /* =========================================================
+     REDUCED MOTION
+     ========================================================= */
 
   if (reducedMotion) {
     revealAllImmediately();
@@ -18,11 +25,9 @@
 
   const hasGSAP = Boolean(window.gsap && window.ScrollTrigger);
 
-  /*
-  |--------------------------------------------------------------------------
-  | FALLBACK TANPA GSAP
-  |--------------------------------------------------------------------------
-  */
+  /* =========================================================
+     FALLBACK TANPA GSAP
+     ========================================================= */
 
   if (!hasGSAP) {
     const observer = new IntersectionObserver(
@@ -40,18 +45,14 @@
       },
     );
 
-    document.querySelectorAll(".reveal, .reveal-text").forEach((el) => {
-      observer.observe(el);
-    });
+    revealElements().forEach((el) => observer.observe(el));
 
     return;
   }
 
-  /*
-  |--------------------------------------------------------------------------
-  | GSAP SETUP
-  |--------------------------------------------------------------------------
-  */
+  /* =========================================================
+     GSAP SETUP
+     ========================================================= */
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -65,10 +66,48 @@
   });
 
   /*
-  |--------------------------------------------------------------------------
-  | HERO — CINEMATIC INTRO
-  |--------------------------------------------------------------------------
-  */
+   * CSS .reveal / .reveal-text hanya menjadi fallback
+   * jika GSAP tidak tersedia.
+   *
+   * Ketika GSAP aktif, state fallback dibuat visible.
+   * Initial animation kemudian sepenuhnya diatur GSAP
+   * melalui fromTo().
+   *
+   * Ini mencegah konflik transform antara:
+   *
+   * - CSS fallback
+   * - project parallax
+   * - component animation
+   * - magnetic interaction
+   */
+
+  revealElements().forEach((el) => {
+    el.classList.add("is-visible");
+  });
+
+  /* =========================================================
+     HELPERS
+     ========================================================= */
+
+  const isComponentOwnedReveal = (el) => {
+    return Boolean(
+      el.closest(".project") ||
+        el.matches(".about-stats .stat") ||
+        el.matches(".capability") ||
+        el.matches(".education-card") ||
+        el.matches(".contact-cta"),
+    );
+  };
+
+  const projectMobile = window.matchMedia(
+    "(max-width: 700px)",
+  ).matches;
+
+  const transitionMobile = projectMobile;
+
+  /* =========================================================
+     HERO — CINEMATIC INTRO
+     ========================================================= */
 
   const heroTimeline = gsap.timeline({
     defaults: {
@@ -77,13 +116,14 @@
   });
 
   heroTimeline
-
     .fromTo(
       ".hero-topline",
+
       {
         opacity: 0,
         y: 18,
       },
+
       {
         opacity: 1,
         y: 0,
@@ -93,11 +133,13 @@
 
     .fromTo(
       ".hero-title .hero-line",
+
       {
         opacity: 0,
         yPercent: 115,
         rotate: 1.8,
       },
+
       {
         opacity: 1,
         yPercent: 0,
@@ -115,10 +157,12 @@
 
     .fromTo(
       ".hero-intro",
+
       {
         opacity: 0,
         y: 26,
       },
+
       {
         opacity: 1,
         y: 0,
@@ -131,10 +175,12 @@
 
     .fromTo(
       ".hero-status",
+
       {
         opacity: 0,
         y: 20,
       },
+
       {
         opacity: 1,
         y: 0,
@@ -147,9 +193,11 @@
 
     .fromTo(
       ".hero-scroll",
+
       {
         opacity: 0,
       },
+
       {
         opacity: 1,
 
@@ -159,107 +207,116 @@
       "-=0.55",
     );
 
-  /*
-  |--------------------------------------------------------------------------
-  | HERO POSITIONING
-  |--------------------------------------------------------------------------
-  |
-  | The hero title and the Three.js mount are intentionally NOT translated
-  | on scroll. Their alignment is owned only by CSS (hero.css/responsive.css).
-  | Three.js still animates the sculpture inside the orbit container.
-  |
-  */
+  /* =========================================================
+     GLOBAL REVEAL
+     ========================================================= */
 
-  /*
-  |--------------------------------------------------------------------------
-  | GLOBAL REVEAL
-  |--------------------------------------------------------------------------
-  */
+  document
+    .querySelectorAll(".reveal")
+    .forEach((el) => {
+      /*
+       * Hero punya timeline sendiri.
+       *
+       * Component-owned elements juga punya
+       * animation controller sendiri.
+       *
+       * Karena itu GLOBAL REVEAL tidak boleh
+       * menjalankannya lagi.
+       */
 
-  document.querySelectorAll(".reveal").forEach((el) => {
-    /*
-      Jangan jalankan ulang elemen Hero.
-      Hero sudah mempunyai timeline sendiri.
-      */
+      if (
+        el.closest(".hero") ||
+        isComponentOwnedReveal(el)
+      ) {
+        return;
+      }
 
-    if (el.closest(".hero") || el.closest(".project")) {
-      return;
-    }
+      gsap.fromTo(
+        el,
 
-    gsap.fromTo(
-      el,
-
-      {
-        opacity: 0,
-        y: 32,
-      },
-
-      {
-        opacity: 1,
-        y: 0,
-
-        duration: 0.95,
-
-        ease: "power3.out",
-
-        scrollTrigger: {
-          trigger: el,
-
-          start: "top 88%",
-
-          once: true,
+        {
+          opacity: 0,
+          y: 32,
         },
-      },
-    );
-  });
 
-  /*
-  |--------------------------------------------------------------------------
-  | LARGE TEXT REVEAL
-  |--------------------------------------------------------------------------
-  */
+        {
+          opacity: 1,
+          y: 0,
 
-  document.querySelectorAll(".reveal-text").forEach((el) => {
-    if (el.closest(".hero")) return;
+          duration: 0.95,
 
-    gsap.fromTo(
-      el,
+          ease: "power3.out",
 
-      {
-        opacity: 0,
-        y: 52,
-      },
+          scrollTrigger: {
+            trigger: el,
 
-      {
-        opacity: 1,
-        y: 0,
+            start: "top 88%",
 
-        duration: 1.05,
-
-        ease: "power4.out",
-
-        scrollTrigger: {
-          trigger: el,
-
-          start: "top 90%",
-
-          once: true,
+            once: true,
+          },
         },
-      },
-    );
-  });
+      );
+    });
 
-  /*
-  |--------------------------------------------------------------------------
-  | ABOUT
-  |--------------------------------------------------------------------------
-  */
+  /* =========================================================
+     LARGE TEXT REVEAL
+     ========================================================= */
 
-  const aboutSection = document.querySelector(".about");
+  document
+    .querySelectorAll(".reveal-text")
+    .forEach((el) => {
+      /*
+       * Hero title punya cinematic timeline.
+       *
+       * Contact heading juga mempunyai
+       * animation khusus.
+       */
 
-  if (aboutSection) {
+      if (
+        el.closest(".hero") ||
+        el.matches(".contact-heading")
+      ) {
+        return;
+      }
+
+      gsap.fromTo(
+        el,
+
+        {
+          opacity: 0,
+          y: 52,
+        },
+
+        {
+          opacity: 1,
+          y: 0,
+
+          duration: 1.05,
+
+          ease: "power4.out",
+
+          scrollTrigger: {
+            trigger: el,
+
+            start: "top 90%",
+
+            once: true,
+          },
+        },
+      );
+    });
+
+  /* =========================================================
+     ABOUT — STATS
+     ========================================================= */
+
+  const aboutStats = gsap.utils.toArray(
+    ".about-stats .stat",
+  );
+
+  if (aboutStats.length) {
     gsap.fromTo(
-      ".about-stats .stat",
+      aboutStats,
 
       {
         opacity: 0,
@@ -287,72 +344,91 @@
     );
   }
 
-  /*
-|--------------------------------------------------------------------------
-| PROJECTS — B2 + B3 CINEMATIC SHOWCASE
-|--------------------------------------------------------------------------
-*/
+  /* =========================================================
+     PROJECTS
+     B2 + B3 CINEMATIC SHOWCASE
+     ========================================================= */
 
-  const projectMobile = window.matchMedia("(max-width: 700px)").matches;
+  const projectItems = gsap.utils.toArray(
+    ".project",
+  );
 
-  /*
-|--------------------------------------------------------------------------
-| B3 — PROJECT FOCUS STATE
-|--------------------------------------------------------------------------
-*/
+  /* =========================================================
+     PROJECT FOCUS HELPERS
+     ========================================================= */
 
-  const projectItems = gsap.utils.toArray(".project");
-
-  const setProjectFocus = (activeProject) => {
+  const setProjectFocus = (
+    activeProject,
+  ) => {
     projectItems.forEach((item) => {
-      item.classList.toggle("is-focus", item === activeProject);
+      item.classList.toggle(
+        "is-focus",
+        item === activeProject,
+      );
     });
   };
 
-  const clearProjectFocus = (project) => {
-    project.classList.remove("is-focus");
+  const clearProjectFocus = (
+    project,
+  ) => {
+    project.classList.remove(
+      "is-focus",
+    );
   };
 
-  /*
-|--------------------------------------------------------------------------
-| PROJECT LOOP
-|--------------------------------------------------------------------------
-*/
+  /* =========================================================
+     PROJECT LOOP
+     ========================================================= */
 
   projectItems.forEach((project) => {
-    const meta = project.querySelector(".project-meta");
+    const meta =
+      project.querySelector(
+        ".project-meta",
+      );
 
-    const copy = project.querySelector(".project-copy");
+    const copy =
+      project.querySelector(
+        ".project-copy",
+      );
 
-    const visual = project.querySelector(".project-visual");
+    const visual =
+      project.querySelector(
+        ".project-visual",
+      );
 
-    const image = project.querySelector(".project-shot img");
+    const image =
+      project.querySelector(
+        ".project-shot img",
+      );
 
-    const overlay = project.querySelector(".project-shot-overlay");
+    const overlay =
+      project.querySelector(
+        ".project-shot-overlay",
+      );
 
-    const footer = project.querySelector(".project-footer");
+    const footer =
+      project.querySelector(
+        ".project-footer",
+      );
 
-    /*
-    |--------------------------------------------------------------------------
-    | PROJECT ENTRANCE
-    |--------------------------------------------------------------------------
-    */
+    /* =======================================================
+       PROJECT ENTRANCE
+       ======================================================= */
 
-    const projectTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: project,
+    const projectTimeline =
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: project,
 
-        start: "top 82%",
+          start: "top 82%",
 
-        once: true,
-      },
-    });
+          once: true,
+        },
+      });
 
-    /*
-    |--------------------------------------------------------------------------
-    | META
-    |--------------------------------------------------------------------------
-    */
+    /* =======================================================
+       META
+       ======================================================= */
 
     if (meta) {
       projectTimeline.fromTo(
@@ -374,11 +450,9 @@
       );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | PROJECT COPY
-    |--------------------------------------------------------------------------
-    */
+    /* =======================================================
+       COPY
+       ======================================================= */
 
     if (copy) {
       projectTimeline.fromTo(
@@ -402,11 +476,9 @@
       );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | PROJECT VISUAL
-    |--------------------------------------------------------------------------
-    */
+    /* =======================================================
+       VISUAL
+       ======================================================= */
 
     if (visual) {
       projectTimeline.fromTo(
@@ -428,11 +500,9 @@
       );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | PROJECT FOOTER
-    |--------------------------------------------------------------------------
-    */
+    /* =======================================================
+       FOOTER
+       ======================================================= */
 
     if (footer) {
       projectTimeline.fromTo(
@@ -456,122 +526,139 @@
       );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | B2 — VISUAL PARALLAX
-    |--------------------------------------------------------------------------
-    */
+    /* =======================================================
+       B2 — VISUAL PARALLAX
+       ======================================================= */
 
     if (visual) {
       gsap.fromTo(
         visual,
 
         {
-          yPercent: projectMobile ? 1.2 : 3.2,
+          yPercent:
+            projectMobile
+              ? 1.2
+              : 3.2,
         },
 
         {
-          yPercent: projectMobile ? -1.2 : -3.2,
+          yPercent:
+            projectMobile
+              ? -1.2
+              : -3.2,
 
           ease: "none",
 
           scrollTrigger: {
             trigger: project,
 
-            start: "top bottom",
+            start:
+              "top bottom",
 
-            end: "bottom top",
+            end:
+              "bottom top",
 
-            scrub: projectMobile ? 1.6 : 1.2,
+            scrub:
+              projectMobile
+                ? 1.6
+                : 1.2,
 
-            invalidateOnRefresh: true,
+            invalidateOnRefresh:
+              true,
           },
         },
       );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | B2 — IMAGE INTERNAL PAN
-    |--------------------------------------------------------------------------
-    |
-    | Pakai object-position.
-    | Tidak mengubah transform image,
-    | jadi hover scale dari CSS tetap aman.
-    |
-    */
+    /* =======================================================
+       B2 — IMAGE INTERNAL PAN
 
-    if (image) {
+       Menggunakan object-position.
+       BUKAN transform.
+
+       Hover scale image dari CSS tetap aman.
+       ======================================================= */
+
+    if (image && visual) {
       gsap.fromTo(
         image,
 
         {
-          objectPosition: "50% 42%",
+          objectPosition:
+            "50% 42%",
         },
 
         {
-          objectPosition: "50% 58%",
+          objectPosition:
+            "50% 58%",
 
           ease: "none",
 
           scrollTrigger: {
             trigger: visual,
 
-            start: "top bottom",
+            start:
+              "top bottom",
 
-            end: "bottom top",
+            end:
+              "bottom top",
 
-            scrub: projectMobile ? 1.8 : 1.35,
+            scrub:
+              projectMobile
+                ? 1.8
+                : 1.35,
 
-            invalidateOnRefresh: true,
+            invalidateOnRefresh:
+              true,
           },
         },
       );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | B2 — OVERLAY DEPTH
-    |--------------------------------------------------------------------------
-    */
+    /* =======================================================
+       B2 — OVERLAY DEPTH
+       ======================================================= */
 
-    if (overlay) {
+    if (overlay && visual) {
       gsap.fromTo(
         overlay,
 
         {
-          y: projectMobile ? 5 : 13,
+          y:
+            projectMobile
+              ? 5
+              : 13,
         },
 
         {
-          y: projectMobile ? -3 : -9,
+          y:
+            projectMobile
+              ? -3
+              : -9,
 
           ease: "none",
 
           scrollTrigger: {
             trigger: visual,
 
-            start: "top bottom",
+            start:
+              "top bottom",
 
-            end: "bottom top",
+            end:
+              "bottom top",
 
             scrub: 1.45,
 
-            invalidateOnRefresh: true,
+            invalidateOnRefresh:
+              true,
           },
         },
       );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | B3 — PROJECT VIEWPORT FOCUS
-    |--------------------------------------------------------------------------
-    |
-    | Project aktif saat melewati area fokus
-    | di tengah viewport.
-    |
-    */
+    /* =======================================================
+       B3 — VIEWPORT FOCUS
+       ======================================================= */
 
     ScrollTrigger.create({
       trigger: project,
@@ -580,84 +667,86 @@
 
       end: "bottom 42%",
 
-      /*
-      | Scroll turun
-      */
-
       onEnter: () => {
-        setProjectFocus(project);
+        setProjectFocus(
+          project,
+        );
       },
-
-      /*
-      | Scroll naik
-      */
 
       onEnterBack: () => {
-        setProjectFocus(project);
+        setProjectFocus(
+          project,
+        );
       },
-
-      /*
-      | Keluar ke bawah
-      */
 
       onLeave: () => {
-        clearProjectFocus(project);
+        clearProjectFocus(
+          project,
+        );
       },
 
-      /*
-      | Keluar ke atas
-      */
-
       onLeaveBack: () => {
-        clearProjectFocus(project);
+        clearProjectFocus(
+          project,
+        );
       },
     });
   });
-  /*
-  |--------------------------------------------------------------------------
-  | CAPABILITIES
-  |--------------------------------------------------------------------------
-  */
 
-  const capabilityItems = gsap.utils.toArray(".capability");
+  /* =========================================================
+     CAPABILITIES
+     ========================================================= */
 
-  capabilityItems.forEach((item, index) => {
-    gsap.fromTo(
-      item,
-
-      {
-        opacity: 0,
-        y: 24,
-      },
-
-      {
-        opacity: 1,
-        y: 0,
-
-        duration: 0.85,
-
-        delay: Math.min(index * 0.025, 0.12),
-
-        ease: "power3.out",
-
-        scrollTrigger: {
-          trigger: item,
-
-          start: "top 90%",
-
-          once: true,
-        },
-      },
+  const capabilityItems =
+    gsap.utils.toArray(
+      ".capability",
     );
-  });
 
-  /*
-  |--------------------------------------------------------------------------
-  | EDUCATION
-  |--------------------------------------------------------------------------
-  */
+  capabilityItems.forEach(
+    (item, index) => {
+      gsap.fromTo(
+        item,
 
-  const educationCard = document.querySelector(".education-card");
+        {
+          opacity: 0,
+          y: 24,
+        },
+
+        {
+          opacity: 1,
+          y: 0,
+
+          duration: 0.85,
+
+          delay:
+            Math.min(
+              index * 0.025,
+              0.12,
+            ),
+
+          ease: "power3.out",
+
+          scrollTrigger: {
+            trigger: item,
+
+            start:
+              "top 90%",
+
+            once: true,
+          },
+        },
+      );
+    },
+  );
+
+  /* =========================================================
+     EDUCATION
+     ========================================================= */
+
+  const educationCard =
+    document.querySelector(
+      ".education-card",
+    );
 
   if (educationCard) {
     gsap.fromTo(
@@ -677,9 +766,11 @@
         ease: "power3.out",
 
         scrollTrigger: {
-          trigger: educationCard,
+          trigger:
+            educationCard,
 
-          start: "top 86%",
+          start:
+            "top 86%",
 
           once: true,
         },
@@ -687,17 +778,27 @@
     );
   }
 
-  /*
-  |--------------------------------------------------------------------------
-  | CONTACT
-  |--------------------------------------------------------------------------
-  */
+  /* =========================================================
+     CONTACT
+     ========================================================= */
 
-  const contact = document.querySelector(".contact");
-
-  if (contact) {
-    gsap.fromTo(
+  const contactHeading =
+    document.querySelector(
       ".contact-heading",
+    );
+
+  const contactCta =
+    document.querySelector(
+      ".contact-cta",
+    );
+
+  /* =========================================================
+     CONTACT HEADING
+     ========================================================= */
+
+  if (contactHeading) {
+    gsap.fromTo(
+      contactHeading,
 
       {
         opacity: 0,
@@ -713,35 +814,53 @@
         ease: "power4.out",
 
         scrollTrigger: {
-          trigger: ".contact-heading",
+          trigger:
+            contactHeading,
 
-          start: "top 88%",
+          start:
+            "top 88%",
 
           once: true,
         },
       },
     );
+  }
+
+  /* =========================================================
+     CONTACT CTA
+     ========================================================= */
+
+  if (contactCta) {
+    /*
+     * contact-cta menggunakan magnetic transform
+     * melalui main.js.
+     *
+     * Karena itu GSAP TIDAK lagi mengubah
+     * transform / translateY CTA.
+     *
+     * GSAP hanya mengatur opacity.
+     */
 
     gsap.fromTo(
-      ".contact-cta",
+      contactCta,
 
       {
         opacity: 0,
-        y: 22,
       },
 
       {
         opacity: 1,
-        y: 0,
 
         duration: 0.9,
 
         ease: "power3.out",
 
         scrollTrigger: {
-          trigger: ".contact-cta",
+          trigger:
+            contactCta,
 
-          start: "top 92%",
+          start:
+            "top 92%",
 
           once: true,
         },
@@ -749,326 +868,335 @@
     );
   }
 
-  /*
-  |--------------------------------------------------------------------------
-  | ACTIVE NAVIGATION
-  |--------------------------------------------------------------------------
-  */
+  /* =========================================================
+     C5 — SECTION TRANSITIONS
+     ========================================================= */
 
-  const navLinks = document.querySelectorAll(
-    '.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]',
+  const transitionSections =
+    gsap.utils.toArray(
+      ".about, .projects, .skills, .education, .contact",
+    );
+
+  transitionSections.forEach(
+    (section, index) => {
+      /*
+       * Hindari bridge duplicate jika script
+       * suatu saat dieksekusi ulang.
+       */
+
+      if (
+        section.querySelector(
+          ".section-bridge",
+        )
+      ) {
+        return;
+      }
+
+      /* =====================================================
+         CREATE ELEMENTS
+         ===================================================== */
+
+      const bridge =
+        document.createElement(
+          "div",
+        );
+
+      const line =
+        document.createElement(
+          "span",
+        );
+
+      const glow =
+        document.createElement(
+          "span",
+        );
+
+      const point =
+        document.createElement(
+          "span",
+        );
+
+      bridge.className =
+        "section-bridge";
+
+      line.className =
+        "section-bridge-line";
+
+      glow.className =
+        "section-bridge-glow";
+
+      point.className =
+        "section-bridge-point";
+
+      bridge.setAttribute(
+        "aria-hidden",
+        "true",
+      );
+
+      /* =====================================================
+         ALTERNATE AMBIENT ORIGIN
+         ===================================================== */
+
+      bridge.style.setProperty(
+        "--bridge-origin",
+
+        index % 2 === 0
+          ? "38%"
+          : "62%",
+      );
+
+      bridge.append(
+        line,
+        glow,
+        point,
+      );
+
+      section.prepend(
+        bridge,
+      );
+
+      /* =====================================================
+         TRANSITION TIMELINE
+         ===================================================== */
+
+      const transitionTimeline =
+        gsap.timeline({
+          scrollTrigger: {
+            trigger:
+              section,
+
+            start:
+              "top 98%",
+
+            end:
+              "top 54%",
+
+            scrub:
+              transitionMobile
+                ? 1.5
+                : 1.15,
+
+            invalidateOnRefresh:
+              true,
+          },
+        });
+
+      /* =====================================================
+         LINE ARRIVAL
+         ===================================================== */
+
+      transitionTimeline
+        .fromTo(
+          line,
+
+          {
+            scaleX: 0,
+            opacity: 0,
+          },
+
+          {
+            scaleX: 1,
+            opacity: 1,
+
+            duration: 0.58,
+
+            ease: "none",
+          },
+
+          0,
+        )
+
+        /* ===================================================
+           LINE SETTLE
+           =================================================== */
+
+        .to(
+          line,
+
+          {
+            opacity:
+              transitionMobile
+                ? 0.24
+                : 0.34,
+
+            duration: 0.42,
+
+            ease: "none",
+          },
+
+          0.58,
+        )
+
+        /* ===================================================
+           GLOW ARRIVAL
+           =================================================== */
+
+        .fromTo(
+          glow,
+
+          {
+            opacity: 0,
+            y: -18,
+          },
+
+          {
+            opacity:
+              transitionMobile
+                ? 0.32
+                : 0.52,
+
+            y: 0,
+
+            duration: 0.48,
+
+            ease: "none",
+          },
+
+          0,
+        )
+
+        /* ===================================================
+           GLOW DISSOLVE
+           =================================================== */
+
+        .to(
+          glow,
+
+          {
+            opacity: 0,
+
+            y:
+              transitionMobile
+                ? 14
+                : 24,
+
+            duration: 0.52,
+
+            ease: "none",
+          },
+
+          0.48,
+        )
+
+        /* ===================================================
+           LIGHT POINT ARRIVAL
+           =================================================== */
+
+        .fromTo(
+          point,
+
+          {
+            opacity: 0,
+            scale: 0,
+          },
+
+          {
+            opacity:
+              transitionMobile
+                ? 0.5
+                : 0.8,
+
+            scale: 1,
+
+            duration: 0.32,
+
+            ease: "none",
+          },
+
+          0.18,
+        )
+
+        /* ===================================================
+           LIGHT POINT EXIT
+           =================================================== */
+
+        .to(
+          point,
+
+          {
+            opacity: 0,
+
+            scale: 0.55,
+
+            duration: 0.4,
+
+            ease: "none",
+          },
+
+          0.5,
+        );
+    },
   );
 
-  const navSections = ["about", "projects", "skills", "education", "contact"];
+  /* =========================================================
+     ACTIVE NAVIGATION
+     ========================================================= */
+
+  const navLinks =
+    document.querySelectorAll(
+      '.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]',
+    );
+
+  const navSections = [
+    "about",
+    "projects",
+    "skills",
+    "education",
+    "contact",
+  ];
 
   navSections.forEach((id) => {
-    const section = document.getElementById(id);
+    const section =
+      document.getElementById(
+        id,
+      );
 
     if (!section) return;
 
     ScrollTrigger.create({
-      trigger: section,
+      trigger:
+        section,
 
-      start: "top 45%",
-      end: "bottom 45%",
+      start:
+        "top 45%",
+
+      end:
+        "bottom 45%",
 
       onToggle: (self) => {
-        if (!self.isActive) return;
+        if (!self.isActive) {
+          return;
+        }
 
-        navLinks.forEach((link) => {
-          const active = link.getAttribute("href") === `#${id}`;
+        navLinks.forEach(
+          (link) => {
+            const active =
+              link.getAttribute(
+                "href",
+              ) === `#${id}`;
 
-          link.classList.toggle("is-active", active);
-        });
+            link.classList.toggle(
+              "is-active",
+              active,
+            );
+          },
+        );
       },
     });
   });
 
-  /*
-  |--------------------------------------------------------------------------
-  | REFRESH SETELAH WEBSITE SELESAI LOAD
-  |--------------------------------------------------------------------------
-  */
+  /* =========================================================
+     FINAL REFRESH
+     ========================================================= */
 
-  window.addEventListener("load", () => {
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
-    });
-  });
+  window.addEventListener(
+    "load",
+    () => {
+      requestAnimationFrame(
+        () => {
+          ScrollTrigger.refresh();
+        },
+      );
+    },
+  );
 })();
-
-/*
-|--------------------------------------------------------------------------
-| C5 — SECTION TRANSITIONS
-|--------------------------------------------------------------------------
-|
-| Transition ini TIDAK menggerakkan content section.
-|
-| Global reveal + component reveal sudah ditangani
-| oleh animation system sebelumnya.
-|
-| Di sini kita hanya membuat:
-|
-| 1. transition line
-| 2. ambient glow
-| 3. center light point
-|
-| sehingga setiap section terasa tersambung.
-|
-|--------------------------------------------------------------------------
-*/
-
-const transitionSections = gsap.utils.toArray(
-  ".about, .projects, .skills, .education, .contact",
-);
-
-const transitionMobile = window.matchMedia("(max-width: 700px)").matches;
-
-/*
-|--------------------------------------------------------------------------
-| CREATE BRIDGES
-|--------------------------------------------------------------------------
-*/
-
-transitionSections.forEach((section, index) => {
-  /*
-    |--------------------------------------------------------------------------
-    | Hindari duplicate element jika script
-    | suatu saat dieksekusi ulang.
-    |--------------------------------------------------------------------------
-    */
-
-  if (section.querySelector(".section-bridge")) {
-    return;
-  }
-
-  /*
-    |--------------------------------------------------------------------------
-    | CREATE WRAPPER
-    |--------------------------------------------------------------------------
-    */
-
-  const bridge = document.createElement("div");
-
-  bridge.className = "section-bridge";
-
-  bridge.setAttribute("aria-hidden", "true");
-
-  /*
-    |--------------------------------------------------------------------------
-    | Alternate ambient origin.
-    |
-    | Bukan zig-zag ekstrem.
-    | Hanya sedikit variasi supaya homepage
-    | tidak terasa terlalu mekanis.
-    |--------------------------------------------------------------------------
-    */
-
-  bridge.style.setProperty(
-    "--bridge-origin",
-
-    index % 2 === 0 ? "38%" : "62%",
-  );
-
-  /*
-    |--------------------------------------------------------------------------
-    | LINE
-    |--------------------------------------------------------------------------
-    */
-
-  const line = document.createElement("span");
-
-  line.className = "section-bridge-line";
-
-  /*
-    |--------------------------------------------------------------------------
-    | GLOW
-    |--------------------------------------------------------------------------
-    */
-
-  const glow = document.createElement("span");
-
-  glow.className = "section-bridge-glow";
-
-  /*
-    |--------------------------------------------------------------------------
-    | CENTER POINT
-    |--------------------------------------------------------------------------
-    */
-
-  const point = document.createElement("span");
-
-  point.className = "section-bridge-point";
-
-  bridge.append(line, glow, point);
-
-  /*
-    |--------------------------------------------------------------------------
-    | Tambahkan sebagai elemen pertama section.
-    |--------------------------------------------------------------------------
-    */
-
-  section.prepend(bridge);
-
-  /*
-    |--------------------------------------------------------------------------
-    | TRANSITION TIMELINE
-    |--------------------------------------------------------------------------
-    */
-
-  const transitionTimeline = gsap.timeline({
-    scrollTrigger: {
-      trigger: section,
-
-      start: "top 98%",
-
-      end: "top 54%",
-
-      scrub: transitionMobile ? 1.5 : 1.15,
-
-      invalidateOnRefresh: true,
-    },
-  });
-
-  /*
-    |--------------------------------------------------------------------------
-    | LINE ARRIVAL
-    |--------------------------------------------------------------------------
-    */
-
-  transitionTimeline.fromTo(
-    line,
-
-    {
-      scaleX: 0,
-
-      opacity: 0,
-    },
-
-    {
-      scaleX: 1,
-
-      opacity: 1,
-
-      duration: 0.58,
-
-      ease: "none",
-    },
-
-    0,
-  );
-
-  /*
-    |--------------------------------------------------------------------------
-    | LINE SETTLE
-    |--------------------------------------------------------------------------
-    */
-
-  transitionTimeline.to(
-    line,
-
-    {
-      opacity: transitionMobile ? 0.24 : 0.34,
-
-      duration: 0.42,
-
-      ease: "none",
-    },
-
-    0.58,
-  );
-
-  /*
-    |--------------------------------------------------------------------------
-    | AMBIENT GLOW ARRIVAL
-    |--------------------------------------------------------------------------
-    */
-
-  transitionTimeline.fromTo(
-    glow,
-
-    {
-      opacity: 0,
-
-      y: -18,
-    },
-
-    {
-      opacity: transitionMobile ? 0.32 : 0.52,
-
-      y: 0,
-
-      duration: 0.48,
-
-      ease: "none",
-    },
-
-    0,
-  );
-
-  /*
-    |--------------------------------------------------------------------------
-    | AMBIENT GLOW DISSOLVE
-    |--------------------------------------------------------------------------
-    */
-
-  transitionTimeline.to(
-    glow,
-
-    {
-      opacity: 0,
-
-      y: transitionMobile ? 14 : 24,
-
-      duration: 0.52,
-
-      ease: "none",
-    },
-
-    0.48,
-  );
-
-  /*
-    |--------------------------------------------------------------------------
-    | LIGHT POINT
-    |--------------------------------------------------------------------------
-    */
-
-  transitionTimeline.fromTo(
-    point,
-
-    {
-      opacity: 0,
-
-      scale: 0,
-    },
-
-    {
-      opacity: transitionMobile ? 0.5 : 0.8,
-
-      scale: 1,
-
-      duration: 0.32,
-
-      ease: "none",
-    },
-
-    0.18,
-  );
-
-  transitionTimeline.to(
-    point,
-
-    {
-      opacity: 0,
-
-      scale: 0.55,
-
-      duration: 0.4,
-
-      ease: "none",
-    },
-
-    0.5,
-  );
-});
