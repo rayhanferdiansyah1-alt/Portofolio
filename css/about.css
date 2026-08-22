@@ -625,3 +625,259 @@
     transition: none !important;
   }
 }
+
+/* =========================================================
+   DNA5 — ABOUT CINEMATIC INTEGRATION
+   ========================================================= */
+
+
+/*
+|--------------------------------------------------------------------------
+| ABOUT AMBIENT LINE
+|
+| Existing vertical line kita gunakan sebagai
+| visual guide untuk DNA.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience
+.about::after {
+  opacity: 0.28;
+
+  transition:
+    height
+    0.9s
+    var(--ease-out),
+
+    opacity
+    0.75s
+    ease,
+
+    background
+    0.75s
+    ease;
+}
+
+
+/* =========================================================
+   DNA ENTERS ABOUT
+   ========================================================= */
+
+body.dna-about-entry
+.about::after {
+  height: 48%;
+
+  opacity: 0.5;
+
+  background:
+    linear-gradient(
+      to bottom,
+
+      transparent,
+
+      rgba(
+        168,
+        221,
+        245,
+        0.16
+      ),
+
+      transparent
+    );
+}
+
+
+/* =========================================================
+   ABOUT HERO MOMENT
+   ========================================================= */
+
+body.dna-about-focus
+.about::after {
+  height: 61%;
+
+  opacity: 0.92;
+
+  background:
+    linear-gradient(
+      to bottom,
+
+      transparent 0%,
+
+      rgba(
+        168,
+        221,
+        245,
+        0.08
+      )
+      18%,
+
+      rgba(
+        168,
+        221,
+        245,
+        0.34
+      )
+      48%,
+
+      rgba(
+        168,
+        221,
+        245,
+        0.11
+      )
+      70%,
+
+      transparent 100%
+    );
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Watermark PROFILE sedikit bangun
+| ketika DNA berada di About.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience
+.about::before {
+  transition:
+    opacity
+    0.8s
+    ease;
+}
+
+
+body.dna-about-active
+.about::before {
+  opacity: 1.45;
+}
+
+
+/* =========================================================
+   HEADING REACTION
+   ========================================================= */
+
+/*
+|--------------------------------------------------------------------------
+| Tidak ada transform.
+|
+| GSAP tetap memiliki ownership posisi heading.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience
+.about-heading h2 span {
+  transition:
+    color
+    0.7s
+    ease,
+
+    text-shadow
+    0.7s
+    ease;
+}
+
+
+body.dna-about-focus
+.about-heading h2 span {
+  color:
+    rgba(
+      217,
+      242,
+      255,
+      0.58
+    );
+
+  text-shadow:
+    0
+    0
+    40px
+    rgba(
+      168,
+      221,
+      245,
+      0.055
+    );
+}
+
+
+/* =========================================================
+   COPY MICRO ACCENT
+   ========================================================= */
+
+body.dna-experience
+.about-copy {
+  transition:
+    border-color
+    0.7s
+    ease;
+}
+
+
+/* =========================================================
+   EXIT
+   ========================================================= */
+
+body.dna-about-exit
+.about::after {
+  height: 44%;
+
+  opacity: 0.34;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  body.dna-about-focus
+  .about::after {
+    height: 48%;
+
+    opacity: 0.5;
+  }
+
+
+  body.dna-about-focus
+  .about-heading h2 span {
+    color:
+      rgba(
+        217,
+        242,
+        255,
+        0.46
+      );
+
+    text-shadow:
+      none;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+
+  body.dna-experience
+  .about::before,
+
+  body.dna-experience
+  .about::after,
+
+  body.dna-experience
+  .about-heading h2 span,
+
+  body.dna-experience
+  .about-copy {
+    transition:
+      none !important;
+  }
+
+}
