@@ -1233,3 +1233,525 @@ and (max-width: 700px) {
   }
 
 }
+
+/* =========================================================
+   DNA8 — CONTACT FINAL CINEMATIC SCENE
+   ========================================================= */
+
+
+/* =========================================================
+   CONTACT BASE
+   ========================================================= */
+
+body.dna-experience
+.contact {
+  transition:
+    background
+    0.9s
+    ease;
+}
+
+
+/* =========================================================
+   CONTACT ENTRY
+   ========================================================= */
+
+body[data-dna-scene="contact-entry"]
+.contact {
+  background:
+
+    radial-gradient(
+      circle at 76% 38%,
+      rgba(
+        82,
+        165,
+        199,
+        0.055
+      ),
+      transparent 31%
+    ),
+
+    radial-gradient(
+      circle at 28% 76%,
+      rgba(
+        255,
+        255,
+        255,
+        0.018
+      ),
+      transparent 34%
+    ),
+
+    #040405;
+}
+
+
+/* =========================================================
+   CONTACT FOCUS
+   ========================================================= */
+
+body[data-dna-scene="contact-focus"]
+.contact {
+  background:
+
+    radial-gradient(
+      circle at 79% 46%,
+      rgba(
+        112,
+        207,
+        242,
+        0.09
+      ),
+      transparent 31%
+    ),
+
+    radial-gradient(
+      circle at 56% 58%,
+      rgba(
+        59,
+        119,
+        145,
+        0.04
+      ),
+      transparent 37%
+    ),
+
+    #040405;
+}
+
+
+/* =========================================================
+   CONTACT FINAL
+
+   Final scene sengaja lebih cinematic.
+   ========================================================= */
+
+body[data-dna-scene="contact-final"]
+.contact {
+  background:
+
+    radial-gradient(
+      circle at 60% 48%,
+      rgba(
+        128,
+        215,
+        248,
+        0.105
+      ),
+      transparent 29%
+    ),
+
+    radial-gradient(
+      circle at 79% 64%,
+      rgba(
+        57,
+        119,
+        145,
+        0.05
+      ),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 22% 84%,
+      rgba(
+        255,
+        255,
+        255,
+        0.02
+      ),
+      transparent 35%
+    ),
+
+    #040405;
+}
+
+
+/* =========================================================
+   LET'S TALK WATERMARK
+   ========================================================= */
+
+body.dna-experience
+.contact::before {
+  transition:
+    opacity
+    0.8s
+    ease;
+}
+
+
+body[data-dna-scene="contact-entry"]
+.contact::before {
+  opacity:
+    0.72;
+}
+
+
+body[data-dna-scene="contact-focus"]
+.contact::before {
+  opacity:
+    0.9;
+}
+
+
+body[data-dna-scene="contact-final"]
+.contact::before {
+  opacity:
+    1;
+}
+
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+/*
+|--------------------------------------------------------------------------
+| Tidak ada transform di sini.
+|
+| Contact heading animation tetap milik GSAP.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience
+.contact-heading {
+  transition:
+    color
+    0.75s
+    ease,
+
+    text-shadow
+    0.75s
+    ease;
+}
+
+
+body[data-dna-scene="contact-focus"]
+.contact-heading {
+  text-shadow:
+
+    0
+    0
+    60px
+    rgba(
+      168,
+      221,
+      245,
+      0.045
+    );
+}
+
+
+body[data-dna-scene="contact-final"]
+.contact-heading {
+  color:
+    var(--text);
+
+  text-shadow:
+
+    0
+    0
+    75px
+    rgba(
+      168,
+      221,
+      245,
+      0.065
+    );
+}
+
+
+/* =========================================================
+   TOPLINE
+   ========================================================= */
+
+body.dna-experience
+.contact-topline {
+  transition:
+    color
+    0.65s
+    ease;
+}
+
+
+body[data-dna-scene="contact-focus"]
+.contact-topline,
+
+body[data-dna-scene="contact-final"]
+.contact-topline {
+  color:
+    rgba(
+      168,
+      221,
+      245,
+      0.72
+    );
+}
+
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+/*
+|--------------------------------------------------------------------------
+| Hanya visual properties.
+|
+| JANGAN beri transform pada .contact-cta karena
+| elemen tersebut menggunakan magnetic interaction.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience
+.contact-cta {
+  transition:
+
+    border-color
+    0.65s
+    ease,
+
+    background-color
+    0.65s
+    ease,
+
+    color
+    0.65s
+    ease,
+
+    box-shadow
+    0.65s
+    ease;
+}
+
+
+body[data-dna-scene="contact-focus"]
+.contact-cta {
+  border-color:
+    rgba(
+      168,
+      221,
+      245,
+      0.22
+    );
+}
+
+
+body[data-dna-scene="contact-final"]
+.contact-cta {
+  color:
+    var(--accent-soft);
+
+  border-color:
+    rgba(
+      168,
+      221,
+      245,
+      0.3
+    );
+
+  background:
+    rgba(
+      168,
+      221,
+      245,
+      0.025
+    );
+
+  box-shadow:
+
+    0
+    0
+    50px
+    rgba(
+      99,
+      191,
+      226,
+      0.045
+    );
+}
+
+
+/* =========================================================
+   FOOTER CONTENT
+   ========================================================= */
+
+body.dna-experience
+.contact-links a,
+
+body.dna-experience
+.contact-note {
+  transition:
+    color
+    0.65s
+    ease;
+}
+
+
+body[data-dna-scene="contact-final"]
+.contact-links a {
+  color:
+    var(--text-soft);
+}
+
+
+body[data-dna-scene="contact-final"]
+.contact-note {
+  color:
+    var(--muted);
+}
+
+
+/* =========================================================
+   DNA FINAL PRESENCE
+   ========================================================= */
+
+/*
+|--------------------------------------------------------------------------
+| Tidak mengubah transform DNA.
+| Transform tetap sepenuhnya dimiliki Three.js controller.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience
+.dna-stage {
+  transition:
+    filter
+    0.8s
+    ease;
+}
+
+
+body[data-dna-scene="contact-focus"]
+.dna-stage {
+  filter:
+
+    drop-shadow(
+      0
+      0
+      28px
+      rgba(
+        116,
+        208,
+        243,
+        0.055
+      )
+    );
+}
+
+
+body[data-dna-scene="contact-final"]
+.dna-stage {
+  filter:
+
+    drop-shadow(
+      0
+      0
+      42px
+      rgba(
+        122,
+        215,
+        249,
+        0.075
+      )
+    );
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  body[data-dna-scene="contact-focus"]
+  .contact {
+    background:
+
+      radial-gradient(
+        circle at 72% 42%,
+        rgba(
+          106,
+          199,
+          234,
+          0.06
+        ),
+        transparent 38%
+      ),
+
+      #040405;
+  }
+
+
+  body[data-dna-scene="contact-final"]
+  .contact {
+    background:
+
+      radial-gradient(
+        circle at 65% 45%,
+        rgba(
+          119,
+          207,
+          240,
+          0.07
+        ),
+        transparent 41%
+      ),
+
+      #040405;
+  }
+
+
+  body[data-dna-scene="contact-final"]
+  .contact-heading {
+    text-shadow:
+      none;
+  }
+
+
+  body[data-dna-scene="contact-focus"]
+  .dna-stage,
+
+  body[data-dna-scene="contact-final"]
+  .dna-stage {
+    filter:
+      none;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+
+  body.dna-experience
+  .contact,
+
+  body.dna-experience
+  .contact::before,
+
+  body.dna-experience
+  .contact-heading,
+
+  body.dna-experience
+  .contact-topline,
+
+  body.dna-experience
+  .contact-cta,
+
+  body.dna-experience
+  .contact-links a,
+
+  body.dna-experience
+  .contact-note,
+
+  body.dna-experience
+  .dna-stage {
+    transition:
+      none !important;
+  }
+
+}

@@ -1172,3 +1172,240 @@ and (max-width: 700px) {
   }
 
 }
+
+/* =========================================================
+   DNA7 — SKILLS CINEMATIC INTEGRATION
+   ========================================================= */
+
+
+/* =========================================================
+   SKILLS AMBIENCE
+   ========================================================= */
+
+body.dna-experience
+.skills {
+  transition:
+    background
+    0.9s
+    ease;
+}
+
+
+/* =========================================================
+   ENTRY
+   ========================================================= */
+
+body[data-dna-scene="skills-entry"]
+.skills {
+  background:
+    radial-gradient(
+      circle at 35% 45%,
+      rgba(
+        88,
+        176,
+        211,
+        0.045
+      ),
+      transparent 34%
+    ),
+
+    var(--bg);
+}
+
+
+/* =========================================================
+   FOCUS
+
+   DNA besar berada di belakang capabilities.
+   ========================================================= */
+
+body[data-dna-scene="skills-focus"]
+.skills {
+  background:
+    radial-gradient(
+      circle at 50% 48%,
+      rgba(
+        105,
+        201,
+        236,
+        0.075
+      ),
+      transparent 38%
+    ),
+
+    radial-gradient(
+      circle at 75% 62%,
+      rgba(
+        67,
+        129,
+        153,
+        0.035
+      ),
+      transparent 31%
+    ),
+
+    var(--bg);
+}
+
+
+/* =========================================================
+   STACK WATERMARK
+   ========================================================= */
+
+body.dna-experience
+.skills::before {
+  transition:
+    opacity
+    0.75s
+    ease;
+}
+
+
+body[data-dna-scene="skills-focus"]
+.skills::before {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+body.dna-experience
+.skills-header h2 {
+  transition:
+    text-shadow
+    0.75s
+    ease;
+}
+
+
+body[data-dna-scene="skills-focus"]
+.skills-header h2 {
+  text-shadow:
+    0
+    0
+    55px
+    rgba(
+      168,
+      221,
+      245,
+      0.035
+    );
+}
+
+
+/* =========================================================
+   CAPABILITY ROWS
+   ========================================================= */
+
+body.dna-experience
+.capability {
+  transition:
+    border-color
+    0.65s
+    ease,
+
+    background-color
+    0.65s
+    ease;
+}
+
+
+body[data-dna-scene="skills-focus"]
+.capability {
+  border-color:
+    rgba(
+      168,
+      221,
+      245,
+      0.115
+    );
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Kita sengaja tidak memberi transform.
+| GSAP tetap punya ownership movement.
+|--------------------------------------------------------------------------
+*/
+
+
+/* =========================================================
+   EXIT
+   ========================================================= */
+
+body[data-dna-scene="skills-exit"]
+.skills {
+  background:
+    radial-gradient(
+      circle at 67% 54%,
+      rgba(
+        83,
+        163,
+        194,
+        0.045
+      ),
+      transparent 32%
+    ),
+
+    var(--bg);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  body[data-dna-scene="skills-focus"]
+  .skills {
+    background:
+      radial-gradient(
+        circle at 58% 46%,
+        rgba(
+          105,
+          201,
+          236,
+          0.045
+        ),
+        transparent 42%
+      ),
+
+      var(--bg);
+  }
+
+
+  body[data-dna-scene="skills-focus"]
+  .skills-header h2 {
+    text-shadow: none;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+
+  body.dna-experience
+  .skills,
+
+  body.dna-experience
+  .skills::before,
+
+  body.dna-experience
+  .skills-header h2,
+
+  body.dna-experience
+  .capability {
+    transition:
+      none !important;
+  }
+
+}
