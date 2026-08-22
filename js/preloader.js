@@ -27,7 +27,9 @@
 
   const minimumVisibleDuration = reducedMotion ? 250 : 650;
 
-  const maximumWaitDuration = 4200;
+  const completionHoldDuration = reducedMotion ? 0 : 180;
+
+  const exitAnimationDuration = reducedMotion ? 0 : 720;
 
   const startedAt = performance.now();
 
@@ -56,6 +58,12 @@
   let dnaFallbackTimer = null;
 
   let maximumWaitTimer = null;
+
+  let completionHoldTimer = null;
+
+  let exitTimer = null;
+
+  let exitStarted = false;
 
   /*
    * PRE3 mulai menampilkan loader.
@@ -164,33 +172,27 @@
      FINISH
      ========================================================= */
 
-  const finishPreloader = () => {
-    if (finished) {
-      return;
-    }
+  /* =========================================================
+   PRE6 — EXIT CONTROLLER
+   ========================================================= */
 
-    finished = true;
-
-    currentProgress = 100;
-
-    renderProgress();
-
+  const clearLoadingController = () => {
     if (animationFrame !== null) {
       cancelAnimationFrame(animationFrame);
+
+      animationFrame = null;
     }
 
     if (dnaFallbackTimer !== null) {
       clearTimeout(dnaFallbackTimer);
+
+      dnaFallbackTimer = null;
     }
 
     if (maximumWaitTimer !== null) {
       clearTimeout(maximumWaitTimer);
-    }
 
-    if (window.__rfmPreloaderSafety) {
-      clearTimeout(window.__rfmPreloaderSafety);
-
-      window.__rfmPreloaderSafety = null;
+      maximumWaitTimer = null;
     }
 
     document.removeEventListener("DOMContentLoaded", markDomReady);
@@ -200,6 +202,36 @@
     window.removeEventListener("rfm:dna-ready", markDnaReady);
 
     window.removeEventListener("rfm:dna-fallback", markDnaReady);
+
+    if (window.__rfmPreloaderSafety) {
+      clearTimeout(window.__rfmPreloaderSafety);
+
+      window.__rfmPreloaderSafety = null;
+    }
+  };
+
+  const finalizePreloader = () => {
+    if (finished) {
+      return;
+    }
+
+    finished = true;
+
+    clearLoadingController();
+
+    if (completionHoldTimer !== null) {
+      clearTimeout(completionHoldTimer);
+
+      completionHoldTimer = null;
+    }
+
+    if (exitTimer !== null) {
+      clearTimeout(exitTimer);
+
+      exitTimer = null;
+    }
+
+    preloader.removeEventListener("transitionend", handleExitTransitionEnd);
 
     preloader.hidden = true;
 
@@ -216,12 +248,59 @@
     );
   };
 
+  const handleExitTransitionEnd = (event) => {
+    if (event.target !== preloader || event.propertyName !== "opacity") {
+      return;
+    }
+
+    finalizePreloader();
+  };
+
+  const startPreloaderExit = () => {
+    if (exitStarted || finished) {
+      return;
+    }
+
+    exitStarted = true;
+
+    currentProgress = 100;
+
+    renderProgress();
+
+    clearLoadingController();
+
+    preloader.classList.add("is-complete");
+
+    completionHoldTimer = window.setTimeout(() => {
+      if (reducedMotion) {
+        preloader.classList.add("is-leaving");
+
+        finalizePreloader();
+
+        return;
+      }
+
+      preloader.addEventListener("transitionend", handleExitTransitionEnd);
+
+      preloader.classList.add("is-leaving");
+
+      /*
+       * Safety apabila transitionend
+       * tidak dikirim browser.
+       */
+      exitTimer = window.setTimeout(
+        finalizePreloader,
+        exitAnimationDuration + 160,
+      );
+    }, completionHoldDuration);
+  };
+
   /* =========================================================
      ANIMATION LOOP
      ========================================================= */
 
   const updateProgress = () => {
-    if (finished) {
+    if (finished || exitStarted) {
       return;
     }
 
@@ -244,8 +323,7 @@
       currentProgress >= 99.7 &&
       elapsed >= minimumVisibleDuration
     ) {
-      finishPreloader();
-
+      startPreloaderExit();
       return;
     }
 
@@ -312,6 +390,12 @@
     state.dna = true;
 
     completionRequested = true;
+
+    /*
+     * Kondisi darurat tidak perlu
+     * menunggu progress terlalu lama.
+     */
+    currentProgress = Math.max(currentProgress, 99.8);
 
     setTarget(100);
   }, maximumWaitDuration);

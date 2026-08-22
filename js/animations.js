@@ -352,7 +352,7 @@
        * Safety agar Hero tidak pernah
        * tertahan permanen.
        */
-      heroStartSafetyTimer = window.setTimeout(startHeroTimeline, 5200);
+      heroStartSafetyTimer = window.setTimeout(startHeroTimeline, 6200);
     }
   }
 

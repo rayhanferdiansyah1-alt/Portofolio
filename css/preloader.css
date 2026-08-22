@@ -351,3 +351,147 @@ html.is-preloading
 
   user-select: none;
 }
+
+/* =========================================================
+   PRE6 — PRELOADER EXIT ANIMATION
+   ========================================================= */
+
+.site-preloader {
+  opacity: 1;
+
+  transition:
+    opacity
+    0.72s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-preloader::before,
+.site-preloader::after {
+  transition:
+    opacity
+    0.45s
+    ease;
+}
+
+.site-preloader__inner {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+  transition:
+    opacity
+    0.5s
+    ease,
+
+    transform
+    0.65s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-preloader__meter {
+  transform:
+    scale(1);
+
+  transition:
+    transform
+    0.62s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-preloader__copy {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+
+  transition:
+    opacity
+    0.38s
+    ease,
+
+    transform
+    0.5s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-preloader__indicator {
+  transition:
+    stroke-dashoffset
+    0.18s
+    linear,
+
+    stroke-width
+    0.3s
+    ease;
+}
+
+/* PROGRESS SUDAH 100% */
+.site-preloader.is-complete
+.site-preloader__meter {
+  transform:
+    scale(1.045);
+}
+
+.site-preloader.is-complete
+.site-preloader__indicator {
+  stroke-width: 2;
+}
+
+.site-preloader.is-complete
+.site-preloader__monogram {
+  opacity: 1;
+
+  animation: none;
+}
+
+/* MULAI MENINGGALKAN LAYAR */
+.site-preloader.is-leaving {
+  opacity: 0;
+
+  pointer-events: none;
+
+  will-change: opacity;
+}
+
+.site-preloader.is-leaving::before,
+.site-preloader.is-leaving::after {
+  opacity: 0;
+}
+
+.site-preloader.is-leaving
+.site-preloader__inner {
+  opacity: 0;
+
+  transform:
+    translateY(-10px)
+    scale(0.97);
+}
+
+.site-preloader.is-leaving
+.site-preloader__meter {
+  transform:
+    scale(0.82);
+}
+
+.site-preloader.is-leaving
+.site-preloader__copy {
+  opacity: 0;
+
+  transform:
+    translateY(8px);
+}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  .site-preloader,
+  .site-preloader::before,
+  .site-preloader::after,
+  .site-preloader__inner,
+  .site-preloader__meter,
+  .site-preloader__copy,
+  .site-preloader__indicator {
+    transition: none !important;
+  }
+}
