@@ -1,8 +1,8 @@
 /* =========================================================
    RFM PORTFOLIO
-   HERO — A3 COMPOSITION
+   DNA3 — HERO DNA COMPOSITION
+   FINAL
    ========================================================= */
-
 
 /* =========================================================
    HERO
@@ -12,58 +12,47 @@
   --hero-pad-top: 112px;
   --hero-pad-bottom: 40px;
 
-  --hero-title-size:
-    clamp(
-      5.25rem,
-      9.15vw,
-      9.75rem
-    );
-
-  --hero-copy-width: 62%;
-
-  --hero-orbit-size:
-    min(
-      39vw,
-      600px
-    );
-
-  --hero-orbit-right: -4vw;
-  --hero-orbit-top: 50%;
-
+  --hero-title-size: clamp(5.8rem, 10.1vw, 10.9rem);
 
   position: relative;
 
   min-height: 100svh;
 
-  padding:
-    var(--hero-pad-top)
-    0
-    var(--hero-pad-bottom);
+  padding: var(--hero-pad-top) 0 var(--hero-pad-bottom);
 
   overflow: hidden;
 
+  isolation: isolate;
+
   background:
-
     radial-gradient(
-      circle at 76% 38%,
-      rgba(92, 183, 219, 0.075),
-      transparent 27%
+      circle at 62% 43%,
+      rgba(93, 188, 225, 0.095),
+      transparent 25%
     ),
-
     radial-gradient(
-      circle at 24% 82%,
-      rgba(255, 255, 255, 0.03),
+      circle at 78% 58%,
+      rgba(52, 105, 130, 0.06),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 19% 84%,
+      rgba(255, 255, 255, 0.025),
       transparent 34%
     ),
-
     var(--bg);
 }
 
+/* =========================================================
+   BOTTOM SEAM
+   ========================================================= */
 
 .hero::after {
   content: "";
 
   position: absolute;
+
+  z-index: 10;
 
   left: 0;
   right: 0;
@@ -71,15 +60,16 @@
 
   height: 1px;
 
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      var(--line-strong),
-      transparent
-    );
-}
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 221, 245, 0.16),
+    var(--line-strong),
+    transparent
+  );
 
+  pointer-events: none;
+}
 
 /* =========================================================
    HERO SHELL
@@ -88,29 +78,23 @@
 .hero-shell {
   position: relative;
 
-  z-index: 3;
+  z-index: 5;
 
-  min-height:
-    calc(
-      100svh -
-      var(--hero-pad-top) -
-      var(--hero-pad-bottom)
-    );
+  min-height: calc(100svh - var(--hero-pad-top) - var(--hero-pad-bottom));
 
   display: flex;
 
   flex-direction: column;
 }
 
-
 /* =========================================================
-   TOP LINE
+   TOPLINE
    ========================================================= */
 
 .hero-topline {
   position: relative;
 
-  z-index: 6;
+  z-index: 10;
 
   flex: 0 0 auto;
 
@@ -118,31 +102,23 @@
 
   align-items: center;
 
-  justify-content:
-    space-between;
+  justify-content: space-between;
 
   gap: 24px;
 
-  margin: 0;
+  color: var(--dim);
 
-  color:
-    var(--dim);
-
-  font-family:
-    var(--font-mono);
+  font-family: var(--font-mono);
 
   font-size: 0.6rem;
 
   letter-spacing: 0.12em;
 
-  text-transform:
-    uppercase;
+  text-transform: uppercase;
 }
-
 
 /* =========================================================
    HERO STAGE
-   Main vertical centering area
    ========================================================= */
 
 .hero-stage {
@@ -158,26 +134,8 @@
 
   align-items: center;
 
-  /*
-  | Sedikit naik dari center matematis
-  | supaya secara visual lebih balance.
-  */
-
-  padding:
-    clamp(
-      34px,
-      4.5vh,
-      64px
-    )
-    0
-
-    clamp(
-      52px,
-      6vh,
-      86px
-    );
+  padding: clamp(28px, 3.8vh, 54px) 0 clamp(52px, 6vh, 82px);
 }
-
 
 /* =========================================================
    HERO COPY
@@ -186,13 +144,12 @@
 .hero-copy {
   position: relative;
 
-  z-index: 5;
+  z-index: 7;
 
-  width: var(--hero-copy-width);
+  width: 100%;
 
-  max-width: 980px;
+  max-width: none;
 }
-
 
 /* =========================================================
    TITLE
@@ -201,49 +158,100 @@
 .hero-title {
   position: relative;
 
-  z-index: 5;
+  z-index: 8;
 
-  width: fit-content;
+  width: 100%;
 
-  max-width: 100%;
+  max-width: none;
 
   margin: 0;
 
-  color:
-    var(--text);
+  color: var(--text);
 
-  font-family:
-    var(--font-display);
+  font-family: var(--font-display);
 
-  font-size:
-    var(--hero-title-size);
+  font-size: var(--hero-title-size);
 
   font-weight: 600;
 
-  line-height: 0.86;
+  line-height: 0.81;
 
-  letter-spacing: -0.08em;
+  letter-spacing: -0.085em;
+
+  pointer-events: none;
 }
 
+/* =========================================================
+   TITLE LINES
+   ========================================================= */
 
 .hero-line {
+  position: relative;
+
   display: block;
+
+  width: max-content;
+
+  max-width: 100%;
 }
 
+/*
+|--------------------------------------------------------------------------
+| RAYHAN
+|--------------------------------------------------------------------------
+*/
+
+.hero-line:nth-child(1) {
+  z-index: 8;
+
+  margin-left: 0;
+
+  color: var(--text);
+
+  text-shadow: 0 20px 55px rgba(0, 0, 0, 0.42);
+}
+
+/*
+|--------------------------------------------------------------------------
+| FERDISNYAH
+|
+| Ini titik utama interaction antara DNA dan typography.
+|--------------------------------------------------------------------------
+*/
+
+.hero-line:nth-child(2) {
+  z-index: 9;
+
+  margin-left: clamp(28px, 6vw, 110px);
+}
+
+/*
+|--------------------------------------------------------------------------
+| MARDANI
+|--------------------------------------------------------------------------
+*/
+
+.hero-line:nth-child(3) {
+  z-index: 8;
+
+  margin-left: clamp(120px, 22vw, 350px);
+
+  color: var(--text);
+
+  text-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================================================
+   OUTLINE WORD
+   ========================================================= */
 
 .hero-line-outline {
   color: transparent;
 
-  -webkit-text-stroke:
-    1px
-    rgba(
-      245,
-      245,
-      247,
-      0.48
-    );
-}
+  -webkit-text-stroke: 1px rgba(245, 245, 247, 0.62);
 
+  text-shadow: 0 0 30px rgba(217, 242, 255, 0.035);
+}
 
 /* =========================================================
    HERO INTRO
@@ -252,83 +260,71 @@
 .hero-intro {
   position: relative;
 
-  z-index: 6;
+  z-index: 11;
 
-  max-width: 520px;
+  max-width: 490px;
 
-  /*
-  | Ruang nyata dari visual MARDANI.
-  | Tidak lagi memakai hero-bottom.
-  */
-
-  margin-top:
-    clamp(
-      48px,
-      5.5vh,
-      70px
-    );
+  margin-top: clamp(34px, 4.3vh, 58px);
 }
 
+.hero-intro::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  top: -18px;
+
+  width: 42px;
+
+  height: 1px;
+
+  background: linear-gradient(90deg, var(--accent), transparent);
+
+  opacity: 0.6;
+}
 
 .hero-intro p {
-  max-width: 520px;
+  max-width: 490px;
 
-  margin: 0;
+  color: var(--muted);
 
-  color:
-    var(--muted);
+  font-size: clamp(0.9rem, 1vw, 1.02rem);
 
-  font-size:
-    clamp(
-      0.94rem,
-      1.05vw,
-      1.05rem
-    );
-
-  line-height: 1.75;
+  line-height: 1.74;
 }
 
-
 .hero-intro strong {
-  color:
-    var(--text-soft);
+  color: var(--text-soft);
 
   font-weight: 500;
 }
 
-
 /* =========================================================
-   EXPLORE LINK
+   EXPLORE
    ========================================================= */
 
 .hero-intro .text-link {
-  margin-top: 26px;
+  margin-top: 25px;
 
-  color:
-    var(--text);
+  color: var(--text);
 }
 
-
 /* =========================================================
-   HERO STATUS
-   Independent from hero-copy
+   STATUS
    ========================================================= */
 
 .hero-status {
   position: absolute;
 
-  z-index: 6;
+  z-index: 12;
 
-  right:
-    clamp(
-      54px,
-      6vw,
-      100px
-    );
+  right: 0;
 
   bottom: 0;
 
-  min-width: 260px;
+  min-width: 250px;
 
   display: flex;
 
@@ -336,11 +332,6 @@
 
   gap: 14px;
 }
-
-
-/* =========================================================
-   STATUS DOT
-   ========================================================= */
 
 .status-dot {
   width: 8px;
@@ -350,28 +341,12 @@
 
   border-radius: 50%;
 
-  background:
-    var(--accent);
+  background: var(--accent);
 
   box-shadow:
-
-    0 0 0 5px
-    rgba(
-      168,
-      221,
-      245,
-      0.05
-    ),
-
-    0 0 24px
-    rgba(
-      168,
-      221,
-      245,
-      0.45
-    );
+    0 0 0 5px rgba(168, 221, 245, 0.05),
+    0 0 24px rgba(168, 221, 245, 0.45);
 }
-
 
 .hero-status > div {
   display: grid;
@@ -379,42 +354,36 @@
   gap: 4px;
 }
 
-
 .status-label {
-  color:
-    var(--accent);
+  color: var(--accent);
 
-  font-family:
-    var(--font-mono);
+  font-family: var(--font-mono);
 
   font-size: 0.54rem;
 
   letter-spacing: 0.08em;
 }
 
-
 .hero-status strong {
-  color:
-    var(--muted);
+  color: var(--muted);
 
   font-size: 0.72rem;
 
   font-weight: 500;
 }
 
-
 /* =========================================================
-   SCROLL INDICATOR
+   SCROLL
    ========================================================= */
 
 .hero-scroll {
   position: absolute;
 
+  z-index: 12;
+
   right: 28px;
 
   bottom: 48px;
-
-  z-index: 6;
 
   display: grid;
 
@@ -422,119 +391,90 @@
 
   gap: 14px;
 
-  color:
-    var(--dim);
+  color: var(--dim);
 
-  font-family:
-    var(--font-mono);
+  font-family: var(--font-mono);
 
   font-size: 0.52rem;
 
   letter-spacing: 0.12em;
 
-  writing-mode:
-    vertical-rl;
+  writing-mode: vertical-rl;
 }
-
 
 .hero-scroll i {
   width: 1px;
 
   height: 70px;
 
-  background:
-    linear-gradient(
-      to bottom,
-      var(--line-strong),
-      transparent
-    );
-}
-
-
-/* =========================================================
-   THREE.JS HOST
-   ========================================================= */
-
-.hero-orbit {
-  position: absolute;
-
-  z-index: 2;
-
-  width:
-    var(--hero-orbit-size);
-
-  aspect-ratio: 1;
-
-  right:
-    var(--hero-orbit-right);
-
-  top:
-    var(--hero-orbit-top);
-
-  transform:
-    translateY(-50%);
-
-  opacity: 0.92;
-
-  filter:
-    drop-shadow(
-      0
-      40px
-      100px
-      rgba(
-        0,
-        0,
-        0,
-        0.4
-      )
-    );
+  background: linear-gradient(to bottom, var(--line-strong), transparent);
 }
 
 /* =========================================================
-   A4 — SCULPTURE × TYPOGRAPHY INTEGRATION
+   DNA / THREE.JS HOST
    ========================================================= */
 
+.hero-orbit,
 .hero .hero-sculpture {
   position: absolute;
 
-  z-index: 2;
+  z-index: 6;
 
-  width: min(46vw, 720px);
+  /*
+  |--------------------------------------------------------------------------
+  | DNA sekarang duduk di DALAM typography,
+  | bukan di luar composition.
+  |--------------------------------------------------------------------------
+  */
+
+  width: min(56vw, 860px);
 
   aspect-ratio: 1;
 
-  /*
-  | Sculpture digeser jauh lebih ke kiri
-  | agar masuk ke komposisi typography.
-  */
+  left: 59%;
 
-  right: clamp(
-    120px,
-    13vw,
-    245px
-  );
+  right: auto;
 
-  top: 50%;
+  top: 48%;
 
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
 
-  opacity: 0.97;
+  opacity: 1;
 
   isolation: isolate;
 
-  filter:
-    drop-shadow(
-      0 0 48px
-      rgba(107, 201, 238, 0.10)
-    )
-    drop-shadow(
-      0 45px 110px
-      rgba(0, 0, 0, 0.48)
-    );
+  /*
+  |--------------------------------------------------------------------------
+  | Fade ujung canvas supaya DNA menyatu
+  | dengan background.
+  |--------------------------------------------------------------------------
+  */
+
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    #000 0%,
+    #000 55%,
+    rgba(0, 0, 0, 0.92) 68%,
+    rgba(0, 0, 0, 0.45) 82%,
+    transparent 96%
+  );
+
+  mask-image: radial-gradient(
+    circle at center,
+    #000 0%,
+    #000 55%,
+    rgba(0, 0, 0, 0.92) 68%,
+    rgba(0, 0, 0, 0.45) 82%,
+    transparent 96%
+  );
+
+  filter: drop-shadow(0 0 38px rgba(119, 211, 246, 0.08))
+    drop-shadow(0 55px 120px rgba(0, 0, 0, 0.55));
 }
 
-
-/* Ambient glow behind sculpture */
+/* =========================================================
+   DNA AMBIENT GLOW
+   ========================================================= */
 
 .hero .hero-sculpture::before {
   content: "";
@@ -543,35 +483,33 @@
 
   z-index: 0;
 
-  width: 80%;
-  height: 80%;
-
   left: 50%;
   top: 50%;
 
-  transform:
-    translate(
-      -50%,
-      -50%
-    );
+  width: 72%;
+  height: 86%;
+
+  transform: translate(-50%, -50%);
 
   border-radius: 50%;
 
-  background:
-    radial-gradient(
-      circle,
-      rgba(111, 203, 239, 0.09) 0%,
-      rgba(79, 157, 190, 0.045) 35%,
-      transparent 70%
-    );
+  background: radial-gradient(
+    ellipse,
+    rgba(116, 210, 246, 0.085) 0%,
 
-  filter: blur(24px);
+    rgba(63, 130, 157, 0.032) 40%,
+
+    transparent 72%
+  );
+
+  filter: blur(25px);
 
   pointer-events: none;
 }
 
-
-/* Three.js canvas above ambient glow */
+/* =========================================================
+   THREE CANVAS
+   ========================================================= */
 
 .hero .hero-sculpture canvas {
   position: absolute;
@@ -579,234 +517,659 @@
   z-index: 2;
 
   inset: 0;
+
+  width: 100%;
+  height: 100%;
 }
-
-
-/* CSS fallback also stays above glow */
-
-.hero .hero-sculpture
-.hero-orbit-core,
-
-.hero .hero-sculpture
-.hero-orbit-ring {
-  z-index: 1;
-}
-
 
 /* =========================================================
    TYPOGRAPHY DEPTH
+
+   DNA z-index 6
+   Copy / text z-index 7+
+   DNA terlihat lewat FERDISNYAH karena fill transparan.
    ========================================================= */
 
-.hero .hero-copy {
+.hero-title,
+.hero-line,
+.hero-intro {
   position: relative;
-
-  z-index: 5;
-
-  width: 60%;
 }
-
-
-.hero .hero-title {
-  position: relative;
-
-  z-index: 6;
-}
-
-
-/*
-| FERDISNYAH transparan.
-| Sculpture yang berada di belakang bisa terlihat
-| melalui bagian dalam huruf.
-*/
-
-.hero .hero-line-outline {
-  position: relative;
-
-  color: transparent;
-
-  -webkit-text-stroke:
-    1px
-    rgba(
-      245,
-      245,
-      247,
-      0.56
-    );
-
-  text-shadow:
-    0 0 28px
-    rgba(
-      255,
-      255,
-      255,
-      0.018
-    );
-}
-
-
-/* Solid lines remain visually dominant */
-
-.hero .hero-line:not(
-  .hero-line-outline
-) {
-  position: relative;
-
-  z-index: 7;
-}
-
-
-/* Intro always in front */
-
-.hero .hero-intro {
-  position: relative;
-
-  z-index: 7;
-
-  max-width: 520px;
-}
-
 
 /* =========================================================
-   CSS FALLBACK ORB
-   Only visible if Three.js fails
+   CSS FALLBACK
+   DNA-INSPIRED
    ========================================================= */
 
 .hero-orbit-core {
   position: absolute;
 
-  inset: 26%;
-
-  border-radius: 50%;
-
-  background:
-
-    radial-gradient(
-      circle at 35% 25%,
-      rgba(255,255,255,.28),
-      transparent 18%
-    ),
-
-    radial-gradient(
-      circle at 45% 42%,
-      rgba(168,221,245,.18),
-      transparent 28%
-    ),
-
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.05),
-      rgba(43,111,140,.03)
-    );
-
-  border:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.12
-    );
-
-  box-shadow:
-
-    inset
-    0
-    0
-    90px
-    rgba(
-      168,
-      221,
-      245,
-      0.05
-    ),
-
-    0
-    0
-    100px
-    rgba(
-      99,
-      184,
-      220,
-      0.05
-    );
-
-  backdrop-filter:
-    blur(16px);
-}
-
-
-.hero-orbit-core::after {
-  content: "";
-
-  position: absolute;
-
-  inset: 12%;
-
-  border-radius: 50%;
-
-  border:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.06
-    );
-}
-
-
-/* =========================================================
-   FALLBACK RINGS
-   ========================================================= */
-
-.hero-orbit-ring {
-  position: absolute;
+  z-index: 1;
 
   left: 50%;
   top: 50%;
 
+  width: 22%;
+  height: 72%;
+
+  transform: translate(-50%, -50%);
+
+  opacity: 0.72;
+
+  background: repeating-linear-gradient(
+    to bottom,
+
+    transparent 0,
+
+    transparent 7%,
+
+    rgba(168, 221, 245, 0.18) 7.4%,
+
+    rgba(168, 221, 245, 0.18) 8%,
+
+    transparent 8.4%,
+
+    transparent 13%
+  );
+
+  filter: drop-shadow(0 0 25px rgba(168, 221, 245, 0.12));
+}
+
+.hero-orbit-ring {
+  position: absolute;
+
+  z-index: 1;
+
+  left: 50%;
+  top: 50%;
+
+  width: 28%;
+  height: 78%;
+
+  border: 1px solid rgba(200, 236, 248, 0.16);
+
   border-radius: 50%;
 
-  border:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.08
-    );
-
-  transform:
-    translate(
-      -50%,
-      -50%
-    )
-    rotate(-12deg);
+  transform: translate(-50%, -50%) rotate(17deg);
 }
-
 
 .ring-one {
-  width: 92%;
-  height: 42%;
+  margin-left: -9%;
 }
 
-
 .ring-two {
-  width: 68%;
-  height: 106%;
+  margin-left: 9%;
 
-  border-color:
-    rgba(
-      168,
-      221,
-      245,
-      0.08
-    );
+  border-color: rgba(116, 204, 238, 0.14);
 
-  transform:
-    translate(
-      -50%,
-      -50%
-    )
-    rotate(34deg);
+  transform: translate(-50%, -50%) rotate(-17deg);
+}
+
+/* =========================================================
+   SHORT DESKTOP
+   ========================================================= */
+
+@media (min-width: 901px) and (max-height: 820px) {
+  .hero {
+    --hero-pad-top: 88px;
+    --hero-pad-bottom: 28px;
+
+    --hero-title-size: clamp(4.7rem, 8.4vw, 8rem);
+  }
+
+  .hero-stage {
+    padding: 20px 0 35px;
+  }
+
+  .hero-line:nth-child(3) {
+    margin-left: clamp(100px, 20vw, 285px);
+  }
+
+  .hero-intro {
+    max-width: 450px;
+
+    margin-top: 30px;
+  }
+
+  .hero-intro p {
+    font-size: 0.88rem;
+
+    line-height: 1.62;
+  }
+
+  .hero-intro .text-link {
+    margin-top: 18px;
+  }
+
+  .hero .hero-sculpture {
+    width: min(51vw, 700px);
+
+    left: 60%;
+
+    top: 47.5%;
+  }
+
+  .hero-scroll {
+    bottom: 28px;
+  }
+}
+
+/* =========================================================
+   TABLET COMMON
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .hero-scroll {
+    display: none;
+  }
+
+  .hero .hero-sculpture {
+    pointer-events: none;
+  }
+}
+
+/* =========================================================
+   TABLET
+   701px — 900px
+   ========================================================= */
+
+@media (min-width: 701px) and (max-width: 900px) {
+  .hero {
+    --hero-pad-top: 106px;
+    --hero-pad-bottom: 54px;
+
+    --hero-title-size: clamp(4.9rem, 11.8vw, 7rem);
+  }
+
+  .hero-topline {
+    gap: 22px;
+
+    font-size: 0.52rem;
+  }
+
+  .hero-stage {
+    padding: 44px 0 122px;
+  }
+
+  .hero-line:nth-child(2) {
+    margin-left: 4vw;
+  }
+
+  .hero-line:nth-child(3) {
+    margin-left: 14vw;
+  }
+
+  .hero .hero-sculpture {
+    width: min(82vw, 690px);
+
+    left: 63%;
+
+    top: 45.5%;
+
+    opacity: 0.88;
+
+    filter: drop-shadow(0 0 30px rgba(112, 206, 241, 0.07));
+  }
+
+  .hero-intro {
+    max-width: 420px;
+
+    margin-top: 40px;
+  }
+
+  .hero-intro p {
+    max-width: 420px;
+
+    font-size: 0.9rem;
+  }
+
+  .hero-status {
+    right: 0;
+
+    bottom: 0;
+
+    min-width: 230px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   431px — 700px
+   ========================================================= */
+
+@media (min-width: 431px) and (max-width: 700px) {
+  .hero {
+    --hero-pad-top: 94px;
+    --hero-pad-bottom: 46px;
+
+    --hero-title-size: clamp(4rem, 15vw, 5.7rem);
+  }
+
+  .hero-topline {
+    gap: 16px;
+
+    font-size: 0.47rem;
+
+    letter-spacing: 0.09em;
+  }
+
+  .hero-topline span:last-child {
+    text-align: right;
+  }
+
+  .hero-stage {
+    padding: 48px 0 145px;
+  }
+
+  .hero-title {
+    line-height: 0.84;
+
+    letter-spacing: -0.077em;
+  }
+
+  .hero-line:nth-child(2) {
+    margin-left: 2vw;
+  }
+
+  .hero-line:nth-child(3) {
+    margin-left: 9vw;
+  }
+
+  .hero-line-outline {
+    -webkit-text-stroke: 1px rgba(245, 245, 247, 0.52);
+  }
+
+  .hero .hero-sculpture {
+    width: 520px;
+
+    left: 61%;
+
+    top: 43%;
+
+    opacity: 0.66;
+
+    filter: drop-shadow(0 0 24px rgba(112, 206, 241, 0.055));
+  }
+
+  .hero .hero-sculpture::before {
+    opacity: 0.72;
+  }
+
+  .hero-intro {
+    max-width: 370px;
+
+    margin-top: 46px;
+  }
+
+  .hero-intro p {
+    max-width: 370px;
+
+    font-size: 0.86rem;
+
+    line-height: 1.68;
+  }
+
+  .hero-intro .text-link {
+    margin-top: 22px;
+  }
+
+  .hero-status {
+    left: 0;
+
+    right: auto;
+
+    bottom: 0;
+
+    min-width: 0;
+  }
+
+  .status-label {
+    font-size: 0.49rem;
+  }
+
+  .hero-status strong {
+    font-size: 0.68rem;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   <= 430px
+   ========================================================= */
+
+@media (max-width: 430px) {
+  .hero {
+    --hero-pad-top: 88px;
+    --hero-pad-bottom: 42px;
+
+    --hero-title-size: clamp(3.45rem, 16vw, 4.55rem);
+  }
+
+  .hero-topline {
+    gap: 12px;
+
+    font-size: 0.43rem;
+
+    letter-spacing: 0.075em;
+  }
+
+  .hero-topline span:last-child {
+    text-align: right;
+  }
+
+  .hero-stage {
+    padding: 46px 0 145px;
+  }
+
+  .hero-title {
+    line-height: 0.86;
+
+    letter-spacing: -0.073em;
+  }
+
+  .hero-line:nth-child(2) {
+    margin-left: 0;
+  }
+
+  .hero-line:nth-child(3) {
+    margin-left: 6vw;
+  }
+
+  .hero-line-outline {
+    -webkit-text-stroke: 1px rgba(245, 245, 247, 0.46);
+  }
+
+  .hero .hero-sculpture {
+    width: 430px;
+
+    left: 63%;
+
+    top: 42.5%;
+
+    opacity: 0.57;
+
+    filter: none;
+  }
+
+  .hero .hero-sculpture::before {
+    opacity: 0.58;
+  }
+
+  .hero-intro {
+    max-width: 325px;
+
+    margin-top: 42px;
+  }
+
+  .hero-intro p {
+    max-width: 325px;
+
+    font-size: 0.82rem;
+
+    line-height: 1.66;
+  }
+
+  .hero-intro .text-link {
+    margin-top: 21px;
+
+    font-size: 0.64rem;
+  }
+
+  .hero-status {
+    left: 0;
+
+    right: auto;
+
+    bottom: 0;
+
+    min-width: 0;
+
+    gap: 11px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .status-label {
+    font-size: 0.45rem;
+  }
+
+  .hero-status strong {
+    font-size: 0.63rem;
+  }
+}
+
+/* =========================================================
+   MOBILE LANDSCAPE / SHORT HEIGHT
+   ========================================================= */
+
+@media (max-width: 900px) and (max-height: 560px) and (orientation: landscape) {
+  .hero {
+    --hero-pad-top: 74px;
+    --hero-pad-bottom: 26px;
+
+    --hero-title-size: clamp(3rem, 8.8vw, 4.8rem);
+  }
+
+  .hero-stage {
+    padding: 18px 0 28px;
+  }
+
+  .hero-line:nth-child(2) {
+    margin-left: 4vw;
+  }
+
+  .hero-line:nth-child(3) {
+    margin-left: 13vw;
+  }
+
+  .hero-intro {
+    max-width: 390px;
+
+    margin-top: 22px;
+  }
+
+  .hero-intro::before {
+    display: none;
+  }
+
+  .hero-intro p {
+    font-size: 0.74rem;
+
+    line-height: 1.5;
+  }
+
+  .hero-intro .text-link {
+    margin-top: 12px;
+  }
+
+  .hero .hero-sculpture {
+    width: 420px;
+
+    left: 69%;
+
+    top: 49%;
+
+    opacity: 0.72;
+  }
+
+  .hero-status,
+  .hero-scroll {
+    display: none;
+  }
+}
+
+/* =========================================================
+   TOUCH
+   ========================================================= */
+
+@media (hover: none) {
+  .hero .hero-sculpture {
+    pointer-events: none;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-sculpture {
+    filter: none;
+  }
+}
+
+/* =========================================================
+   DNA4 — GLOBAL IMMERSIVE STAGE
+   ========================================================= */
+
+/*
+|--------------------------------------------------------------------------
+| Ketika WebGL berhasil aktif,
+| Three.js memindahkan .hero-orbit ke body
+| dan menambahkan .dna-stage.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience main > section {
+  position: relative;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Content selalu berada di atas DNA.
+|
+| Section background tetap di bawah DNA,
+| sehingga DNA masih terlihat melewati homepage.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience main > section > .shell {
+  position: relative;
+
+  z-index: 3;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Hero sebelumnya memakai isolation:isolate.
+|
+| Saat DNA menjadi global stage, isolation harus
+| dilepas supaya hero typography bisa berada
+| di atas DNA body-level.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience .hero {
+  isolation: auto;
+}
+
+/*
+|--------------------------------------------------------------------------
+| GLOBAL DNA STAGE
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience .dna-stage {
+  position: fixed !important;
+
+  left: 50% !important;
+  top: 50% !important;
+
+  right: auto !important;
+  bottom: auto !important;
+
+  z-index: 2 !important;
+
+  aspect-ratio: 1;
+
+  margin: 0 !important;
+
+  pointer-events: none;
+
+  transform-origin: center center;
+
+  contain: layout style;
+
+  will-change: transform, opacity;
+}
+
+/* =========================================================
+   GLOBAL DNA AMBIENCE
+   ========================================================= */
+
+body.dna-experience .dna-stage::before {
+  content: "";
+
+  position: absolute;
+
+  z-index: 0;
+
+  left: 50%;
+  top: 50%;
+
+  width: 74%;
+  height: 88%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    ellipse,
+    rgba(116, 210, 246, 0.08) 0%,
+
+    rgba(63, 130, 157, 0.028) 42%,
+
+    transparent 72%
+  );
+
+  filter: blur(26px);
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   CANVAS
+   ========================================================= */
+
+body.dna-experience .dna-stage canvas {
+  position: absolute;
+
+  z-index: 2;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  body.dna-experience .dna-stage {
+    filter: drop-shadow(0 0 20px rgba(112, 206, 241, 0.045));
+  }
+
+  body.dna-experience .dna-stage::before {
+    opacity: 0.7;
+
+    filter: blur(20px);
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  body.dna-experience .dna-stage {
+    will-change: auto;
+  }
 }
