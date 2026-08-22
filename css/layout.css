@@ -5,14 +5,14 @@
   border-bottom: 1px solid transparent;
   transition:
     background .35s ease,
-    border-color .35s ease,
-    backdrop-filter .35s ease;
+    border-color .35s ease;
 }
 
 .site-header.is-scrolled {
-  background: rgba(5,5,6,.72);
+  background: rgba(5,5,6,.92);
   border-bottom-color: var(--line);
-  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .nav-shell {
@@ -92,10 +92,11 @@
   z-index: 999;
   display: none;
   padding: 24px 36px 36px;
-  background: rgba(5,5,6,.96);
+  background: rgba(5,5,6,.985);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .mobile-nav.is-open {

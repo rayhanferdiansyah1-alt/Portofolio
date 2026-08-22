@@ -12,6 +12,109 @@
 
 
   /* =========================================================
+     PROJECT IMAGE WARM-UP
+     ========================================================= */
+
+  const projectImages =
+    Array.from(
+      document.querySelectorAll(
+        ".project-shot img"
+      )
+    );
+
+
+  const warmProjectImage =
+    (image) => {
+
+      if (
+        image.dataset.warmed ===
+        "true"
+      ) {
+        return;
+      }
+
+
+      image.dataset.warmed =
+        "true";
+
+      image.loading =
+        "eager";
+
+
+      if (
+        typeof image.decode ===
+        "function"
+      ) {
+
+        image.decode()
+          .catch(() => {});
+
+      }
+
+    };
+
+
+  if (
+    projectImages.length &&
+    "IntersectionObserver" in window
+  ) {
+
+    const projectImageObserver =
+      new IntersectionObserver(
+
+        (entries, observer) => {
+
+          entries.forEach(
+            (entry) => {
+
+              if (
+                !entry.isIntersecting
+              ) {
+                return;
+              }
+
+
+              warmProjectImage(
+                entry.target
+              );
+
+              observer.unobserve(
+                entry.target
+              );
+
+            }
+          );
+
+        },
+
+        {
+          threshold: 0.01,
+
+          rootMargin:
+            "120% 0px",
+        }
+
+      );
+
+
+    projectImages.forEach(
+      (image) => {
+        projectImageObserver.observe(
+          image
+        );
+      }
+    );
+
+  } else {
+
+    projectImages.forEach(
+      warmProjectImage
+    );
+
+  }
+
+
+  /* =========================================================
      REDUCED MOTION
      ========================================================= */
 
@@ -617,9 +720,9 @@
           ".project-visual"
         );
 
-      const image =
+      const media =
         project.querySelector(
-          ".project-shot img"
+          ".project-shot-media"
         );
 
       const overlay =
@@ -832,7 +935,7 @@
 
       if (
         visual ||
-        image ||
+        media ||
         overlay
       ) {
 
@@ -855,6 +958,15 @@
             : null;
 
 
+        const setMediaY =
+          media
+            ? gsap.quickSetter(
+                media,
+                "yPercent"
+              )
+            : null;
+
+
         const visualStart =
           projectMobile
             ? 1.2
@@ -863,6 +975,16 @@
 
         const visualEnd =
           -visualStart;
+
+
+        const mediaStart =
+          projectMobile
+            ? -2.4
+            : -4.2;
+
+
+        const mediaEnd =
+          -mediaStart;
 
 
         const overlayStart =
@@ -919,14 +1041,22 @@
               }
 
 
-              if (image) {
+              if (
+                setMediaY
+              ) {
 
-                image.style.objectPosition =
-                  `50% ${
-                    42 +
-                    16 *
-                    progress
-                  }%`;
+                setMediaY(
+
+                  mediaStart +
+
+                  (
+                    mediaEnd -
+                    mediaStart
+                  ) *
+
+                  progress
+
+                );
 
               }
 

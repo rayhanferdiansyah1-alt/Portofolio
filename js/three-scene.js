@@ -59,25 +59,32 @@
      ========================================================= */
 
   function initScene(THREE) {
-    const reducedQuality =
+    const constrainedQuality =
       reducedMotion ||
-      mobileAtLoad ||
-      coarsePointer ||
       lowPower;
 
-    const quality = reducedQuality
+    const mobileQuality =
+      mobileAtLoad &&
+      !constrainedQuality;
+
+    const reducedQuality =
+      constrainedQuality ||
+      mobileQuality;
+
+    const devicePixelRatio =
+      window.devicePixelRatio || 1;
+
+    const quality = constrainedQuality
       ? {
           tubeSegments: 76,
           radialSegments: 7,
           helixSamples: 64,
           rungCount: 14,
 
-          pixelRatio: 1,
-
-          fps:
-            reducedMotion
-              ? 20
-              : 30,
+          pixelRatio: Math.min(
+            devicePixelRatio,
+            1.25
+          ),
 
           antialias: false,
 
@@ -86,6 +93,25 @@
 
           precision: "mediump",
         }
+      : mobileQuality
+        ? {
+            tubeSegments: 92,
+            radialSegments: 8,
+            helixSamples: 80,
+            rungCount: 16,
+
+            pixelRatio: Math.min(
+              devicePixelRatio,
+              1.5
+            ),
+
+            antialias: false,
+
+            physicalMaterial: false,
+            studioEnvironment: false,
+
+            precision: "highp",
+          }
       : {
           tubeSegments: 132,
           radialSegments: 10,
@@ -100,15 +126,9 @@
            * hampir tidak terlihat bedanya.
            */
           pixelRatio: Math.min(
-            window.devicePixelRatio || 1,
+            devicePixelRatio,
             1.25
           ),
-
-          /*
-           * DNA10:
-           * 50 -> 45 FPS.
-           */
-          fps: 45,
 
           antialias: true,
 
@@ -157,7 +177,7 @@
             quality.precision,
 
           powerPreference:
-            reducedQuality
+            constrainedQuality
               ? "low-power"
               : "high-performance",
 
@@ -180,8 +200,21 @@
       0
     );
 
+    let currentPixelRatio =
+      quality.pixelRatio;
+
+    const minimumPixelRatio =
+      mobileAtLoad
+        ? Math.min(
+            devicePixelRatio,
+            lowPower
+              ? 1.1
+              : 1.25
+          )
+        : currentPixelRatio;
+
     renderer.setPixelRatio(
-      quality.pixelRatio
+      currentPixelRatio
     );
 
     renderer.outputColorSpace =
@@ -3028,6 +3061,45 @@
     let lastHeight =
       0;
 
+    const applyPixelRatio =
+      (nextPixelRatio) => {
+        const normalizedPixelRatio =
+          Math.max(
+            minimumPixelRatio,
+            Math.min(
+              quality.pixelRatio,
+              nextPixelRatio
+            )
+          );
+
+        if (
+          Math.abs(
+            normalizedPixelRatio -
+            currentPixelRatio
+          ) < 0.01
+        ) {
+          return;
+        }
+
+        currentPixelRatio =
+          normalizedPixelRatio;
+
+        renderer.setPixelRatio(
+          currentPixelRatio
+        );
+
+        if (
+          lastWidth > 0 &&
+          lastHeight > 0
+        ) {
+          renderer.setSize(
+            lastWidth,
+            lastHeight,
+            false
+          );
+        }
+      };
+
     let resizeRaf =
       null;
 
@@ -3221,9 +3293,32 @@
     let previousTime =
       performance.now();
 
-    const frameDuration =
-      1000 /
-      quality.fps;
+    let previousRafTime =
+      previousTime;
+
+    let cadenceSampleTotal =
+      0;
+
+    let cadenceSampleCount =
+      0;
+
+    let cadenceCalibrated =
+      false;
+
+    let renderStride =
+      1;
+
+    let renderFrameIndex =
+      0;
+
+    let frameSampleTotal =
+      0;
+
+    let frameSampleCount =
+      0;
+
+    let lastQualityAdjustment =
+      performance.now();
 
     const start =
       () => {
@@ -3238,6 +3333,18 @@
 
         previousTime =
           performance.now();
+
+        previousRafTime =
+          previousTime;
+
+        renderFrameIndex =
+          0;
+
+        frameSampleTotal =
+          0;
+
+        frameSampleCount =
+          0;
 
         raf =
           requestAnimationFrame(
@@ -3581,13 +3688,60 @@
         return;
       }
 
-      const elapsed =
-        timestamp -
-        previousTime;
+      const rafElapsed =
+        Math.min(
+          Math.max(
+            timestamp -
+            previousRafTime,
+            0
+          ),
+          100
+        );
+
+      previousRafTime =
+        timestamp;
 
       if (
-        elapsed <
-        frameDuration
+        !cadenceCalibrated &&
+        rafElapsed > 0 &&
+        rafElapsed < 25
+      ) {
+        cadenceSampleTotal +=
+          rafElapsed;
+
+        cadenceSampleCount +=
+          1;
+
+        if (
+          cadenceSampleCount >= 24
+        ) {
+          const averageRafTime =
+            cadenceSampleTotal /
+            cadenceSampleCount;
+
+          /*
+           * Panel 120/144 Hz cukup dirender setiap dua callback.
+           * Hasilnya cadence stabil sekitar 60/72 FPS tanpa timer gate.
+           */
+          renderStride =
+            averageRafTime < 10.5
+              ? 2
+              : 1;
+
+          cadenceCalibrated =
+            true;
+        }
+      }
+
+      renderFrameIndex =
+        (
+          renderFrameIndex +
+          1
+        ) %
+        renderStride;
+
+      if (
+        renderFrameIndex !== 0
       ) {
         raf =
           requestAnimationFrame(
@@ -3597,6 +3751,69 @@
         return;
       }
 
+      const elapsed =
+        Math.min(
+          Math.max(
+            timestamp -
+            previousTime,
+            0
+          ),
+          100
+        );
+
+      previousTime =
+        timestamp;
+
+      /*
+       * Gunakan cadence native browser.
+       * DPR mobile hanya diturunkan bertahap jika frame aktual
+       * terus berada di bawah kisaran 50 FPS.
+       */
+      if (
+        mobileAtLoad &&
+        !reducedMotion &&
+        currentPixelRatio >
+          minimumPixelRatio + 0.01
+      ) {
+        frameSampleTotal +=
+          elapsed;
+
+        frameSampleCount +=
+          1;
+
+        if (
+          frameSampleCount >= 90 &&
+          timestamp -
+            lastQualityAdjustment >= 2000
+        ) {
+          const averageFrameTime =
+            frameSampleTotal /
+            frameSampleCount;
+
+          if (
+            averageFrameTime > 20
+          ) {
+            applyPixelRatio(
+              Number(
+                (
+                  currentPixelRatio -
+                  0.15
+                ).toFixed(2)
+              )
+            );
+
+            lastQualityAdjustment =
+              timestamp;
+          }
+
+          frameSampleTotal =
+            0;
+
+          frameSampleCount =
+            0;
+        }
+      }
+
       const dt =
         Math.min(
           elapsed /
@@ -3604,9 +3821,6 @@
 
           0.05
         );
-
-      previousTime =
-        timestamp;
 
       if (
         scrollDirty

@@ -442,34 +442,6 @@
   opacity: 1;
 
   isolation: isolate;
-
-  /*
-  |--------------------------------------------------------------------------
-  | Fade ujung canvas supaya DNA menyatu
-  | dengan background.
-  |--------------------------------------------------------------------------
-  */
-
-  -webkit-mask-image: radial-gradient(
-    circle at center,
-    #000 0%,
-    #000 55%,
-    rgba(0, 0, 0, 0.92) 68%,
-    rgba(0, 0, 0, 0.45) 82%,
-    transparent 96%
-  );
-
-  mask-image: radial-gradient(
-    circle at center,
-    #000 0%,
-    #000 55%,
-    rgba(0, 0, 0, 0.92) 68%,
-    rgba(0, 0, 0, 0.45) 82%,
-    transparent 96%
-  );
-
-  filter: drop-shadow(0 0 38px rgba(119, 211, 246, 0.08))
-    drop-shadow(0 55px 120px rgba(0, 0, 0, 0.55));
 }
 
 /* =========================================================
@@ -486,8 +458,8 @@
   left: 50%;
   top: 50%;
 
-  width: 72%;
-  height: 86%;
+  width: 86%;
+  height: 100%;
 
   transform: translate(-50%, -50%);
 
@@ -495,14 +467,12 @@
 
   background: radial-gradient(
     ellipse,
-    rgba(116, 210, 246, 0.085) 0%,
+    rgba(116, 210, 246, 0.075) 0%,
 
-    rgba(63, 130, 157, 0.032) 40%,
+    rgba(63, 130, 157, 0.026) 38%,
 
-    transparent 72%
+    transparent 76%
   );
-
-  filter: blur(25px);
 
   pointer-events: none;
 }
@@ -708,7 +678,7 @@
 
     opacity: 0.88;
 
-    filter: drop-shadow(0 0 30px rgba(112, 206, 241, 0.07));
+    filter: none;
   }
 
   .hero-intro {
@@ -788,7 +758,7 @@
 
     opacity: 0.66;
 
-    filter: drop-shadow(0 0 24px rgba(112, 206, 241, 0.055));
+    filter: none;
   }
 
   .hero .hero-sculpture::before {
@@ -1091,7 +1061,7 @@ body.dna-experience .dna-stage {
 
   transform-origin: center center;
 
-  contain: layout style;
+  contain: layout style paint;
 
   will-change: transform, opacity;
 }
@@ -1110,8 +1080,8 @@ body.dna-experience .dna-stage::before {
   left: 50%;
   top: 50%;
 
-  width: 74%;
-  height: 88%;
+  width: 88%;
+  height: 102%;
 
   transform: translate(-50%, -50%);
 
@@ -1119,14 +1089,12 @@ body.dna-experience .dna-stage::before {
 
   background: radial-gradient(
     ellipse,
-    rgba(116, 210, 246, 0.08) 0%,
+    rgba(116, 210, 246, 0.072) 0%,
 
-    rgba(63, 130, 157, 0.028) 42%,
+    rgba(63, 130, 157, 0.024) 40%,
 
-    transparent 72%
+    transparent 77%
   );
-
-  filter: blur(26px);
 
   pointer-events: none;
 }
@@ -1153,14 +1121,8 @@ body.dna-experience .dna-stage canvas {
    ========================================================= */
 
 @media (max-width: 700px) {
-  body.dna-experience .dna-stage {
-    filter: drop-shadow(0 0 20px rgba(112, 206, 241, 0.045));
-  }
-
   body.dna-experience .dna-stage::before {
-    opacity: 0.7;
-
-    filter: blur(20px);
+    opacity: 0.68;
   }
 }
 

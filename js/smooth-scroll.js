@@ -1,48 +1,143 @@
 (() => {
   if (!window.Lenis) return;
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+  ) {
     return;
   }
 
-  const lenis = new Lenis({
-    duration: 1.05,
-    smoothWheel: true,
-    syncTouch: false,
-  });
+  const lenis =
+    new Lenis({
+      duration: 1.05,
+      smoothWheel: true,
+      syncTouch: false,
+    });
 
-  const hasGSAP = Boolean(window.gsap && window.ScrollTrigger);
+  const hasGSAP =
+    Boolean(
+      window.gsap &&
+      window.ScrollTrigger
+    );
 
-  let rafId = null;
-  let gsapTick = null;
+  let rafId =
+    null;
+
+  let gsapTick =
+    null;
+
+  let fallbackTick =
+    null;
+
+  const stopFallback =
+    () => {
+      if (
+        rafId === null
+      ) {
+        return;
+      }
+
+      cancelAnimationFrame(
+        rafId
+      );
+
+      rafId =
+        null;
+    };
+
+  const startFallback =
+    () => {
+      if (
+        hasGSAP ||
+        document.hidden ||
+        rafId !== null ||
+        !fallbackTick
+      ) {
+        return;
+      }
+
+      rafId =
+        requestAnimationFrame(
+          fallbackTick
+        );
+    };
 
   /* =========================================================
      GSAP TICKER
      ========================================================= */
 
   if (hasGSAP) {
-    lenis.on("scroll", window.ScrollTrigger.update);
+    lenis.on(
+      "scroll",
+      window.ScrollTrigger.update
+    );
 
-    gsapTick = (time) => {
-      lenis.raf(time * 1000);
-    };
+    gsapTick =
+      (time) => {
+        if (!document.hidden) {
+          lenis.raf(
+            time * 1000
+          );
+        }
+      };
 
-    window.gsap.ticker.add(gsapTick);
+    window.gsap.ticker.add(
+      gsapTick
+    );
 
-    window.gsap.ticker.lagSmoothing(0);
+    window.gsap.ticker.lagSmoothing(
+      0
+    );
   } else {
+    /* =======================================================
+       FALLBACK TANPA GSAP
+       ======================================================= */
+
+    fallbackTick =
+      (time) => {
+        rafId =
+          null;
+
+        if (document.hidden) {
+          return;
+        }
+
+        lenis.raf(
+          time
+        );
+
+        startFallback();
+      };
+
+    startFallback();
+  }
 
   /* =========================================================
-     FALLBACK TANPA GSAP
+     PAGE VISIBILITY
      ========================================================= */
-    const raf = (time) => {
-      lenis.raf(time);
 
-      rafId = requestAnimationFrame(raf);
+  const onVisibilityChange =
+    () => {
+      if (document.hidden) {
+        lenis.stop();
+        stopFallback();
+
+        return;
+      }
+
+      lenis.start();
+      startFallback();
+
+      window.ScrollTrigger
+        ?.update();
     };
 
-    rafId = requestAnimationFrame(raf);
-  }
+  document.addEventListener(
+    "visibilitychange",
+    onVisibilityChange
+  );
 
   /* =========================================================
      CLEANUP
@@ -50,21 +145,25 @@
 
   window.addEventListener(
     "pagehide",
-
     () => {
+      document.removeEventListener(
+        "visibilitychange",
+        onVisibilityChange
+      );
+
       if (gsapTick) {
-        window.gsap?.ticker.remove(gsapTick);
+        window.gsap
+          ?.ticker
+          .remove(
+            gsapTick
+          );
       }
 
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-      }
-
+      stopFallback();
       lenis.destroy();
     },
-
     {
       once: true,
-    },
+    }
   );
 })();

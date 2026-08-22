@@ -217,18 +217,16 @@
 
   background: radial-gradient(
     circle,
-    rgba(var(--focus-r), var(--focus-g), var(--focus-b), 0.075) 0%,
+    rgba(var(--focus-r), var(--focus-g), var(--focus-b), 0.07) 0%,
 
-    rgba(var(--focus-r), var(--focus-g), var(--focus-b), 0.032) 34%,
+    rgba(var(--focus-r), var(--focus-g), var(--focus-b), 0.026) 38%,
 
-    transparent 70%
+    transparent 76%
   );
 
   opacity: 0;
 
   transform: translate(-50%, -50%) scale(0.78);
-
-  filter: blur(18px);
 
   pointer-events: none;
 
@@ -438,20 +436,19 @@
   position: absolute;
 
   left: 50%;
-  bottom: -10%;
+  bottom: -17%;
 
-  width: 65%;
-  height: 30%;
+  width: 78%;
+  height: 44%;
 
   transform: translateX(-50%);
 
   background: radial-gradient(
     ellipse,
-    rgba(100, 190, 225, 0.09),
-    transparent 68%
+    rgba(100, 190, 225, 0.075),
+    rgba(100, 190, 225, 0.025) 34%,
+    transparent 72%
   );
-
-  filter: blur(45px);
 
   pointer-events: none;
 }
@@ -570,9 +567,27 @@
   overflow: hidden;
 
   background: #090a0c;
+
+  isolation: isolate;
+
+  contain: paint;
 }
 
-.project-shot img {
+.project-shot-media {
+  position: absolute;
+
+  z-index: 0;
+
+  inset: -8% 0;
+
+  transform: translate3d(0, 0, 0);
+
+  backface-visibility: hidden;
+
+  will-change: transform;
+}
+
+.project-shot-media img {
   width: 100%;
   height: 100%;
 
@@ -586,20 +601,22 @@
 
   filter: saturate(0.92) contrast(1.03) brightness(0.88);
 
-  transform: scale(1.015);
+  transform: translateZ(0) scale(1.015);
+
+  backface-visibility: hidden;
 
   transition:
     transform 1.25s var(--ease-out),
     filter 0.75s ease;
 }
 
-.project:hover .project-shot img {
-  transform: scale(1.05);
+.project:hover .project-shot-media img {
+  transform: translateZ(0) scale(1.05);
 
   filter: saturate(1) contrast(1.04) brightness(0.95);
 }
 
-.project.is-focus .project-shot img {
+.project.is-focus .project-shot-media img {
   filter: saturate(0.98) contrast(1.035) brightness(0.93);
 }
 
@@ -769,7 +786,7 @@
   min-height: 0;
 }
 
-.project-featured .project-shot img {
+.project-featured .project-shot-media img {
   min-height: 0;
 }
 
@@ -1302,7 +1319,7 @@
   .project::before {
     width: 145vw;
 
-    filter: blur(10px);
+    filter: none;
   }
 
   .project.is-focus::before {
@@ -1337,13 +1354,22 @@
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+  .project-shot-media {
+    inset: 0;
+
+    transform: none !important;
+
+    will-change: auto;
+  }
+
   .project::before,
   .project-number,
   .project-copy h3 span,
   .browser-frame,
   .browser-address,
   .project-footer,
-  .project-shot img,
+  .project-shot-media,
+  .project-shot-media img,
   .project-tech li {
     transition: none !important;
   }

@@ -1613,47 +1613,37 @@ body[data-dna-scene="contact-final"]
 */
 
 body.dna-experience
-.dna-stage {
+.dna-stage::before {
   transition:
-    filter
+    opacity
+    0.8s
+    ease,
+
+    transform
     0.8s
     ease;
 }
 
 
 body[data-dna-scene="contact-focus"]
-.dna-stage {
-  filter:
+.dna-stage::before {
+  opacity:
+    0.88;
 
-    drop-shadow(
-      0
-      0
-      28px
-      rgba(
-        116,
-        208,
-        243,
-        0.055
-      )
-    );
+  transform:
+    translate(-50%, -50%)
+    scale(1.035);
 }
 
 
 body[data-dna-scene="contact-final"]
-.dna-stage {
-  filter:
+.dna-stage::before {
+  opacity:
+    1;
 
-    drop-shadow(
-      0
-      0
-      42px
-      rgba(
-        122,
-        215,
-        249,
-        0.075
-      )
-    );
+  transform:
+    translate(-50%, -50%)
+    scale(1.07);
 }
 
 
@@ -1717,6 +1707,24 @@ body[data-dna-scene="contact-final"]
       none;
   }
 
+
+  body[data-dna-scene="contact-focus"]
+  .dna-stage::before {
+    opacity:
+      0.74;
+  }
+
+
+  body[data-dna-scene="contact-final"]
+  .dna-stage::before {
+    opacity:
+      0.82;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.045);
+  }
+
 }
 
 
@@ -1749,7 +1757,10 @@ body[data-dna-scene="contact-final"]
   .contact-note,
 
   body.dna-experience
-  .dna-stage {
+  .dna-stage,
+
+  body.dna-experience
+  .dna-stage::before {
     transition:
       none !important;
   }

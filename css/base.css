@@ -318,7 +318,7 @@ button {
    */
 
   opacity:
-    0.022;
+    0.012;
 
   background-image:
     repeating-radial-gradient(
@@ -348,7 +348,10 @@ button {
     );
 
   mix-blend-mode:
-    soft-light;
+    normal;
+
+  contain:
+    paint;
 }
 
 
@@ -364,16 +367,13 @@ button {
     -1;
 
   width:
-    42rem;
+    48rem;
 
   height:
-    42rem;
+    48rem;
 
   border-radius:
     50%;
-
-  filter:
-    blur(90px);
 
   pointer-events:
     none;
@@ -388,11 +388,24 @@ button {
     -12rem;
 
   background:
-    rgba(
-      74,
-      167,
-      203,
-      0.09
+    radial-gradient(
+      circle,
+
+      rgba(
+        74,
+        167,
+        203,
+        0.085
+      ) 0%,
+
+      rgba(
+        74,
+        167,
+        203,
+        0.035
+      ) 38%,
+
+      transparent 72%
     );
 }
 
@@ -405,11 +418,24 @@ button {
     45vh;
 
   background:
-    rgba(
-      90,
-      115,
-      150,
-      0.055
+    radial-gradient(
+      circle,
+
+      rgba(
+        90,
+        115,
+        150,
+        0.052
+      ) 0%,
+
+      rgba(
+        90,
+        115,
+        150,
+        0.02
+      ) 40%,
+
+      transparent 74%
     );
 }
 
@@ -582,7 +608,7 @@ section[id] {
 
   .page-noise {
     opacity:
-      0.016;
+      0.009;
   }
 
 
@@ -593,7 +619,7 @@ section[id] {
 
   .ambient {
     opacity:
-      0.72;
+      0.66;
   }
 
 }
