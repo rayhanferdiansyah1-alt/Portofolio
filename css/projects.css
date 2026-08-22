@@ -1338,3 +1338,315 @@
     transition: none !important;
   }
 }
+
+/* =========================================================
+   DNA6 — PROJECT CINEMATIC INTEGRATION
+   ========================================================= */
+
+
+/* =========================================================
+   SELECTED WORK ACTIVE STATE
+   ========================================================= */
+
+body.dna-experience
+.projects.dna-projects-active::before {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   ACTIVE PROJECT
+   ========================================================= */
+
+/*
+|--------------------------------------------------------------------------
+| Kita TIDAK mengubah transform.
+|
+| Project entrance / parallax tetap milik GSAP.
+|--------------------------------------------------------------------------
+*/
+
+body.dna-experience
+.project.dna-project-active {
+  border-color:
+    rgba(
+      168,
+      221,
+      245,
+      0.14
+    );
+}
+
+
+/* =========================================================
+   META
+   ========================================================= */
+
+body.dna-experience
+.project.dna-project-active
+.project-meta {
+  color:
+    rgba(
+      217,
+      242,
+      255,
+      0.78
+    );
+}
+
+
+/* =========================================================
+   PROJECT TITLE
+   ========================================================= */
+
+body.dna-experience
+.project.dna-project-active
+.project-copy h3 {
+  text-shadow:
+    0
+    0
+    55px
+    rgba(
+      168,
+      221,
+      245,
+      0.035
+    );
+}
+
+
+body.dna-experience
+.project.dna-project-active
+.project-copy h3 span {
+  color:
+    rgba(
+      217,
+      242,
+      255,
+      0.58
+    );
+}
+
+
+/* =========================================================
+   BROWSER FRAME
+   ========================================================= */
+
+body.dna-experience
+.project.dna-project-active
+.browser-frame {
+  border-color:
+    rgba(
+      168,
+      221,
+      245,
+      0.19
+    );
+
+  box-shadow:
+    0
+    34px
+    95px
+    rgba(
+      0,
+      0,
+      0,
+      0.42
+    ),
+
+    0
+    0
+    75px
+    rgba(
+      94,
+      184,
+      220,
+      0.055
+    );
+}
+
+
+/* =========================================================
+   TECH PILLS
+   ========================================================= */
+
+body.dna-experience
+.project.dna-project-active
+.project-tech li {
+  border-color:
+    rgba(
+      168,
+      221,
+      245,
+      0.16
+    );
+
+  color:
+    var(--text-soft);
+}
+
+
+/* =========================================================
+   PROJECT 01
+   RIGHT DNA
+   ========================================================= */
+
+body[data-dna-scene="project-01"]
+.projects {
+  background:
+    radial-gradient(
+      circle at 82% 38%,
+      rgba(
+        79,
+        161,
+        194,
+        0.055
+      ),
+      transparent 27%
+    ),
+
+    var(--bg);
+}
+
+
+/* =========================================================
+   PROJECT 02
+   LEFT DNA
+   ========================================================= */
+
+body[data-dna-scene="project-02"]
+.projects {
+  background:
+    radial-gradient(
+      circle at 16% 46%,
+      rgba(
+        79,
+        161,
+        194,
+        0.05
+      ),
+      transparent 29%
+    ),
+
+    var(--bg);
+}
+
+
+/* =========================================================
+   PROJECT 03
+   RIGHT DNA
+   ========================================================= */
+
+body[data-dna-scene="project-03"]
+.projects {
+  background:
+    radial-gradient(
+      circle at 84% 56%,
+      rgba(
+        105,
+        196,
+        229,
+        0.06
+      ),
+      transparent 31%
+    ),
+
+    var(--bg);
+}
+
+
+/* =========================================================
+   PROJECT 04
+   LEFT DNA
+   ========================================================= */
+
+body[data-dna-scene="project-04"]
+.projects {
+  background:
+    radial-gradient(
+      circle at 14% 72%,
+      rgba(
+        73,
+        148,
+        178,
+        0.05
+      ),
+      transparent 29%
+    ),
+
+    var(--bg);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  body.dna-experience
+  .project.dna-project-active
+  .browser-frame {
+    box-shadow:
+      0
+      26px
+      65px
+      rgba(
+        0,
+        0,
+        0,
+        0.38
+      ),
+
+      0
+      0
+      45px
+      rgba(
+        94,
+        184,
+        220,
+        0.035
+      );
+  }
+
+
+  body.dna-experience
+  .project.dna-project-active
+  .project-copy h3 {
+    text-shadow: none;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+
+  body.dna-experience
+  .project.dna-project-active
+  .browser-frame,
+
+  body.dna-experience
+  .project.dna-project-active
+  .project-copy h3,
+
+  body.dna-experience
+  .project.dna-project-active
+  .project-copy h3 span,
+
+  body.dna-experience
+  .project.dna-project-active
+  .project-meta,
+
+  body.dna-experience
+  .project.dna-project-active
+  .project-tech li {
+    transition:
+      none !important;
+  }
+
+}

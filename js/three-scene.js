@@ -808,7 +808,30 @@
        DNA4 sekarang membuat controller-nya.
        ======================================================= */
 
+    /* =======================================================
+   DNA5 — CINEMATIC SCENE DEFINITIONS
+   ======================================================= */
+
+    /* =======================================================
+   DNA6 — CINEMATIC SCENE ARCHITECTURE
+   ======================================================= */
+
+    const aboutSection = document.querySelector(".about");
+
+    const projectsSection = document.querySelector(".projects");
+
+    const projectsIntro =
+      document.querySelector(".projects-intro") || projectsSection;
+
+    const projectCards = Array.from(
+      document.querySelectorAll(".projects .project"),
+    );
+
     const SCENE_DEFINITIONS = [
+      /* =====================================================
+     HERO
+     ===================================================== */
+
       {
         id: "hero",
 
@@ -831,49 +854,236 @@
         rotZ: -0.08,
       },
 
-      {
-        id: "about",
-
-        element: document.querySelector(".about"),
-
-        anchorRatio: 0.34,
-
-        x: 0.21,
-
-        y: 0.015,
-
-        scale: 0.88,
-
-        opacity: 0.76,
-
-        rotX: 0.34,
-
-        rotY: 0.12,
-
-        rotZ: -0.4,
-      },
+      /* =====================================================
+     ABOUT — ENTRY
+     ===================================================== */
 
       {
-        id: "projects",
+        id: "about-entry",
 
-        element: document.querySelector(".projects"),
+        element: aboutSection,
 
-        anchorRatio: 0.1,
+        anchorRatio: 0.06,
 
-        x: -0.18,
+        x: 0.15,
 
-        y: 0.025,
+        y: -0.025,
 
-        scale: 1.04,
+        scale: 0.98,
 
-        opacity: 0.2,
+        opacity: 0.94,
 
         rotX: 0.22,
 
-        rotY: 0.82,
+        rotY: -0.02,
 
-        rotZ: 0.48,
+        rotZ: -0.2,
       },
+
+      /* =====================================================
+     ABOUT — FOCUS
+     ===================================================== */
+
+      {
+        id: "about-focus",
+
+        element: aboutSection,
+
+        anchorRatio: 0.34,
+
+        x: 0.27,
+
+        y: 0.005,
+
+        scale: 0.94,
+
+        opacity: 0.88,
+
+        rotX: 0.34,
+
+        rotY: 0.4,
+
+        rotZ: -0.62,
+      },
+
+      /* =====================================================
+     ABOUT — EXIT
+     ===================================================== */
+
+      {
+        id: "about-exit",
+
+        element: aboutSection,
+
+        anchorRatio: 0.73,
+
+        x: 0.18,
+
+        y: 0.045,
+
+        scale: 0.85,
+
+        opacity: 0.58,
+
+        rotX: 0.28,
+
+        rotY: 0.72,
+
+        rotZ: -0.36,
+      },
+
+      /* =====================================================
+     PROJECTS — INTRO
+
+     DNA keluar dari About lalu mulai
+     mengambil ruang Selected Work.
+     ===================================================== */
+
+      {
+        id: "projects-intro",
+
+        element: projectsIntro,
+
+        anchorRatio: 0.24,
+
+        x: -0.05,
+
+        y: 0.015,
+
+        scale: 0.92,
+
+        opacity: 0.43,
+
+        rotX: 0.28,
+
+        rotY: 0.9,
+
+        rotZ: 0.2,
+      },
+
+      /* =====================================================
+     PROJECT 01
+     SISTEM ABSENSI PEGAWAI KLINIK
+
+     DNA ke kanan.
+     ===================================================== */
+
+      {
+        id: "project-01",
+
+        element: projectCards[0],
+
+        anchorRatio: 0.3,
+
+        x: 0.25,
+
+        y: -0.025,
+
+        scale: 1.12,
+
+        opacity: 0.35,
+
+        rotX: 0.18,
+
+        rotY: 1.14,
+
+        rotZ: -0.52,
+      },
+
+      /* =====================================================
+     PROJECT 02
+     SISTEM INFORMASI SEKOLAH
+
+     Sweep ke kiri.
+     ===================================================== */
+
+      {
+        id: "project-02",
+
+        element: projectCards[1],
+
+        anchorRatio: 0.3,
+
+        x: -0.26,
+
+        y: 0.015,
+
+        scale: 1.18,
+
+        opacity: 0.31,
+
+        rotX: 0.42,
+
+        rotY: 1.64,
+
+        rotZ: 0.58,
+      },
+
+      /* =====================================================
+     PROJECT 03
+     GENERATOR SERTIFIKAT DIGITAL
+
+     DNA kembali kanan dan membesar.
+     ===================================================== */
+
+      {
+        id: "project-03",
+
+        element: projectCards[2],
+
+        anchorRatio: 0.3,
+
+        x: 0.27,
+
+        y: 0.02,
+
+        scale: 1.27,
+
+        opacity: 0.34,
+
+        rotX: 0.24,
+
+        rotY: 2.2,
+
+        rotZ: -0.78,
+      },
+
+      /* =====================================================
+     PROJECT 04
+     SISTEM PENGGAJIAN & LEMBUR
+
+     Final sweep Selected Work.
+     ===================================================== */
+
+      {
+        id: "project-04",
+
+        element: projectCards[3],
+
+        anchorRatio: 0.31,
+
+        x: -0.23,
+
+        y: 0.035,
+
+        scale: 1.16,
+
+        opacity: 0.29,
+
+        rotX: 0.48,
+
+        rotY: 2.74,
+
+        rotZ: 0.46,
+      },
+
+      /* =====================================================
+     SKILLS
+
+     DNA7 nanti kita art-direct ulang.
+     Rotation sekarang sengaja meneruskan
+     arah Project, bukan balik ke belakang.
+     ===================================================== */
 
       {
         id: "skills",
@@ -892,10 +1102,14 @@
 
         rotX: 0.5,
 
-        rotY: 1.32,
+        rotY: 3.22,
 
         rotZ: 0.82,
       },
+
+      /* =====================================================
+     EDUCATION
+     ===================================================== */
 
       {
         id: "education",
@@ -914,10 +1128,14 @@
 
         rotX: 0.28,
 
-        rotY: 1.88,
+        rotY: 3.86,
 
         rotZ: -0.32,
       },
+
+      /* =====================================================
+     CONTACT
+     ===================================================== */
 
       {
         id: "contact",
@@ -936,7 +1154,7 @@
 
         rotX: 0.16,
 
-        rotY: 2.35,
+        rotY: 4.48,
 
         rotZ: 0.08,
       },
@@ -1102,12 +1320,118 @@
 
       targetScene.rotZ = mix(from.rotZ, to.rotZ, t);
 
-      activeSceneId = t < 0.5 ? from.id : to.id;
+/* =====================================================
+   DNA6 — ACTIVE CINEMATIC SCENE
+   ===================================================== */
 
-      host.dataset.dnaScene = activeSceneId;
+activeSceneId =
+  t < 0.5
+    ? from.id
+    : to.id;
 
-      scrollDirty = false;
-    };
+
+host.dataset.dnaScene =
+  activeSceneId;
+
+
+/* =====================================================
+   ABOUT STATE
+   ===================================================== */
+
+const aboutActive =
+  activeSceneId.startsWith(
+    "about"
+  );
+
+
+document.body.classList.toggle(
+  "dna-about-active",
+  aboutActive
+);
+
+
+document.body.classList.toggle(
+  "dna-about-entry",
+  activeSceneId ===
+    "about-entry"
+);
+
+
+document.body.classList.toggle(
+  "dna-about-focus",
+  activeSceneId ===
+    "about-focus"
+);
+
+
+document.body.classList.toggle(
+  "dna-about-exit",
+  activeSceneId ===
+    "about-exit"
+);
+
+
+/* =====================================================
+   PROJECT STATE
+   ===================================================== */
+
+const projectMatch =
+  activeSceneId.match(
+    /^project-(\d{2})$/
+  );
+
+
+const activeProjectIndex =
+  projectMatch
+    ? Number(
+        projectMatch[1]
+      ) - 1
+    : -1;
+
+
+const projectsActive =
+  activeSceneId ===
+    "projects-intro" ||
+  activeProjectIndex >= 0;
+
+
+projectsSection
+  ?.classList.toggle(
+    "dna-projects-active",
+    projectsActive
+  );
+
+
+projectCards.forEach(
+  (
+    project,
+    index
+  ) => {
+    project.classList.toggle(
+      "dna-project-active",
+      index ===
+        activeProjectIndex
+    );
+  }
+);
+
+
+/* =====================================================
+   GLOBAL SCENE ATTRIBUTE
+
+   Nanti DNA7 dan DNA8 bisa memakai
+   state yang sama tanpa membuat
+   engine scroll baru.
+   ===================================================== */
+
+document.body.dataset.dnaScene =
+  activeSceneId;
+
+
+scrollDirty =
+  false;
+
+};
 
     /* =======================================================
        INITIAL OBJECT POSE
