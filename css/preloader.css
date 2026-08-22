@@ -1,0 +1,353 @@
+/* =========================================================
+   RFM PORTFOLIO
+   PRE2 — PRELOADER VISUAL
+   ========================================================= */
+
+.site-preloader {
+  --preloader-accent: #a8ddf5;
+  --preloader-offset: 100;
+
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  min-height: 100vh;
+  min-height: 100svh;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  color: #f5f5f7;
+
+  background:
+    radial-gradient(
+      circle at 50% 48%,
+      rgba(168, 221, 245, 0.055) 0%,
+      rgba(98, 178, 211, 0.018) 24%,
+      transparent 48%
+    ),
+    #050506;
+
+  contain: layout style paint;
+}
+
+/* Wajib agar PRE1 tetap aman sebelum JavaScript aktif */
+.site-preloader[hidden] {
+  display: none !important;
+}
+
+/* GARIS AMBIENT HORIZONTAL */
+.site-preloader::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: min(76vw, 760px);
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(168, 221, 245, 0.08),
+      transparent
+    );
+
+  transform: translate(-50%, -50%);
+
+  pointer-events: none;
+}
+
+/* AMBIENT CIRCLE */
+.site-preloader::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: min(58vw, 560px);
+  aspect-ratio: 1;
+
+  border: 1px solid rgba(168, 221, 245, 0.025);
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   INNER
+   ========================================================= */
+
+.site-preloader__inner {
+  position: relative;
+  z-index: 2;
+
+  width: min(
+    calc(100% - 48px),
+    320px
+  );
+
+  display: grid;
+  justify-items: center;
+
+  gap: 28px;
+}
+
+/* =========================================================
+   PROGRESS METER
+   ========================================================= */
+
+.site-preloader__meter {
+  position: relative;
+
+  width: clamp(112px, 10vw, 132px);
+  aspect-ratio: 1;
+
+  display: grid;
+  place-items: center;
+}
+
+/* GLOW RING */
+.site-preloader__meter::before {
+  content: "";
+
+  position: absolute;
+  inset: 18%;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(168, 221, 245, 0.045),
+      transparent 72%
+    );
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   SVG RING
+   ========================================================= */
+
+.site-preloader__ring {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  overflow: visible;
+
+  transform: rotate(-90deg);
+}
+
+.site-preloader__track,
+.site-preloader__indicator {
+  fill: none;
+
+  stroke-width: 1.5;
+
+  vector-effect: non-scaling-stroke;
+}
+
+.site-preloader__track {
+  stroke: rgba(245, 245, 247, 0.15);
+}
+
+.site-preloader__indicator {
+  stroke: var(--preloader-accent);
+
+  stroke-linecap: round;
+
+  stroke-dasharray: 100;
+  stroke-dashoffset: var(--preloader-offset);
+
+  transition:
+    stroke-dashoffset 0.18s linear;
+}
+
+/* =========================================================
+   RFM MONOGRAM
+   ========================================================= */
+
+.site-preloader__monogram {
+  position: relative;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: baseline;
+
+  color: rgba(245, 245, 247, 0.92);
+
+  font-family: var(--font-display, "Manrope", sans-serif);
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: -0.055em;
+
+  animation:
+    preloader-monogram-pulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+.site-preloader__monogram > span {
+  color: var(--preloader-accent);
+}
+
+/* =========================================================
+   LOADING INFORMATION
+   ========================================================= */
+
+.site-preloader__copy {
+  width: 100%;
+
+  padding-top: 14px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 24px;
+
+  border-top:
+    1px solid
+    rgba(245, 245, 247, 0.1);
+}
+
+.site-preloader__label,
+.site-preloader__value {
+  font-family: var(--font-mono, "Space Mono", monospace);
+
+  font-size: 0.5rem;
+  line-height: 1;
+
+  letter-spacing: 0.11em;
+}
+
+.site-preloader__label {
+  color: rgba(245, 245, 247, 0.42);
+}
+
+.site-preloader__value {
+  min-width: 34px;
+
+  color: rgba(168, 221, 245, 0.82);
+
+  text-align: right;
+}
+
+/* =========================================================
+   MONOGRAM MOTION
+   ========================================================= */
+
+@keyframes preloader-monogram-pulse {
+  0%,
+  100% {
+    opacity: 0.62;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .site-preloader__inner {
+    width: min(
+      calc(100% - 40px),
+      280px
+    );
+
+    gap: 24px;
+  }
+
+  .site-preloader__meter {
+    width: 108px;
+  }
+
+  .site-preloader__copy {
+    padding-top: 12px;
+
+    gap: 18px;
+  }
+
+  .site-preloader__label,
+  .site-preloader__value {
+    font-size: 0.46rem;
+  }
+
+  .site-preloader::after {
+    width: 82vw;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .site-preloader__monogram {
+    animation: none;
+  }
+
+  .site-preloader__indicator {
+    transition: none;
+  }
+}
+
+/* =========================================================
+   PRE3 — PRELOADER ACTIVE STATE
+   ========================================================= */
+
+html.is-preloading {
+  overflow: hidden;
+
+  scroll-behavior: auto;
+}
+
+html.is-preloading body {
+  overflow: hidden;
+
+  overscroll-behavior: none;
+}
+
+/*
+ * Menampilkan preloader sejak awal parsing HTML,
+ * tetapi tetap aman apabila JavaScript nonaktif.
+ */
+html.is-preloading
+.site-preloader[hidden] {
+  display: grid !important;
+}
+
+.site-preloader {
+  touch-action: none;
+
+  user-select: none;
+}

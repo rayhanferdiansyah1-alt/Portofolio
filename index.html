@@ -6,6 +6,37 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <script>
+    (() => {
+      const root = document.documentElement;
+
+      root.classList.add("is-preloading");
+
+      /*
+       * Safety timeout:
+       * website tetap terbuka apabila controller preloader gagal.
+       */
+      window.__rfmPreloaderSafety =
+        window.setTimeout(
+          () => {
+            root.classList.remove(
+              "is-preloading"
+            );
+
+            const preloader =
+              document.getElementById(
+                "sitePreloader"
+              );
+
+            if (preloader) {
+              preloader.hidden = true;
+            }
+          },
+          5000
+        );
+    })();
+  </script>
+
 
   <!-- ======================================================
        PRIMARY SEO
@@ -141,6 +172,8 @@
 
   <link rel="stylesheet" href="css/responsive.css">
 
+  <link rel="stylesheet" href="css/preloader.css">
+
 
   <!-- ======================================================
        STRUCTURED DATA
@@ -175,6 +208,45 @@
 </head>
 
 <body id="top">
+  <!-- ======================================================
+     PRE1 — RFM DNA PRELOADER STRUCTURE
+     ====================================================== -->
+
+  <div class="site-preloader" id="sitePreloader" role="status" aria-live="polite"
+    aria-label="Memuat portfolio Rayhan Ferdisnyah Mardani" hidden>
+    <div class="site-preloader__inner">
+
+      <!-- PROGRESS CIRCLE -->
+      <div class="site-preloader__meter" id="preloaderMeter" role="progressbar" aria-label="Progres pemuatan"
+        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <svg class="site-preloader__ring" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="site-preloader__track" cx="60" cy="60" r="54" pathLength="100"></circle>
+
+          <circle class="site-preloader__indicator" id="preloaderIndicator" cx="60" cy="60" r="54" pathLength="100">
+          </circle>
+        </svg>
+
+        <!-- LOGO -->
+        <span class="site-preloader__monogram" aria-hidden="true">
+          RFM<span>.</span>
+        </span>
+      </div>
+
+      <!-- LOADING INFORMATION -->
+      <div class="site-preloader__copy">
+
+        <span class="site-preloader__label">
+          INITIALIZING PORTFOLIO
+        </span>
+
+        <span class="site-preloader__value" id="preloaderValue" aria-hidden="true">
+          0%
+        </span>
+
+      </div>
+
+    </div>
+  </div>
   <noscript>
     <div
       style="position:relative;z-index:9999;width:100%;padding:12px 20px;color:#f5f5f7;background:#111318;border-bottom:1px solid rgba(255,255,255,.1);font-family:monospace;font-size:.75rem;line-height:1.6;text-align:center;">
@@ -575,8 +647,8 @@
                 <div class="project-shot">
 
                   <div class="project-shot-media">
-                    <img src="assets/images/projects/project-02.png" alt="Preview Sistem Informasi Sekolah"
-                      width="735" height="490" loading="lazy" decoding="async">
+                    <img src="assets/images/projects/project-02.png" alt="Preview Sistem Informasi Sekolah" width="735"
+                      height="490" loading="lazy" decoding="async">
                   </div>
 
                   <div class="project-shot-overlay">
@@ -950,6 +1022,9 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+  <script src="js/preloader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="js/smooth-scroll.js"></script>
   <script src="js/animations.js"></script>
   <script src="js/main.js"></script>
