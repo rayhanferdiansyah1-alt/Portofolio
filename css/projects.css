@@ -425,7 +425,9 @@
 .project-visual {
   position: relative;
 
-  width: 100%;
+  width: min(88%, 1320px);
+
+  margin-inline: auto;
 
   perspective: 1600px;
 }
@@ -561,7 +563,7 @@
 .project-shot {
   position: relative;
 
-  height: clamp(440px, 39vw, 640px);
+  height: clamp(360px, 30vw, 520px);
 
   min-height: 0;
 
@@ -762,7 +764,7 @@
 }
 
 .project-featured .project-shot {
-  height: clamp(480px, 42vw, 690px);
+  height: clamp(380px, 31vw, 540px);
 
   min-height: 0;
 }
@@ -814,12 +816,16 @@
     gap: clamp(45px, 7vw, 90px);
   }
 
+  .project-visual {
+    width: 92%;
+  }
+
   .project-shot {
-    height: clamp(420px, 42vw, 570px);
+    height: clamp(330px, 34vw, 440px);
   }
 
   .project-featured .project-shot {
-    height: clamp(460px, 45vw, 620px);
+    height: clamp(350px, 36vw, 470px);
   }
 }
 
@@ -898,9 +904,13 @@
     justify-content: flex-start;
   }
 
+  .project-visual {
+    width: 94%;
+  }
+
   .project-shot,
   .project-featured .project-shot {
-    height: clamp(390px, 58vw, 500px);
+    height: clamp(300px, 48vw, 400px);
   }
 
   .browser-frame {
@@ -1056,7 +1066,7 @@
 
   .project-shot,
   .project-featured .project-shot {
-    height: clamp(300px, 67vw, 390px);
+    height: clamp(245px, 55vw, 320px);
   }
 
   .project-shot-overlay {
@@ -1248,7 +1258,7 @@
 
   .project-shot,
   .project-featured .project-shot {
-    height: clamp(260px, 70vw, 330px);
+    height: clamp(210px, 56vw, 270px);
   }
 
   .project-shot-overlay {
