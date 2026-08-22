@@ -1,12 +1,12 @@
 /* =========================================================
-   RFM PORTFOLIO — V3.6
-   CONTACT / CINEMATIC CLOSING
-   Luxury Editorial System
+   RFM PORTFOLIO
+   C4 — CONTACT
+   FINAL CLEAN
    ========================================================= */
 
 
 /* =========================================================
-   CONTACT SECTION
+   SECTION
    ========================================================= */
 
 .contact {
@@ -15,9 +15,9 @@
   min-height: 100svh;
 
   padding:
-    clamp(120px, 11vw, 175px)
+    clamp(135px, 12vw, 190px)
     0
-    clamp(80px, 8vw, 120px);
+    clamp(100px, 9vw, 145px);
 
   display: flex;
 
@@ -26,28 +26,26 @@
   overflow: hidden;
 
   border-top:
-    1px solid var(--line);
+    1px solid
+    var(--line);
 
   background:
     radial-gradient(
-      circle at 78% 26%,
-      rgba(168, 221, 245, 0.10),
-      transparent 24%
+      circle at 78% 24%,
+      rgba(168, 221, 245, 0.085),
+      transparent 25%
     ),
+
     radial-gradient(
-      circle at 38% 82%,
-      rgba(255, 255, 255, 0.025),
+      circle at 35% 82%,
+      rgba(255, 255, 255, 0.02),
       transparent 28%
     ),
-    radial-gradient(
-      circle at 5% 15%,
-      rgba(100, 160, 190, 0.025),
-      transparent 28%
-    ),
+
     linear-gradient(
       180deg,
-      #060708,
-      #040405
+      #060708 0%,
+      #040405 100%
     );
 }
 
@@ -62,18 +60,22 @@
   position: absolute;
 
   left: -2vw;
-
-  bottom: -3%;
+  bottom: -4%;
 
   color:
-    rgba(255, 255, 255, 0.012);
+    rgba(
+      255,
+      255,
+      255,
+      0.012
+    );
 
   font-family:
     var(--font-display);
 
   font-size:
     clamp(
-      9rem,
+      10rem,
       22vw,
       26rem
     );
@@ -82,7 +84,8 @@
 
   line-height: 0.72;
 
-  letter-spacing: -0.1em;
+  letter-spacing:
+    -0.1em;
 
   white-space: nowrap;
 
@@ -93,7 +96,7 @@
 
 
 /* =========================================================
-   ORBIT / LUXURY DECORATION
+   ORBIT DECORATION
    ========================================================= */
 
 .contact::before {
@@ -103,45 +106,70 @@
 
   width:
     min(
-      52vw,
+      54vw,
       820px
     );
 
   aspect-ratio: 1;
 
   right: -22vw;
-
   top: 10%;
-
-  border-radius: 50%;
 
   border:
     1px solid
-    rgba(168, 221, 245, 0.065);
+    rgba(
+      168,
+      221,
+      245,
+      0.065
+    );
+
+  border-radius: 50%;
 
   box-shadow:
     0 0 0 80px
-      rgba(255, 255, 255, 0.007),
+      rgba(
+        255,
+        255,
+        255,
+        0.006
+      ),
 
     0 0 0 160px
-      rgba(255, 255, 255, 0.004),
+      rgba(
+        255,
+        255,
+        255,
+        0.003
+      ),
 
     0 0 160px
-      rgba(88, 177, 214, 0.045);
+      rgba(
+        88,
+        177,
+        214,
+        0.045
+      );
 
   pointer-events: none;
 }
 
 
+/* =========================================================
+   SHELL
+   ========================================================= */
+
 .contact > .shell {
   position: relative;
 
-  z-index: 3;
+  z-index: 2;
+
+  width: 100%;
 }
 
 
 /* =========================================================
-   TOP LINE
+   TOPLINE
    ========================================================= */
 
 .contact-topline {
@@ -162,9 +190,16 @@
   color:
     var(--dim);
 
-  font-size: 0.55rem;
+  font-size:
+    0.55rem;
+
+  line-height: 1.4;
 }
 
+
+/* =========================================================
+   AVAILABILITY
+   ========================================================= */
 
 .contact-topline span:last-child {
   position: relative;
@@ -176,8 +211,6 @@
 }
 
 
-/* availability indicator */
-
 .contact-topline
 span:last-child::before {
   content: "";
@@ -185,14 +218,10 @@ span:last-child::before {
   position: absolute;
 
   left: 0;
-
   top: 50%;
 
   width: 6px;
   height: 6px;
-
-  transform:
-    translateY(-50%);
 
   border-radius: 50%;
 
@@ -200,13 +229,18 @@ span:last-child::before {
     var(--accent);
 
   box-shadow:
-    0 0 18px
+    0
+    0
+    18px
     rgba(
       168,
       221,
       245,
       0.45
     );
+
+  transform:
+    translateY(-50%);
 }
 
 
@@ -215,16 +249,63 @@ span:last-child::before {
    ========================================================= */
 
 .contact-main {
+  position: relative;
+
   margin-top:
     clamp(
       70px,
-      9vw,
-      130px
+      8vw,
+      120px
     );
 }
 
 
-/* eyebrow */
+/* subtle ambient glow */
+
+.contact-main::before {
+  content: "";
+
+  position: absolute;
+
+  z-index: -1;
+
+  width:
+    min(
+      42vw,
+      620px
+    );
+
+  aspect-ratio: 1;
+
+  right: 3%;
+  top: 10%;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        168,
+        221,
+        245,
+        0.055
+      ),
+      transparent 68%
+    );
+
+  filter:
+    blur(28px);
+
+  opacity: 0.75;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
 
 .contact-main .eyebrow {
   display: inline-flex;
@@ -235,7 +316,8 @@ span:last-child::before {
 }
 
 
-.contact-main .eyebrow::before {
+.contact-main
+.eyebrow::before {
   content: "";
 
   width: 26px;
@@ -249,19 +331,19 @@ span:last-child::before {
 
 
 /* =========================================================
-   MASSIVE CONTACT HEADING
+   HEADING
    ========================================================= */
 
 .contact-heading {
   position: relative;
 
-  max-width: 1200px;
+  max-width: 1250px;
 
   margin-top:
     clamp(
-      20px,
+      22px,
       3vw,
-      34px
+      36px
     );
 
   color:
@@ -272,22 +354,25 @@ span:last-child::before {
 
   font-size:
     clamp(
-      4.6rem,
-      10.5vw,
-      11rem
+      4.8rem,
+      10vw,
+      10.7rem
     );
 
   font-weight: 500;
 
   line-height: 0.79;
 
-  letter-spacing: -0.09em;
+  letter-spacing:
+    -0.09em;
 
   text-wrap: balance;
 }
 
 
-/* subtle outlined final line feeling */
+/* =========================================================
+   HEADING ACCENT
+   ========================================================= */
 
 .contact-heading::after {
   content: "";
@@ -296,33 +381,42 @@ span:last-child::before {
 
   width:
     clamp(
-      70px,
+      72px,
       7vw,
-      120px
+      118px
     );
 
   height: 1px;
 
   margin-top:
     clamp(
-      35px,
+      38px,
       5vw,
-      65px
+      62px
     );
 
   background:
     linear-gradient(
       90deg,
+
       var(--accent),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.18
+      ),
+
       transparent
     );
 
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
 
 /* =========================================================
-   MAIN CTA
+   CTA
    ========================================================= */
 
 .contact-cta {
@@ -331,7 +425,7 @@ span:last-child::before {
   width:
     min(
       100%,
-      880px
+      900px
     );
 
   margin-top:
@@ -342,7 +436,8 @@ span:last-child::before {
     );
 
   padding:
-    27px 0;
+    28px
+    0;
 
   display: flex;
 
@@ -370,33 +465,30 @@ span:last-child::before {
 
   font-size:
     clamp(
-      1.4rem,
+      1.45rem,
       2.6vw,
-      2.55rem
+      2.6rem
     );
 
   font-weight: 500;
 
-  letter-spacing: -0.045em;
+  line-height: 1.1;
+
+  letter-spacing:
+    -0.045em;
 
   transition:
-    padding-left
-    0.55s
-    var(--ease-out),
-
-    padding-right
-    0.55s
-    var(--ease-out),
+    color
+    0.45s ease,
 
     border-color
-    0.4s ease,
-
-    color
-    0.4s ease;
+    0.45s ease;
 }
 
 
-/* CTA background glow */
+/* =========================================================
+   CTA BACKGROUND
+   ========================================================= */
 
 .contact-cta::before {
   content: "";
@@ -408,28 +500,49 @@ span:last-child::before {
   background:
     linear-gradient(
       90deg,
-      rgba(168, 221, 245, 0.055),
-      transparent 52%
+
+      rgba(
+        168,
+        221,
+        245,
+        0.06
+      ),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.012
+      )
+      45%,
+
+      transparent
+      72%
     );
 
   opacity: 0;
 
   transform:
-    translateX(-20px);
+    scaleX(0.92);
+
+  transform-origin:
+    left center;
 
   transition:
     opacity
-    0.45s ease,
+    0.6s ease,
 
     transform
-    0.6s
+    0.9s
     var(--ease-out);
 
   pointer-events: none;
 }
 
 
-/* CTA bottom accent */
+/* =========================================================
+   CTA ACTIVE LINE
+   ========================================================= */
 
 .contact-cta::after {
   content: "";
@@ -437,7 +550,6 @@ span:last-child::before {
   position: absolute;
 
   left: 0;
-
   bottom: -1px;
 
   width: 0;
@@ -446,14 +558,25 @@ span:last-child::before {
   background:
     linear-gradient(
       90deg,
+
       var(--accent),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.18
+      ),
+
       transparent
     );
 
   transition:
     width
-    0.75s
+    0.8s
     var(--ease-out);
+
+  pointer-events: none;
 }
 
 
@@ -464,79 +587,52 @@ span:last-child::before {
 }
 
 
+/* =========================================================
+   CTA ARROW
+   ========================================================= */
+
 .contact-cta span:last-child {
   color:
     var(--accent);
 
   font-size:
     clamp(
-      1.6rem,
+      1.7rem,
       3vw,
       3rem
     );
 
   font-weight: 400;
 
+  line-height: 1;
+
+  transform:
+    translate3d(
+      0,
+      0,
+      0
+    );
+
   transition:
+    color
+    0.45s ease,
+
     transform
-    0.55s
+    0.6s
     var(--ease-out);
 }
 
 
-/* hover */
-
-.contact-cta:hover {
-  padding-left: 20px;
-
-  padding-right: 20px;
-
-  color:
-    var(--accent-soft);
-
-  border-color:
-    rgba(
-      168,
-      221,
-      245,
-      0.30
-    );
-}
-
-
-.contact-cta:hover::before {
-  opacity: 1;
-
-  transform:
-    translateX(0);
-}
-
-
-.contact-cta:hover::after {
-  width: 70%;
-}
-
-
-.contact-cta:hover
-span:last-child {
-  transform:
-    translate(
-      5px,
-      -5px
-    );
-}
-
-
 /* =========================================================
-   CONTACT FOOTER AREA
+   CONTACT FOOTER
    ========================================================= */
 
 .contact-footer {
   margin-top:
     clamp(
       100px,
-      11vw,
-      160px
+      10vw,
+      150px
     );
 
   padding-top:
@@ -548,7 +644,8 @@ span:last-child {
 
   justify-content: space-between;
 
-  gap: 70px;
+  gap:
+    60px;
 
   border-top:
     1px solid
@@ -566,8 +663,8 @@ span:last-child {
   flex-wrap: wrap;
 
   gap:
-    10px
-    28px;
+    12px
+    30px;
 }
 
 
@@ -582,19 +679,24 @@ span:last-child {
   font-family:
     var(--font-mono);
 
-  font-size: 0.57rem;
+  font-size:
+    0.57rem;
 
-  letter-spacing: 0.09em;
+  letter-spacing:
+    0.09em;
 
-  text-transform: uppercase;
+  text-transform:
+    uppercase;
 
   transition:
     color
-    0.3s ease;
+    0.35s ease;
 }
 
 
-/* underline */
+/* =========================================================
+   LINK UNDERLINE
+   ========================================================= */
 
 .contact-links a::after {
   content: "";
@@ -614,27 +716,12 @@ span:last-child {
     scaleX(0);
 
   transform-origin:
-    right;
+    right center;
 
   transition:
     transform
     0.45s
     var(--ease-out);
-}
-
-
-.contact-links a:hover {
-  color:
-    var(--accent-soft);
-}
-
-
-.contact-links a:hover::after {
-  transform:
-    scaleX(1);
-
-  transform-origin:
-    left;
 }
 
 
@@ -645,10 +732,13 @@ span:last-child {
 .contact-note {
   max-width: 420px;
 
+  margin: 0;
+
   color:
     var(--dim);
 
-  font-size: 0.7rem;
+  font-size:
+    0.7rem;
 
   line-height: 1.7;
 
@@ -657,75 +747,72 @@ span:last-child {
 
 
 /* =========================================================
-   SUBTLE MOVING LIGHT
+   DESKTOP HOVER
    ========================================================= */
 
-.contact .shell::before {
-  content: "";
+@media (hover: hover) {
 
-  position: absolute;
+  .contact-cta:hover {
+    color:
+      var(--accent-soft);
 
-  z-index: -1;
-
-  width: 400px;
-  height: 400px;
-
-  right: 5%;
-
-  top: 25%;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(168, 221, 245, 0.055),
-      transparent 68%
-    );
-
-  filter:
-    blur(30px);
-
-  animation:
-    contactGlow
-    8s
-    ease-in-out
-    infinite;
-}
-
-
-@keyframes contactGlow {
-
-  0%,
-  100% {
-    transform:
-      translate3d(
-        0,
-        0,
-        0
-      )
-      scale(1);
-
-    opacity: 0.55;
+    border-color:
+      rgba(
+        168,
+        221,
+        245,
+        0.28
+      );
   }
 
-  50% {
+
+  .contact-cta:hover::before {
+    opacity: 1;
+
+    transform:
+      scaleX(1);
+  }
+
+
+  .contact-cta:hover::after {
+    width: 70%;
+  }
+
+
+  .contact-cta:hover
+  span:last-child {
+    color:
+      var(--accent-soft);
+
     transform:
       translate3d(
-        -30px,
-        20px,
+        6px,
+        -6px,
         0
-      )
-      scale(1.12);
+      );
+  }
 
-    opacity: 0.85;
+
+  .contact-links a:hover {
+    color:
+      var(--accent-soft);
+  }
+
+
+  .contact-links
+  a:hover::after {
+    transform:
+      scaleX(1);
+
+    transform-origin:
+      left center;
   }
 
 }
 
 
 /* =========================================================
-   DESKTOP SHORT SCREEN
+   SHORT DESKTOP
    ========================================================= */
 
 @media
@@ -736,13 +823,15 @@ and (max-height: 850px) {
     min-height: auto;
 
     padding:
-      110px 0
-      70px;
+      110px
+      0
+      80px;
   }
 
 
   .contact-main {
-    margin-top: 65px;
+    margin-top:
+      65px;
   }
 
 
@@ -750,19 +839,21 @@ and (max-height: 850px) {
     font-size:
       clamp(
         4.2rem,
-        8.8vw,
+        8.7vw,
         8.5rem
       );
   }
 
 
   .contact-cta {
-    margin-top: 50px;
+    margin-top:
+      50px;
   }
 
 
   .contact-footer {
-    margin-top: 90px;
+    margin-top:
+      90px;
   }
 
 }
@@ -770,40 +861,50 @@ and (max-height: 850px) {
 
 /* =========================================================
    TABLET
+   <= 900px
    ========================================================= */
 
 @media (max-width: 900px) {
 
   .contact {
-    min-height: auto;
+    min-height:
+      auto;
   }
 
 
   .contact::before {
-    width: 650px;
+    width:
+      650px;
 
-    right: -430px;
+    right:
+      -430px;
   }
 
 
   .contact-heading {
-    max-width: 900px;
+    max-width:
+      900px;
   }
 
 
   .contact-footer {
-    flex-direction: column;
+    flex-direction:
+      column;
 
-    align-items: flex-start;
+    align-items:
+      flex-start;
 
-    gap: 32px;
+    gap:
+      32px;
   }
 
 
   .contact-note {
-    max-width: 500px;
+    max-width:
+      500px;
 
-    text-align: left;
+    text-align:
+      left;
   }
 
 }
@@ -811,48 +912,74 @@ and (max-height: 850px) {
 
 /* =========================================================
    MOBILE
+   431px — 700px
    ========================================================= */
 
-@media (max-width: 700px) {
+@media
+(min-width: 431px)
+and (max-width: 700px) {
 
   .contact {
-    min-height: auto;
-
     padding:
-      105px 0
-      70px;
+      105px
+      0
+      80px;
   }
 
 
   .contact::after {
-    font-size: 9rem;
+    left:
+      -5vw;
 
-    bottom: 2%;
+    bottom:
+      1%;
+
+    font-size:
+      clamp(
+        8rem,
+        28vw,
+        11rem
+      );
   }
 
 
   .contact::before {
-    width: 500px;
+    width:
+      500px;
 
-    right: -380px;
+    right:
+      -380px;
 
-    top: 22%;
+    top:
+      20%;
   }
 
 
   .contact-topline {
-    padding-bottom: 18px;
+    padding-bottom:
+      18px;
   }
 
 
   .contact-topline
   span:last-child {
-    display: none;
+    display:
+      none;
   }
 
 
   .contact-main {
-    margin-top: 75px;
+    margin-top:
+      70px;
+  }
+
+
+  .contact-main::before {
+    width:
+      350px;
+
+    right:
+      -25%;
   }
 
 
@@ -860,40 +987,40 @@ and (max-height: 850px) {
     font-size:
       clamp(
         4rem,
-        18vw,
-        6.6rem
+        17vw,
+        6.3rem
       );
 
-    line-height: 0.82;
+    line-height:
+      0.82;
   }
 
 
   .contact-heading::after {
-    margin-top: 38px;
+    margin-top:
+      38px;
   }
 
 
   .contact-cta {
-    margin-top: 55px;
+    margin-top:
+      55px;
 
     padding:
-      22px 0;
+      22px
+      0;
 
-    font-size: 1.4rem;
-  }
-
-
-  .contact-cta:hover {
-    padding-left: 9px;
-
-    padding-right: 9px;
+    font-size:
+      1.4rem;
   }
 
 
   .contact-footer {
-    margin-top: 90px;
+    margin-top:
+      90px;
 
-    padding-top: 22px;
+    padding-top:
+      22px;
   }
 
 
@@ -903,47 +1030,186 @@ and (max-height: 850px) {
       22px;
   }
 
+}
 
-  .contact .shell::before {
-    width: 280px;
-    height: 280px;
 
-    right: -20%;
+/* =========================================================
+   SMALL MOBILE
+   <= 430px
+   ========================================================= */
 
-    top: 30%;
+@media (max-width: 430px) {
+
+  .contact {
+    padding:
+      95px
+      0
+      75px;
+  }
+
+
+  .contact::after {
+    left:
+      -8vw;
+
+    bottom:
+      1%;
+
+    font-size:
+      clamp(
+        7rem,
+        30vw,
+        9rem
+      );
+  }
+
+
+  .contact::before {
+    width:
+      430px;
+
+    right:
+      -350px;
+
+    top:
+      20%;
+  }
+
+
+  .contact-topline {
+    padding-bottom:
+      17px;
+
+    font-size:
+      0.5rem;
+  }
+
+
+  .contact-topline
+  span:last-child {
+    display:
+      none;
+  }
+
+
+  .contact-main {
+    margin-top:
+      62px;
+  }
+
+
+  .contact-main::before {
+    width:
+      280px;
+
+    right:
+      -35%;
+  }
+
+
+  .contact-heading {
+    font-size:
+      clamp(
+        3.45rem,
+        16vw,
+        4.25rem
+      );
+
+    line-height:
+      0.83;
+  }
+
+
+  .contact-heading::after {
+    margin-top:
+      34px;
+  }
+
+
+  .contact-cta {
+    margin-top:
+      48px;
+
+    padding:
+      20px
+      0;
+
+    gap:
+      18px;
+
+    font-size:
+      1.18rem;
+  }
+
+
+  .contact-cta
+  span:last-child {
+    font-size:
+      1.7rem;
+  }
+
+
+  .contact-footer {
+    margin-top:
+      78px;
+
+    gap:
+      28px;
+  }
+
+
+  .contact-links {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+
+    gap:
+      14px;
+  }
+
+
+  .contact-note {
+    font-size:
+      0.66rem;
+
+    line-height:
+      1.65;
   }
 
 }
 
 
 /* =========================================================
-   SMALL MOBILE
+   TOUCH
    ========================================================= */
 
-@media (max-width: 430px) {
+@media (hover: none) {
 
-  .contact-heading {
-    font-size: 3.8rem;
+  .contact-cta::before {
+    opacity:
+      0;
   }
 
 
-  .contact-cta {
-    font-size: 1.25rem;
+  .contact-cta::after {
+    width:
+      0;
   }
 
 
   .contact-cta
   span:last-child {
-    font-size: 1.8rem;
+    transform:
+      none;
   }
 
 
-  .contact-links {
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    gap: 14px;
+  .contact-links
+  a::after {
+    transform:
+      scaleX(0);
   }
 
 }
@@ -956,20 +1222,16 @@ and (max-height: 850px) {
 @media
 (prefers-reduced-motion: reduce) {
 
-  .contact .shell::before {
-    animation:
-      none !important;
-  }
-
-
   .contact-cta,
   .contact-cta::before,
   .contact-cta::after,
   .contact-cta span:last-child,
   .contact-links a,
   .contact-links a::after {
+
     transition:
       none !important;
+
   }
 
 }

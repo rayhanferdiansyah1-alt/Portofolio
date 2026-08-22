@@ -796,3 +796,279 @@
     });
   });
 })();
+
+/*
+|--------------------------------------------------------------------------
+| C5 — SECTION TRANSITIONS
+|--------------------------------------------------------------------------
+|
+| Transition ini TIDAK menggerakkan content section.
+|
+| Global reveal + component reveal sudah ditangani
+| oleh animation system sebelumnya.
+|
+| Di sini kita hanya membuat:
+|
+| 1. transition line
+| 2. ambient glow
+| 3. center light point
+|
+| sehingga setiap section terasa tersambung.
+|
+|--------------------------------------------------------------------------
+*/
+
+const transitionSections = gsap.utils.toArray(
+  ".about, .projects, .skills, .education, .contact",
+);
+
+const transitionMobile = window.matchMedia("(max-width: 700px)").matches;
+
+/*
+|--------------------------------------------------------------------------
+| CREATE BRIDGES
+|--------------------------------------------------------------------------
+*/
+
+transitionSections.forEach((section, index) => {
+  /*
+    |--------------------------------------------------------------------------
+    | Hindari duplicate element jika script
+    | suatu saat dieksekusi ulang.
+    |--------------------------------------------------------------------------
+    */
+
+  if (section.querySelector(".section-bridge")) {
+    return;
+  }
+
+  /*
+    |--------------------------------------------------------------------------
+    | CREATE WRAPPER
+    |--------------------------------------------------------------------------
+    */
+
+  const bridge = document.createElement("div");
+
+  bridge.className = "section-bridge";
+
+  bridge.setAttribute("aria-hidden", "true");
+
+  /*
+    |--------------------------------------------------------------------------
+    | Alternate ambient origin.
+    |
+    | Bukan zig-zag ekstrem.
+    | Hanya sedikit variasi supaya homepage
+    | tidak terasa terlalu mekanis.
+    |--------------------------------------------------------------------------
+    */
+
+  bridge.style.setProperty(
+    "--bridge-origin",
+
+    index % 2 === 0 ? "38%" : "62%",
+  );
+
+  /*
+    |--------------------------------------------------------------------------
+    | LINE
+    |--------------------------------------------------------------------------
+    */
+
+  const line = document.createElement("span");
+
+  line.className = "section-bridge-line";
+
+  /*
+    |--------------------------------------------------------------------------
+    | GLOW
+    |--------------------------------------------------------------------------
+    */
+
+  const glow = document.createElement("span");
+
+  glow.className = "section-bridge-glow";
+
+  /*
+    |--------------------------------------------------------------------------
+    | CENTER POINT
+    |--------------------------------------------------------------------------
+    */
+
+  const point = document.createElement("span");
+
+  point.className = "section-bridge-point";
+
+  bridge.append(line, glow, point);
+
+  /*
+    |--------------------------------------------------------------------------
+    | Tambahkan sebagai elemen pertama section.
+    |--------------------------------------------------------------------------
+    */
+
+  section.prepend(bridge);
+
+  /*
+    |--------------------------------------------------------------------------
+    | TRANSITION TIMELINE
+    |--------------------------------------------------------------------------
+    */
+
+  const transitionTimeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,
+
+      start: "top 98%",
+
+      end: "top 54%",
+
+      scrub: transitionMobile ? 1.5 : 1.15,
+
+      invalidateOnRefresh: true,
+    },
+  });
+
+  /*
+    |--------------------------------------------------------------------------
+    | LINE ARRIVAL
+    |--------------------------------------------------------------------------
+    */
+
+  transitionTimeline.fromTo(
+    line,
+
+    {
+      scaleX: 0,
+
+      opacity: 0,
+    },
+
+    {
+      scaleX: 1,
+
+      opacity: 1,
+
+      duration: 0.58,
+
+      ease: "none",
+    },
+
+    0,
+  );
+
+  /*
+    |--------------------------------------------------------------------------
+    | LINE SETTLE
+    |--------------------------------------------------------------------------
+    */
+
+  transitionTimeline.to(
+    line,
+
+    {
+      opacity: transitionMobile ? 0.24 : 0.34,
+
+      duration: 0.42,
+
+      ease: "none",
+    },
+
+    0.58,
+  );
+
+  /*
+    |--------------------------------------------------------------------------
+    | AMBIENT GLOW ARRIVAL
+    |--------------------------------------------------------------------------
+    */
+
+  transitionTimeline.fromTo(
+    glow,
+
+    {
+      opacity: 0,
+
+      y: -18,
+    },
+
+    {
+      opacity: transitionMobile ? 0.32 : 0.52,
+
+      y: 0,
+
+      duration: 0.48,
+
+      ease: "none",
+    },
+
+    0,
+  );
+
+  /*
+    |--------------------------------------------------------------------------
+    | AMBIENT GLOW DISSOLVE
+    |--------------------------------------------------------------------------
+    */
+
+  transitionTimeline.to(
+    glow,
+
+    {
+      opacity: 0,
+
+      y: transitionMobile ? 14 : 24,
+
+      duration: 0.52,
+
+      ease: "none",
+    },
+
+    0.48,
+  );
+
+  /*
+    |--------------------------------------------------------------------------
+    | LIGHT POINT
+    |--------------------------------------------------------------------------
+    */
+
+  transitionTimeline.fromTo(
+    point,
+
+    {
+      opacity: 0,
+
+      scale: 0,
+    },
+
+    {
+      opacity: transitionMobile ? 0.5 : 0.8,
+
+      scale: 1,
+
+      duration: 0.32,
+
+      ease: "none",
+    },
+
+    0.18,
+  );
+
+  transitionTimeline.to(
+    point,
+
+    {
+      opacity: 0,
+
+      scale: 0.55,
+
+      duration: 0.4,
+
+      ease: "none",
+    },
+
+    0.5,
+  );
+});

@@ -1,43 +1,54 @@
 /* =========================================================
-   RFM PORTFOLIO — V3.4
-   ABOUT + EDUCATION
-   Luxury Editorial System
+   RFM PORTFOLIO
+   C1 — ABOUT / PROFILE
+   FINAL CLEAN
    ========================================================= */
 
 
 /* =========================================================
-   ABOUT
+   ABOUT SECTION
    ========================================================= */
 
 .about {
   position: relative;
 
   padding:
-    clamp(120px, 11vw, 180px)
+    clamp(135px, 12vw, 195px)
     0
-    clamp(110px, 10vw, 160px);
+    clamp(120px, 11vw, 175px);
 
   overflow: hidden;
 
   border-bottom:
-    1px solid var(--line);
+    1px solid
+    var(--line);
 
   background:
     radial-gradient(
-      circle at 78% 20%,
-      rgba(168, 221, 245, 0.045),
-      transparent 26%
+      circle at 82% 28%,
+      rgba(168, 221, 245, 0.055),
+      transparent 28%
     ),
+
+    radial-gradient(
+      circle at 14% 82%,
+      rgba(255, 255, 255, 0.018),
+      transparent 25%
+    ),
+
     linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.014),
-      transparent 32%
+      rgba(255, 255, 255, 0.012),
+      transparent 34%
     ),
+
     var(--bg);
 }
 
 
-/* Giant background typography */
+/* =========================================================
+   GIANT BACKGROUND TYPOGRAPHY
+   ========================================================= */
 
 .about::before {
   content: "PROFILE";
@@ -45,26 +56,32 @@
   position: absolute;
 
   right: -2vw;
-  top: 8%;
+  top: 7%;
 
   color:
-    rgba(255, 255, 255, 0.014);
+    rgba(
+      255,
+      255,
+      255,
+      0.014
+    );
 
   font-family:
     var(--font-display);
 
   font-size:
     clamp(
-      8rem,
-      20vw,
-      22rem
+      9rem,
+      21vw,
+      23rem
     );
 
   font-weight: 600;
 
-  line-height: 0.8;
+  line-height: 0.76;
 
-  letter-spacing: -0.09em;
+  letter-spacing:
+    -0.095em;
 
   pointer-events: none;
 
@@ -72,7 +89,9 @@
 }
 
 
-/* Soft vertical glow */
+/* =========================================================
+   VERTICAL AMBIENT LINE
+   ========================================================= */
 
 .about::after {
   content: "";
@@ -80,22 +99,43 @@
   position: absolute;
 
   width: 1px;
-  height: 34%;
+  height: 42%;
 
-  right: 9%;
-  top: 28%;
+  right: 8%;
+  top: 23%;
 
   background:
     linear-gradient(
       to bottom,
+
       transparent,
-      rgba(168, 221, 245, 0.18),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.20
+      ),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.05
+      ),
+
       transparent
     );
+
+  opacity: 0.7;
 
   pointer-events: none;
 }
 
+
+/* =========================================================
+   SHELL
+   ========================================================= */
 
 .about > .shell {
   position: relative;
@@ -111,22 +151,22 @@
 .about-grid {
   margin-top:
     clamp(
-      55px,
-      7vw,
-      90px
+      65px,
+      7.5vw,
+      105px
     );
 
   display: grid;
 
   grid-template-columns:
     minmax(0, 1.08fr)
-    minmax(320px, 0.72fr);
+    minmax(330px, 0.72fr);
 
   gap:
     clamp(
-      70px,
-      10vw,
-      170px
+      80px,
+      11vw,
+      180px
     );
 
   align-items: start;
@@ -139,11 +179,13 @@
 
 .about-heading {
   position: relative;
+
+  min-width: 0;
 }
 
 
 .about-heading h2 {
-  max-width: 850px;
+  max-width: 900px;
 
   margin-top: 24px;
 
@@ -155,16 +197,17 @@
 
   font-size:
     clamp(
-      3.8rem,
-      7vw,
-      7.8rem
+      4.2rem,
+      7.5vw,
+      8.3rem
     );
 
   font-weight: 500;
 
-  line-height: 0.89;
+  line-height: 0.86;
 
-  letter-spacing: -0.075em;
+  letter-spacing:
+    -0.08em;
 }
 
 
@@ -172,30 +215,77 @@
   display: block;
 
   color:
-    rgba(245, 245, 247, 0.27);
+    rgba(
+      245,
+      245,
+      247,
+      0.25
+    );
+
+  transition:
+    color
+    0.65s ease;
 }
 
 
-/* decorative index line */
+@media (hover: hover) {
+
+  .about:hover
+  .about-heading h2 span {
+    color:
+      rgba(
+        245,
+        245,
+        247,
+        0.36
+      );
+  }
+
+}
+
+
+/* =========================================================
+   HEADING ACCENT
+   ========================================================= */
 
 .about-heading::after {
   content: "";
 
   display: block;
 
-  width: 72px;
+  width:
+    clamp(
+      58px,
+      6vw,
+      88px
+    );
+
   height: 1px;
 
-  margin-top: 45px;
+  margin-top:
+    clamp(
+      38px,
+      4vw,
+      52px
+    );
 
   background:
     linear-gradient(
       90deg,
+
       var(--accent),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.16
+      ),
+
       transparent
     );
 
-  opacity: 0.6;
+  opacity: 0.72;
 }
 
 
@@ -208,48 +298,69 @@
 
   padding-top:
     clamp(
-      45px,
+      54px,
       6vw,
-      85px
+      92px
     );
 }
 
+
+/* =========================================================
+   EDITORIAL MARKER
+   ========================================================= */
 
 .about-copy::before {
   content: "";
 
   position: absolute;
 
-  left: -28px;
+  left: -30px;
 
   top:
     clamp(
-      52px,
+      60px,
       6vw,
-      90px
+      98px
     );
 
   width: 1px;
-  height: 70px;
+  height: 86px;
 
   background:
     linear-gradient(
       to bottom,
+
       var(--accent),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.12
+      ),
+
       transparent
     );
 
-  opacity: 0.26;
+  opacity: 0.42;
+
+  pointer-events: none;
 }
 
+
+/* =========================================================
+   PARAGRAPH
+   ========================================================= */
 
 .about-copy p {
   max-width: 620px;
 
+  margin: 0;
+
   color:
     var(--muted);
 
-  font-size: 0.97rem;
+  font-size: 0.96rem;
 
   line-height: 1.95;
 }
@@ -260,18 +371,25 @@
 }
 
 
-.about-copy .about-lead {
+/* =========================================================
+   LEAD PARAGRAPH
+   ========================================================= */
+
+.about-copy
+.about-lead {
+  position: relative;
+
   color:
     var(--text-soft);
 
   font-size:
     clamp(
-      1.08rem,
+      1.1rem,
       1.45vw,
-      1.28rem
+      1.3rem
     );
 
-  line-height: 1.8;
+  line-height: 1.78;
 }
 
 
@@ -282,38 +400,46 @@
 .about-stats {
   margin-top:
     clamp(
-      90px,
-      10vw,
-      145px
+      100px,
+      10.5vw,
+      155px
     );
 
   display: grid;
 
   grid-template-columns:
-    repeat(3, 1fr);
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
 
   border-top:
-    1px solid var(--line);
+    1px solid
+    var(--line-strong);
 
   border-bottom:
-    1px solid var(--line);
+    1px solid
+    var(--line);
 }
 
 
-/* Stat item */
+/* =========================================================
+   STAT ITEM
+   ========================================================= */
 
 .stat {
   position: relative;
 
   min-height:
     clamp(
-      155px,
+      165px,
       14vw,
-      210px
+      215px
     );
 
   padding:
-    34px 0;
+    32px
+    0;
 
   display: flex;
 
@@ -323,23 +449,30 @@
     space-between;
 
   overflow: hidden;
-
-  transition:
-    padding-left
-    0.55s
-    var(--ease-out);
 }
 
+
+/* =========================================================
+   STAT SEPARATOR
+   ========================================================= */
 
 .stat + .stat {
-  padding-left: 44px;
+  padding-left:
+    clamp(
+      28px,
+      3.2vw,
+      48px
+    );
 
   border-left:
-    1px solid var(--line);
+    1px solid
+    var(--line);
 }
 
 
-/* subtle hover background */
+/* =========================================================
+   STAT AMBIENCE
+   ========================================================= */
 
 .stat::before {
   content: "";
@@ -349,36 +482,96 @@
   inset: 0;
 
   background:
-    linear-gradient(
-      135deg,
-      rgba(168, 221, 245, 0.035),
-      transparent 55%
+    radial-gradient(
+      circle at 12% 18%,
+
+      rgba(
+        168,
+        221,
+        245,
+        0.07
+      ),
+
+      transparent 58%
     );
 
   opacity: 0;
 
+  transform:
+    scale(0.94);
+
+  transform-origin:
+    left center;
+
   transition:
     opacity
-    0.45s ease;
+    0.65s ease,
+
+    transform
+    0.9s
+    var(--ease-out);
+
+  pointer-events: none;
 }
 
 
-.stat:hover::before {
-  opacity: 1;
+/* =========================================================
+   STAT ACTIVE LINE
+   ========================================================= */
+
+.stat::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: -1px;
+
+  width: 0;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+
+      var(--accent),
+
+      transparent
+    );
+
+  transition:
+    width
+    0.75s
+    var(--ease-out);
+
+  pointer-events: none;
 }
 
 
-.stat:hover {
-  padding-left: 16px;
+/* =========================================================
+   STAT HOVER
+   ========================================================= */
+
+@media (hover: hover) {
+
+  .stat:hover::before {
+    opacity: 1;
+
+    transform:
+      scale(1);
+  }
+
+
+  .stat:hover::after {
+    width: 42%;
+  }
+
 }
 
 
-.stat + .stat:hover {
-  padding-left: 58px;
-}
-
-
-/* Numbers */
+/* =========================================================
+   STAT NUMBER
+   ========================================================= */
 
 .stat-number {
   position: relative;
@@ -393,449 +586,116 @@
 
   font-size:
     clamp(
-      2.4rem,
-      4.3vw,
-      4.5rem
+      2.6rem,
+      4.5vw,
+      4.8rem
     );
 
   font-weight: 500;
 
-  line-height: 0.95;
+  line-height: 0.92;
 
-  letter-spacing: -0.065em;
+  letter-spacing:
+    -0.07em;
+
+  transition:
+    color
+    0.45s ease,
+
+    text-shadow
+    0.45s ease;
 }
 
 
-/* Labels */
+@media (hover: hover) {
+
+  .stat:hover
+  .stat-number {
+    color:
+      var(--accent-soft);
+
+    text-shadow:
+      0
+      0
+      28px
+      rgba(
+        168,
+        221,
+        245,
+        0.10
+      );
+  }
+
+}
+
+
+/* =========================================================
+   STAT LABEL
+   ========================================================= */
 
 .stat-label {
   position: relative;
 
   z-index: 2;
 
+  max-width: 180px;
+
   color:
     var(--dim);
 
   font-family:
     var(--font-mono);
 
-  font-size: 0.55rem;
+  font-size: 0.53rem;
 
-  letter-spacing: 0.1em;
+  line-height: 1.6;
 
-  text-transform:
-    uppercase;
-}
-
-
-/* =========================================================
-   EDUCATION
-   ========================================================= */
-
-.education {
-  position: relative;
-
-  padding:
-    clamp(
-      120px,
-      11vw,
-      175px
-    )
-    0;
-
-  overflow: hidden;
-
-  border-top:
-    1px solid
-    var(--line);
-
-  background:
-    radial-gradient(
-      circle at 84% 34%,
-      rgba(168, 221, 245, 0.045),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 10% 80%,
-      rgba(255, 255, 255, 0.018),
-      transparent 24%
-    ),
-    var(--bg);
-}
-
-
-/* Giant watermark */
-
-.education::before {
-  content: "EDU";
-
-  position: absolute;
-
-  right: -2vw;
-  bottom: -4%;
-
-  color:
-    rgba(255, 255, 255, 0.016);
-
-  font-family:
-    var(--font-display);
-
-  font-size:
-    clamp(
-      10rem,
-      24vw,
-      28rem
-    );
-
-  font-weight: 600;
-
-  letter-spacing: -0.09em;
-
-  line-height: 0.7;
-
-  pointer-events: none;
-
-  user-select: none;
-}
-
-
-.education > .shell {
-  position: relative;
-
-  z-index: 2;
-}
-
-
-/* =========================================================
-   EDUCATION GRID
-   ========================================================= */
-
-.education-layout {
-  margin-top:
-    clamp(
-      60px,
-      7vw,
-      95px
-    );
-
-  display: grid;
-
-  grid-template-columns:
-    minmax(260px, 0.68fr)
-    minmax(0, 1.32fr);
-
-  gap:
-    clamp(
-      70px,
-      10vw,
-      170px
-    );
-
-  align-items: start;
-}
-
-
-/* =========================================================
-   EDUCATION HEADING
-   ========================================================= */
-
-.education-heading h2 {
-  margin-top: 20px;
-
-  color:
-    var(--text);
-
-  font-family:
-    var(--font-display);
-
-  font-size:
-    clamp(
-      3.4rem,
-      5.8vw,
-      6.4rem
-    );
-
-  font-weight: 500;
-
-  line-height: 0.91;
-
-  letter-spacing: -0.07em;
-}
-
-
-.education-heading::after {
-  content: "";
-
-  display: block;
-
-  width: 58px;
-  height: 1px;
-
-  margin-top: 40px;
-
-  background:
-    var(--accent);
-
-  opacity: 0.45;
-}
-
-
-/* =========================================================
-   EDUCATION CARD
-   ========================================================= */
-
-.education-card {
-  position: relative;
-
-  padding:
-    30px 0
-    15px;
-
-  display: grid;
-
-  grid-template-columns:
-    90px 1fr;
-
-  gap: 40px;
-
-  border-top:
-    1px solid
-    var(--line-strong);
-
-  border-bottom:
-    1px solid
-    var(--line);
-
-  transition:
-    padding-left
-    0.55s
-    var(--ease-out),
-    border-color
-    0.4s ease;
-}
-
-
-/* accent line */
-
-.education-card::before {
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-  top: -1px;
-
-  width: 0;
-  height: 1px;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--accent),
-      transparent
-    );
-
-  transition:
-    width
-    0.75s
-    var(--ease-out);
-}
-
-
-.education-card:hover::before {
-  width: 46%;
-}
-
-
-.education-card:hover {
-  padding-left: 18px;
-
-  border-top-color:
-    rgba(168, 221, 245, 0.24);
-}
-
-
-/* D3 */
-
-.education-year {
-  padding-top: 4px;
-
-  color:
-    var(--accent);
-
-  font-family:
-    var(--font-mono);
-
-  font-size: 0.68rem;
-
-  letter-spacing: 0.1em;
-}
-
-
-/* Degree */
-
-.education-degree {
-  color:
-    var(--muted);
-
-  font-family:
-    var(--font-mono);
-
-  font-size: 0.57rem;
-
-  letter-spacing: 0.11em;
-
-  text-transform:
-    uppercase;
-}
-
-
-/* University */
-
-.education-card h3 {
-  max-width: 760px;
-
-  margin-top: 20px;
-
-  color:
-    var(--text);
-
-  font-family:
-    var(--font-display);
-
-  font-size:
-    clamp(
-      2rem,
-      3.4vw,
-      3.6rem
-    );
-
-  font-weight: 500;
-
-  line-height: 1;
-
-  letter-spacing: -0.06em;
-}
-
-
-/* description */
-
-.education-card p {
-  max-width: 680px;
-
-  margin-top: 30px;
-
-  color:
-    var(--muted);
-
-  font-size: 0.92rem;
-
-  line-height: 1.9;
-}
-
-
-/* =========================================================
-   EDUCATION TAGS
-   ========================================================= */
-
-.education-tags {
-  margin-top: 36px;
-
-  padding-bottom: 24px;
-
-  display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 8px;
-}
-
-
-.education-tags span {
-  position: relative;
-
-  padding:
-    7px
-    12px;
-
-  border:
-    1px solid
-    var(--line);
-
-  border-radius: 999px;
-
-  color:
-    var(--dim);
-
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.008
-    );
-
-  font-family:
-    var(--font-mono);
-
-  font-size: 0.5rem;
-
-  letter-spacing: 0.07em;
+  letter-spacing:
+    0.10em;
 
   text-transform:
     uppercase;
 
   transition:
     color
-    0.3s ease,
-    border-color
-    0.3s ease,
-    background
-    0.3s ease;
+    0.45s ease;
 }
 
 
-.education-tags span:hover {
-  color:
-    var(--accent-soft);
+@media (hover: hover) {
 
-  border-color:
-    rgba(
-      168,
-      221,
-      245,
-      0.28
-    );
+  .stat:hover
+  .stat-label {
+    color:
+      var(--muted);
+  }
 
-  background:
-    rgba(
-      168,
-      221,
-      245,
-      0.035
-    );
 }
 
 
 /* =========================================================
    TABLET
+   <= 900px
    ========================================================= */
 
 @media (max-width: 900px) {
 
-  .about-grid,
-  .education-layout {
+  .about-grid {
     grid-template-columns:
       1fr;
+
+    gap: 48px;
   }
 
 
-  .about-grid {
-    gap: 44px;
+  .about-heading h2 {
+    max-width: 780px;
   }
 
 
   .about-copy {
+    max-width: 620px;
+
     padding-top: 0;
   }
 
@@ -844,41 +704,45 @@
     display: none;
   }
 
-
-  .education-layout {
-    gap: 55px;
-  }
-
-
-  .education-card {
-    max-width: 850px;
-  }
-
 }
 
 
 /* =========================================================
    MOBILE
+   <= 700px
    ========================================================= */
 
 @media (max-width: 700px) {
 
   .about {
     padding:
-      105px 0
-      90px;
+      105px
+      0
+      95px;
   }
 
 
   .about::before {
     top: 6%;
 
-    font-size: 9rem;
+    right: -7vw;
+
+    font-size:
+      clamp(
+        8rem,
+        32vw,
+        11rem
+      );
+  }
+
+
+  .about::after {
+    display: none;
   }
 
 
   .about-grid {
-    margin-top: 48px;
+    margin-top: 50px;
 
     gap: 40px;
   }
@@ -887,27 +751,41 @@
   .about-heading h2 {
     font-size:
       clamp(
-        3rem,
+        3.2rem,
         14vw,
-        5.1rem
+        5.2rem
       );
+
+    line-height: 0.87;
   }
 
 
   .about-heading::after {
-    margin-top: 30px;
+    margin-top: 32px;
   }
 
 
-  .about-copy .about-lead {
+  .about-copy
+  .about-lead {
     font-size: 1rem;
+
+    line-height: 1.75;
   }
 
 
-  /* stats */
+  .about-copy p {
+    font-size: 0.88rem;
+
+    line-height: 1.82;
+  }
+
+
+  /* =======================================================
+     MOBILE STATS
+     ======================================================= */
 
   .about-stats {
-    margin-top: 75px;
+    margin-top: 80px;
 
     grid-template-columns:
       1fr;
@@ -918,7 +796,8 @@
     min-height: 135px;
 
     padding:
-      26px 0;
+      26px
+      0;
   }
 
 
@@ -933,91 +812,114 @@
   }
 
 
-  .stat:hover,
-  .stat + .stat:hover {
-    padding-left: 10px;
-  }
-
-
-  /* Education */
-
-  .education {
-    padding:
-      105px 0;
-  }
-
-
-  .education::before {
-    font-size: 10rem;
-  }
-
-
-  .education-layout {
-    margin-top: 48px;
-  }
-
-
-  .education-heading h2 {
+  .stat-number {
     font-size:
       clamp(
-        3rem,
-        13vw,
-        5rem
+        2.5rem,
+        11vw,
+        3.5rem
       );
   }
 
 
-  .education-card {
-    grid-template-columns:
-      1fr;
-
-    gap: 18px;
-
-    padding:
-      24px 0;
-  }
-
-
-  .education-card:hover {
-    padding-left: 8px;
-  }
-
-
-  .education-card h3 {
-    font-size:
-      clamp(
-        2rem,
-        9vw,
-        3rem
-      );
+  .stat-label {
+    margin-top: 20px;
   }
 
 }
 
 
 /* =========================================================
-   VERY SMALL MOBILE
+   SMALL MOBILE
+   <= 430px
    ========================================================= */
 
 @media (max-width: 430px) {
 
+  .about {
+    padding:
+      95px
+      0
+      88px;
+  }
+
+
+  .about-grid {
+    margin-top: 45px;
+  }
+
+
   .about-heading h2 {
-    font-size: 3.1rem;
+    font-size:
+      clamp(
+        3rem,
+        15vw,
+        3.9rem
+      );
   }
 
 
   .about-copy p {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
+  }
+
+
+  .about-stats {
+    margin-top: 70px;
+  }
+
+
+  .stat {
+    min-height: 128px;
   }
 
 
   .stat-number {
-    font-size: 2.6rem;
+    font-size: 2.65rem;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICE
+   ========================================================= */
+
+@media (hover: none) {
+
+  .about-heading h2 span {
+    color:
+      rgba(
+        245,
+        245,
+        247,
+        0.25
+      );
   }
 
 
-  .education-heading h2 {
-    font-size: 3rem;
+  .stat::before {
+    opacity: 0;
+  }
+
+
+  .stat::after {
+    width: 0;
+  }
+
+
+  .stat-number {
+    color:
+      var(--text);
+
+    text-shadow:
+      none;
+  }
+
+
+  .stat-label {
+    color:
+      var(--dim);
   }
 
 }
@@ -1027,18 +929,18 @@
    REDUCED MOTION
    ========================================================= */
 
-@media (
-  prefers-reduced-motion:
-  reduce
-) {
+@media
+(prefers-reduced-motion: reduce) {
 
-  .stat,
+  .about-heading h2 span,
   .stat::before,
-  .education-card,
-  .education-card::before,
-  .education-tags span {
+  .stat::after,
+  .stat-number,
+  .stat-label {
+
     transition:
       none !important;
+
   }
 
 }
