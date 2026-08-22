@@ -1,6 +1,6 @@
 /* =========================================================
-   RFM PORTFOLIO — V3.5
-   CAPABILITIES / TECH STACK
+   RFM PORTFOLIO
+   C2 — CAPABILITIES / TECH STACK
    Luxury Editorial System
    ========================================================= */
 
@@ -13,31 +13,69 @@
   position: relative;
 
   padding:
-    clamp(125px, 11vw, 180px)
+    clamp(
+      135px,
+      12vw,
+      195px
+    )
     0
-    clamp(120px, 10vw, 165px);
+    clamp(
+      125px,
+      11vw,
+      175px
+    );
 
   overflow: hidden;
 
   border-top:
-    1px solid var(--line);
+    1px solid
+    var(--line);
+
+  border-bottom:
+    1px solid
+    var(--line);
 
   background:
     radial-gradient(
-      circle at 16% 22%,
-      rgba(168, 221, 245, 0.045),
-      transparent 25%
+      circle at 14% 22%,
+      rgba(
+        168,
+        221,
+        245,
+        0.05
+      ),
+      transparent 27%
     ),
+
     radial-gradient(
       circle at 85% 74%,
-      rgba(255, 255, 255, 0.018),
-      transparent 26%
+      rgba(
+        255,
+        255,
+        255,
+        0.018
+      ),
+      transparent 28%
     ),
+
+    linear-gradient(
+      180deg,
+      rgba(
+        255,
+        255,
+        255,
+        0.008
+      ),
+      transparent 24%
+    ),
+
     var(--bg);
 }
 
 
-/* Giant background typography */
+/* =========================================================
+   GIANT BACKGROUND TYPOGRAPHY
+   ========================================================= */
 
 .skills::before {
   content: "STACK";
@@ -45,10 +83,15 @@
   position: absolute;
 
   left: -2vw;
-  bottom: -3%;
+  bottom: -2%;
 
   color:
-    rgba(255, 255, 255, 0.014);
+    rgba(
+      255,
+      255,
+      255,
+      0.013
+    );
 
   font-family:
     var(--font-display);
@@ -64,7 +107,8 @@
 
   line-height: 0.7;
 
-  letter-spacing: -0.1em;
+  letter-spacing:
+    -0.1em;
 
   pointer-events: none;
 
@@ -72,26 +116,45 @@
 }
 
 
-/* Ambient vertical glow */
+/* =========================================================
+   AMBIENT VERTICAL LINE
+   ========================================================= */
 
 .skills::after {
   content: "";
 
   position: absolute;
 
-  top: 20%;
-  right: 13%;
+  top: 18%;
+  right: 11%;
 
   width: 1px;
-  height: 38%;
+  height: 42%;
 
   background:
     linear-gradient(
       to bottom,
+
       transparent,
-      rgba(168, 221, 245, 0.15),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.18
+      ),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.04
+      ),
+
       transparent
     );
+
+  opacity: 0.7;
 
   pointer-events: none;
 }
@@ -111,22 +174,28 @@
 .skills-header {
   margin-top:
     clamp(
-      55px,
-      7vw,
-      90px
+      60px,
+      7.5vw,
+      100px
     );
 
   display: grid;
 
   grid-template-columns:
-    minmax(180px, 0.42fr)
-    minmax(0, 1.58fr);
+    minmax(
+      170px,
+      0.34fr
+    )
+    minmax(
+      0,
+      1.66fr
+    );
 
   gap:
     clamp(
       55px,
       8vw,
-      120px
+      125px
     );
 
   align-items: start;
@@ -134,12 +203,14 @@
 
 
 .skills-header .eyebrow {
-  padding-top: 13px;
+  padding-top: 14px;
 }
 
 
 .skills-header h2 {
-  max-width: 1100px;
+  max-width: 1050px;
+
+  margin: 0;
 
   color:
     var(--text);
@@ -149,29 +220,30 @@
 
   font-size:
     clamp(
-      4rem,
+      4.3rem,
       8.2vw,
-      8.6rem
+      8.7rem
     );
 
   font-weight: 500;
 
   line-height: 0.84;
 
-  letter-spacing: -0.085em;
+  letter-spacing:
+    -0.085em;
 }
 
 
 /* =========================================================
-   CAPABILITIES LIST
+   CAPABILITIES
    ========================================================= */
 
 .capabilities {
   margin-top:
     clamp(
-      90px,
-      9vw,
-      135px
+      95px,
+      9.5vw,
+      145px
     );
 
   border-top:
@@ -190,22 +262,33 @@
   min-height:
     clamp(
       170px,
-      15vw,
-      225px
+      14vw,
+      215px
     );
 
   padding:
-    32px 0;
+    clamp(
+      30px,
+      3vw,
+      42px
+    )
+    0;
 
   display: grid;
 
   grid-template-columns:
     90px
-    minmax(0, 1fr)
-    auto;
+    minmax(
+      0,
+      1fr
+    );
 
   gap:
-    38px;
+    clamp(
+      28px,
+      3.5vw,
+      52px
+    );
 
   align-items: start;
 
@@ -215,55 +298,82 @@
     1px solid
     var(--line);
 
+  isolation: isolate;
+
   transition:
-    padding-left
-    0.55s
-    var(--ease-out),
-    padding-right
-    0.55s
-    var(--ease-out),
     border-color
-    0.4s ease;
+    0.45s ease;
 }
 
 
-/* glow layer */
+/* =========================================================
+   ROW AMBIENCE
+   ========================================================= */
 
 .capability::before {
   content: "";
 
   position: absolute;
 
-  inset: 0;
+  z-index: 0;
 
-  opacity: 0;
+  inset: 0;
 
   background:
     radial-gradient(
-      circle at 18% 50%,
-      rgba(168, 221, 245, 0.055),
-      transparent 32%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(168, 221, 245, 0.025),
-      transparent 46%
+      circle at
+      var(--capability-x, 18%)
+      50%,
+
+      rgba(
+        168,
+        221,
+        245,
+        0.065
+      ),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.018
+      )
+      30%,
+
+      transparent
+      62%
     );
+
+  opacity: 0;
+
+  transform:
+    scaleX(0.92);
+
+  transform-origin:
+    left center;
 
   transition:
     opacity
-    0.45s ease;
+    0.7s ease,
+
+    transform
+    1s
+    var(--ease-out);
 
   pointer-events: none;
 }
 
 
-/* animated top/bottom accent line */
+/* =========================================================
+   ACTIVE LINE
+   ========================================================= */
 
 .capability::after {
   content: "";
 
   position: absolute;
+
+  z-index: 3;
 
   left: 0;
   bottom: -1px;
@@ -274,36 +384,86 @@
   background:
     linear-gradient(
       90deg,
+
       var(--accent),
+
+      rgba(
+        168,
+        221,
+        245,
+        0.20
+      ),
+
       transparent
     );
 
   transition:
     width
-    0.75s
+    0.85s
     var(--ease-out);
+
+  pointer-events: none;
 }
 
 
-/* hover */
+/* =========================================================
+   ROW CHARACTER
+   ========================================================= */
 
-.capability:hover {
-  padding-left: 20px;
-
-  padding-right: 14px;
-
-  border-bottom-color:
-    rgba(168, 221, 245, 0.18);
+.capability:nth-child(1) {
+  --capability-x: 18%;
 }
 
 
-.capability:hover::before {
-  opacity: 1;
+.capability:nth-child(2) {
+  --capability-x: 32%;
 }
 
 
-.capability:hover::after {
-  width: 42%;
+.capability:nth-child(3) {
+  --capability-x: 50%;
+}
+
+
+.capability:nth-child(4) {
+  --capability-x: 68%;
+}
+
+
+.capability:nth-child(5) {
+  --capability-x: 82%;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+@media (hover: hover) {
+
+  .capability:hover {
+    border-bottom-color:
+      rgba(
+        168,
+        221,
+        245,
+        0.18
+      );
+  }
+
+
+  .capability:hover::before {
+    opacity: 1;
+
+    transform:
+      scaleX(1);
+  }
+
+
+  .capability:hover::after {
+    width: 42%;
+  }
+
 }
 
 
@@ -316,7 +476,7 @@
 
   z-index: 2;
 
-  padding-top: 6px;
+  padding-top: 7px;
 
   color:
     var(--dim);
@@ -324,20 +484,39 @@
   font-family:
     var(--font-mono);
 
-  font-size: 0.56rem;
+  font-size: 0.54rem;
 
-  letter-spacing: 0.1em;
+  letter-spacing:
+    0.11em;
 
   transition:
     color
-    0.35s ease;
+    0.45s ease,
+
+    text-shadow
+    0.45s ease;
 }
 
 
-.capability:hover
-.capability-index {
-  color:
-    var(--accent);
+@media (hover: hover) {
+
+  .capability:hover
+  .capability-index {
+    color:
+      var(--accent-soft);
+
+    text-shadow:
+      0
+      0
+      20px
+      rgba(
+        168,
+        221,
+        245,
+        0.18
+      );
+  }
+
 }
 
 
@@ -349,8 +528,21 @@
   position: relative;
 
   z-index: 2;
+
+  min-width: 0;
+
+  padding-right:
+    clamp(
+      55px,
+      7vw,
+      110px
+    );
 }
 
+
+/* =========================================================
+   LABEL
+   ========================================================= */
 
 .capability-label {
   display: inline-flex;
@@ -365,9 +557,10 @@
   font-family:
     var(--font-mono);
 
-  font-size: 0.55rem;
+  font-size: 0.54rem;
 
-  letter-spacing: 0.11em;
+  letter-spacing:
+    0.11em;
 
   text-transform:
     uppercase;
@@ -387,21 +580,39 @@
 
   transition:
     width
-    0.45s
-    var(--ease-out);
+    0.55s
+    var(--ease-out),
+
+    opacity
+    0.4s ease;
 }
 
 
-.capability:hover
-.capability-label::before {
-  width: 34px;
+@media (hover: hover) {
+
+  .capability:hover
+  .capability-label::before {
+    width: 32px;
+
+    opacity: 0.8;
+  }
+
 }
 
 
-/* Main skill typography */
+/* =========================================================
+   MAIN SKILL TYPOGRAPHY
+   ========================================================= */
 
 .capability h3 {
-  margin-top: 22px;
+  max-width: 1050px;
+
+  margin-top:
+    clamp(
+      18px,
+      2vw,
+      25px
+    );
 
   color:
     var(--text);
@@ -411,39 +622,36 @@
 
   font-size:
     clamp(
-      2.6rem,
+      2.8rem,
       5vw,
-      5.6rem
+      5.5rem
     );
 
   font-weight: 500;
 
   line-height: 0.88;
 
-  letter-spacing: -0.075em;
+  letter-spacing:
+    -0.075em;
 
   transition:
-    transform
-    0.55s
-    var(--ease-out),
-    letter-spacing
-    0.55s
-    var(--ease-out);
+    color
+    0.55s ease;
 }
 
 
-.capability:hover h3 {
-  transform:
-    translateX(8px);
+@media (hover: hover) {
 
-  letter-spacing:
-    -0.07em;
+  .capability:hover h3 {
+    color:
+      var(--accent-soft);
+  }
+
 }
 
 
 /* =========================================================
    DECORATIVE ARROW
-   Tidak membutuhkan perubahan HTML.
    ========================================================= */
 
 .capability > div::after {
@@ -454,12 +662,13 @@
   right: 4px;
   top: 50%;
 
-  transform:
-    translateY(-50%)
-    translate(-14px, 14px);
-
   color:
-    rgba(168, 221, 245, 0);
+    rgba(
+      168,
+      221,
+      245,
+      0.12
+    );
 
   font-family:
     var(--font-display);
@@ -467,131 +676,70 @@
   font-size:
     clamp(
       1.7rem,
-      3vw,
-      3rem
+      2.8vw,
+      2.8rem
     );
 
   font-weight: 400;
 
+  line-height: 1;
+
+  transform:
+    translateY(-50%)
+    rotate(-5deg);
+
   transition:
     color
-    0.4s ease,
+    0.5s ease,
+
     transform
-    0.55s
+    0.65s
     var(--ease-out);
 }
 
 
-.capability:hover
-> div::after {
-  color:
-    rgba(168, 221, 245, 0.48);
+@media (hover: hover) {
 
-  transform:
-    translateY(-50%)
-    translate(0, 0);
+  .capability:hover
+  > div::after {
+    color:
+      rgba(
+        168,
+        221,
+        245,
+        0.62
+      );
+
+    transform:
+      translateY(-50%)
+      rotate(0deg);
+  }
+
 }
 
 
 /* =========================================================
-   INDIVIDUAL ROW CHARACTER
+   LARGE DECORATIVE ROW NUMBER
    ========================================================= */
 
-/* Backend */
-
-.capability:nth-child(1)::before {
-  background:
-    radial-gradient(
-      circle at 22% 45%,
-      rgba(118, 198, 228, 0.065),
-      transparent 30%
+.capability-index::after {
+  content:
+    attr(
+      data-number
     );
-}
-
-
-/* Database */
-
-.capability:nth-child(2)::before {
-  background:
-    radial-gradient(
-      circle at 45% 45%,
-      rgba(160, 205, 226, 0.045),
-      transparent 32%
-    );
-}
-
-
-/* Frontend */
-
-.capability:nth-child(3)::before {
-  background:
-    radial-gradient(
-      circle at 60% 45%,
-      rgba(168, 221, 245, 0.05),
-      transparent 32%
-    );
-}
-
-
-/* Tools */
-
-.capability:nth-child(4)::before {
-  background:
-    radial-gradient(
-      circle at 74% 45%,
-      rgba(132, 183, 208, 0.04),
-      transparent 32%
-    );
-}
-
-
-/* Design */
-
-.capability:nth-child(5)::before {
-  background:
-    radial-gradient(
-      circle at 86% 45%,
-      rgba(168, 221, 245, 0.045),
-      transparent 30%
-    );
-}
-
-
-/* =========================================================
-   OPTIONAL SUBTLE SIDE NUMBERS
-   ========================================================= */
-
-.capability:nth-child(1) {
-  --row-number: "01";
-}
-
-.capability:nth-child(2) {
-  --row-number: "02";
-}
-
-.capability:nth-child(3) {
-  --row-number: "03";
-}
-
-.capability:nth-child(4) {
-  --row-number: "04";
-}
-
-.capability:nth-child(5) {
-  --row-number: "05";
-}
-
-
-.capability .capability-index::after {
-  content: var(--row-number);
 
   position: absolute;
 
   left: 0;
-  top: 34px;
+  top: 32px;
 
   color:
-    rgba(255, 255, 255, 0.018);
+    rgba(
+      255,
+      255,
+      255,
+      0.018
+    );
 
   font-family:
     var(--font-display);
@@ -605,14 +753,55 @@
 
   font-weight: 600;
 
-  letter-spacing: -0.07em;
+  line-height: 1;
+
+  letter-spacing:
+    -0.07em;
 
   pointer-events: none;
 }
 
 
+/*
+|--------------------------------------------------------------------------
+| HTML saat ini belum memakai data-number.
+| Kita gunakan fallback berdasarkan posisi row.
+|--------------------------------------------------------------------------
+*/
+
+.capability:nth-child(1)
+.capability-index::after {
+  content: "01";
+}
+
+
+.capability:nth-child(2)
+.capability-index::after {
+  content: "02";
+}
+
+
+.capability:nth-child(3)
+.capability-index::after {
+  content: "03";
+}
+
+
+.capability:nth-child(4)
+.capability-index::after {
+  content: "04";
+}
+
+
+.capability:nth-child(5)
+.capability-index::after {
+  content: "05";
+}
+
+
 /* =========================================================
    TABLET
+   <= 900px
    ========================================================= */
 
 @media (max-width: 900px) {
@@ -621,7 +810,7 @@
     grid-template-columns:
       1fr;
 
-    gap: 18px;
+    gap: 20px;
   }
 
 
@@ -630,17 +819,27 @@
   }
 
 
-  .capability {
-    grid-template-columns:
-      70px
-      1fr;
-
-    gap: 25px;
+  .skills-header h2 {
+    max-width:
+      760px;
   }
 
 
-  .capability > div::after {
-    right: 0;
+  .capability {
+    grid-template-columns:
+      68px
+      minmax(
+        0,
+        1fr
+      );
+
+    gap: 26px;
+  }
+
+
+  .capability > div {
+    padding-right:
+      65px;
   }
 
 }
@@ -648,26 +847,42 @@
 
 /* =========================================================
    MOBILE
+   431px — 700px
    ========================================================= */
 
-@media (max-width: 700px) {
+@media
+(min-width: 431px)
+and (max-width: 700px) {
 
   .skills {
     padding:
-      105px 0
-      95px;
+      105px
+      0
+      100px;
   }
 
 
   .skills::before {
-    font-size: 10rem;
+    left: -7vw;
 
-    bottom: 0;
+    bottom: 1%;
+
+    font-size:
+      clamp(
+        8rem,
+        32vw,
+        12rem
+      );
+  }
+
+
+  .skills::after {
+    display: none;
   }
 
 
   .skills-header {
-    margin-top: 48px;
+    margin-top: 50px;
   }
 
 
@@ -675,9 +890,11 @@
     font-size:
       clamp(
         3.8rem,
-        17vw,
-        6rem
+        16vw,
+        5.8rem
       );
+
+    line-height: 0.86;
   }
 
 
@@ -687,41 +904,61 @@
 
 
   .capability {
-    min-height: 155px;
+    min-height: 150px;
 
     padding:
-      26px 0;
+      27px
+      0;
 
     grid-template-columns:
-      52px
-      minmax(0, 1fr);
+      48px
+      minmax(
+        0,
+        1fr
+      );
 
     gap: 18px;
   }
 
 
-  .capability:hover {
-    padding-left: 8px;
+  .capability-index {
+    font-size:
+      0.49rem;
+  }
 
-    padding-right: 0;
+
+  .capability > div {
+    padding-right:
+      0;
+  }
+
+
+  .capability-label {
+    gap: 9px;
+
+    font-size:
+      0.49rem;
+  }
+
+
+  .capability-label::before {
+    width: 12px;
   }
 
 
   .capability h3 {
-    margin-top: 18px;
+    margin-top:
+      18px;
 
     font-size:
       clamp(
-        2.4rem,
-        12vw,
-        4rem
+        2.5rem,
+        11vw,
+        3.9rem
       );
-  }
 
-
-  .capability:hover h3 {
-    transform:
-      translateX(3px);
+    line-height:
+      0.9;
   }
 
 
@@ -730,8 +967,11 @@
   }
 
 
-  .capability-label::before {
-    width: 12px;
+  .capability-index::after {
+    top: 28px;
+
+    font-size:
+      3.2rem;
   }
 
 }
@@ -739,34 +979,173 @@
 
 /* =========================================================
    SMALL MOBILE
+   <= 430px
    ========================================================= */
 
 @media (max-width: 430px) {
 
+  .skills {
+    padding:
+      95px
+      0
+      90px;
+  }
+
+
+  .skills::before {
+    left: -9vw;
+
+    bottom: 1%;
+
+    font-size:
+      clamp(
+        7rem,
+        35vw,
+        10rem
+      );
+  }
+
+
+  .skills::after {
+    display: none;
+  }
+
+
+  .skills-header {
+    margin-top:
+      45px;
+
+    gap:
+      17px;
+  }
+
+
   .skills-header h2 {
-    font-size: 3.7rem;
+    font-size:
+      clamp(
+        3.2rem,
+        15vw,
+        4.3rem
+      );
+
+    line-height:
+      0.87;
+  }
+
+
+  .capabilities {
+    margin-top:
+      65px;
   }
 
 
   .capability {
+    min-height:
+      138px;
+
+    padding:
+      24px
+      0;
+
     grid-template-columns:
-      42px
-      1fr;
+      40px
+      minmax(
+        0,
+        1fr
+      );
+
+    gap:
+      14px;
   }
 
 
   .capability-index {
-    font-size: 0.5rem;
+    padding-top:
+      5px;
+
+    font-size:
+      0.46rem;
+  }
+
+
+  .capability > div {
+    padding-right:
+      0;
   }
 
 
   .capability-label {
-    font-size: 0.49rem;
+    gap:
+      8px;
+
+    font-size:
+      0.46rem;
+
+    letter-spacing:
+      0.09em;
+  }
+
+
+  .capability-label::before {
+    width:
+      10px;
   }
 
 
   .capability h3 {
-    font-size: 2.55rem;
+    margin-top:
+      16px;
+
+    font-size:
+      clamp(
+        2.2rem,
+        11vw,
+        3.15rem
+      );
+
+    line-height:
+      0.91;
+
+    letter-spacing:
+      -0.065em;
+  }
+
+
+  .capability-index::after {
+    top:
+      26px;
+
+    font-size:
+      2.8rem;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   ========================================================= */
+
+@media (hover: none) {
+
+  .capability::before {
+    opacity: 0;
+  }
+
+
+  .capability::after {
+    width: 0;
+  }
+
+
+  .capability > div::after {
+    color:
+      rgba(
+        168,
+        221,
+        245,
+        0.12
+      );
   }
 
 }
@@ -776,10 +1155,8 @@
    REDUCED MOTION
    ========================================================= */
 
-@media (
-  prefers-reduced-motion:
-  reduce
-) {
+@media
+(prefers-reduced-motion: reduce) {
 
   .capability,
   .capability::before,
@@ -788,8 +1165,10 @@
   .capability-label::before,
   .capability h3,
   .capability > div::after {
+
     transition:
       none !important;
+
   }
 
 }
