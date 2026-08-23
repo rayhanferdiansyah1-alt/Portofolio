@@ -1024,29 +1024,153 @@
       </div>
     </section>
 
-    <section class="contact" id="contact">
+    <section class="contact" id="contact" aria-labelledby="contactTitle">
       <div class="shell">
-        <div class="contact-topline reveal"><span>06 / CONTACT</span><span>AVAILABLE FOR OPPORTUNITIES</span></div>
+
+        <div class="contact-topline reveal">
+          <span>06 / CONTACT</span>
+          <span>AVAILABLE FOR OPPORTUNITIES</span>
+        </div>
+
         <div class="contact-main">
           <p class="eyebrow reveal">LET'S TALK</p>
-          <h2 class="contact-heading reveal-text">Have a project,<br>opportunity,<br>or idea?</h2>
-          <a class="contact-cta magnetic reveal" href="mailto:rayhan.mardani@email.com"><span>Start a
-              conversation</span><span>↗</span></a>
+
+          <h2 class="contact-heading reveal-text" id="contactTitle">
+            Have a project,<br>
+            opportunity,<br>
+            or idea?
+          </h2>
+
+          <a class="contact-cta magnetic reveal" href="mailto:rayhanferdiansyah41@gmail.com" data-contact-open
+            aria-haspopup="dialog" aria-controls="contactModal">
+            <span>Start a conversation</span>
+            <span aria-hidden="true">↗</span>
+          </a>
         </div>
 
         <div class="contact-footer">
+
           <div class="contact-links reveal">
-            <a href="mailto:rayhanferdiansyah41@email.com">Email</a>
-            <a href="https://github.com/rayhanferdiansyah1-alt" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://instagram.com/ryhnfrd25" target="_blank" rel="noopener noreferrer">Instagram</a>
+
+            <!-- EMAIL -->
+            <a class="contact-social" href="mailto:rayhanferdiansyah41@gmail.com" data-contact-open
+              aria-haspopup="dialog" aria-controls="contactModal">
+              <span class="contact-social__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                  <path d="M4 7l8 6 8-6"></path>
+                </svg>
+              </span>
+
+              <span class="contact-social__label">Email</span>
+            </a>
+
+            <!-- GITHUB -->
+            <a class="contact-social" href="https://github.com/rayhanferdiansyah1-alt" target="_blank"
+              rel="noopener noreferrer" aria-label="Buka profil GitHub Rayhan">
+              <span class="contact-social__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.7-1.6 6.7-7.3A5.7 5.7 0 0 0 19.2 3.3 5.3 5.3 0 0 0 19 0s-1.2-.4-4 1.5a13.4 13.4 0 0 0-7 0C5.2-.4 4 0 4 0a5.3 5.3 0 0 0-.2 3.3A5.7 5.7 0 0 0 2.3 7.2c0 5.7 3.4 6.9 6.7 7.3A4.8 4.8 0 0 0 8 18v4">
+                  </path>
+                  <path d="M8 19c-3 .9-3-1.5-4.2-2"></path>
+                </svg>
+              </span>
+
+              <span class="contact-social__label">GitHub</span>
+            </a>
+
+            <!-- INSTAGRAM -->
+            <a class="contact-social" href="https://instagram.com/ryhnfrd25" target="_blank"
+              rel="noopener noreferrer" aria-label="Buka profil Instagram Rayhan">
+              <span class="contact-social__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none"></circle>
+                </svg>
+              </span>
+
+              <span class="contact-social__label">Instagram</span>
+            </a>
+
           </div>
+
           <p class="contact-note reveal">
             Terbuka untuk peluang kerja, kolaborasi,
             dan pengembangan aplikasi web.
           </p>
+
         </div>
       </div>
     </section>
+
+    <!-- CONTACT POPUP -->
+    <dialog class="contact-modal" id="contactModal" aria-labelledby="contactModalTitle"
+      aria-describedby="contactModalDescription">
+      <div class="contact-modal__panel">
+
+        <button class="contact-modal__close" type="button" data-contact-close aria-label="Tutup formulir kontak">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 5l14 14"></path>
+            <path d="M19 5L5 19"></path>
+          </svg>
+        </button>
+
+        <div class="contact-modal__header">
+          <p class="contact-modal__eyebrow">
+            DIRECT MESSAGE / RFM
+          </p>
+
+          <h2 class="contact-modal__title" id="contactModalTitle">
+            Start a<br>
+            conversation.
+          </h2>
+
+          <p class="contact-modal__description" id="contactModalDescription">
+            Kirim pesan secara langsung kepada Rayhan.
+            Saya akan membalas melalui alamat email yang kamu masukkan.
+          </p>
+        </div>
+
+        <form class="contact-form" id="contactForm" action="https://formspree.io/f/xppaelvo" method="POST">
+          <input type="hidden" name="_subject" value="Pesan baru dari RFM Portfolio">
+
+          <input type="hidden" name="source" value="RFM Portfolio Website">
+
+          <div class="contact-form__field">
+            <label for="contactName">Nama</label>
+
+            <input type="text" id="contactName" name="name" maxlength="80" autocomplete="name" placeholder="Nama kamu"
+              required>
+          </div>
+
+          <div class="contact-form__field">
+            <label for="contactEmail">Email</label>
+
+            <input type="email" id="contactEmail" name="email" maxlength="254" autocomplete="email"
+              placeholder="nama@email.com" required>
+          </div>
+
+          <div class="contact-form__field">
+            <label for="contactMessage">Pesan</label>
+
+            <textarea id="contactMessage" name="message" rows="6" maxlength="2000"
+              placeholder="Tulis pesan, peluang kerja, atau ide kolaborasi..." required></textarea>
+          </div>
+
+          <div class="contact-form__bottom">
+            <p class="contact-form__status" id="contactFormStatus" role="status" aria-live="polite"></p>
+
+            <button class="contact-form__submit" type="submit">
+              <span data-submit-label>Send message</span>
+              <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </dialog>
   </main>
 
   <footer class="site-footer">
@@ -1064,6 +1188,7 @@
 
   <script src="js/smooth-scroll.js"></script>
   <script src="js/animations.js"></script>
+  <script src="js/contact-form.js"></script>
   <script src="js/main.js"></script>
   <script src="js/three-scene.js"></script>
 </body>

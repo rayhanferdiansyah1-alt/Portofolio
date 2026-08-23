@@ -1773,3 +1773,1079 @@ body[data-dna-scene="contact-final"]
   }
 
 }
+
+/* =========================================================
+   CONTACT UX UPGRADE — FINAL
+   SOCIAL ICONS + RESPONSIVE NOTE + CONTACT MODAL
+   ========================================================= */
+
+
+/* =========================================================
+   SOCIAL LINKS
+   ========================================================= */
+
+.contact-footer {
+  align-items: center;
+  gap: clamp(40px, 7vw, 110px);
+  padding-top: clamp(28px, 3vw, 40px);
+}
+
+.contact-links {
+  flex: 0 1 auto;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 22px);
+}
+
+.contact-links .contact-social {
+  position: relative;
+
+  min-height: 48px;
+  padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  color: var(--text-soft);
+
+  font-family: var(--font-mono);
+  font-size: clamp(0.76rem, 0.85vw, 0.9rem);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  transition:
+    color 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.contact-links .contact-social::after {
+  display: none;
+}
+
+.contact-social__icon {
+  width: 44px;
+  height: 44px;
+
+  flex: 0 0 44px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.018);
+
+  color: var(--accent);
+
+  transition:
+    color 0.35s ease,
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    transform 0.55s var(--ease-out),
+    box-shadow 0.45s ease;
+}
+
+.contact-social__icon svg {
+  width: 21px;
+  height: 21px;
+
+  display: block;
+
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  vector-effect: non-scaling-stroke;
+}
+
+.contact-social__label {
+  display: inline-block;
+}
+
+.contact-social:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 7px;
+}
+
+
+/* =========================================================
+   CONTACT NOTE
+   ========================================================= */
+
+.contact-note {
+  width: min(100%, 560px);
+  max-width: 560px;
+
+  margin: 0;
+
+  color: var(--muted);
+
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.22vw, 1.16rem);
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: -0.012em;
+
+  text-align: right;
+}
+
+
+/* =========================================================
+   DESKTOP SOCIAL HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .contact-links .contact-social:hover {
+    color: var(--text);
+  }
+
+  .contact-social:hover .contact-social__icon {
+    color: var(--accent-soft);
+
+    border-color: rgba(168, 221, 245, 0.34);
+
+    background: rgba(168, 221, 245, 0.055);
+
+    transform: translateY(-4px);
+
+    box-shadow:
+      0 12px 34px rgba(44, 145, 188, 0.1);
+  }
+}
+
+
+/* =========================================================
+   CONTACT MODAL
+   ========================================================= */
+
+.contact-modal {
+  width: min(1040px, calc(100% - 40px));
+  max-width: none;
+  max-height: min(88dvh, 900px);
+
+  margin: auto;
+  padding: 0;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  border: 1px solid rgba(168, 221, 245, 0.18);
+  border-radius: 22px;
+
+  background: #07080a;
+  color: var(--text);
+
+  box-shadow:
+    0 40px 120px rgba(0, 0, 0, 0.68),
+    0 0 80px rgba(73, 164, 201, 0.045);
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(168, 221, 245, 0.3)
+    rgba(255, 255, 255, 0.035);
+
+  opacity: 0;
+
+  transform:
+    translateY(18px)
+    scale(0.985);
+
+  transition:
+    opacity 0.32s ease,
+    transform 0.48s var(--ease-out);
+}
+
+.contact-modal::backdrop {
+  background: rgba(2, 3, 5, 0.84);
+
+  opacity: 0;
+
+  transition:
+    opacity 0.32s ease;
+}
+
+.contact-modal.is-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+.contact-modal.is-visible::backdrop {
+  opacity: 1;
+}
+
+.contact-modal.is-closing {
+  opacity: 0;
+
+  transform:
+    translateY(14px)
+    scale(0.985);
+}
+
+
+/* =========================================================
+   MODAL PANEL
+   ========================================================= */
+
+.contact-modal__panel {
+  position: relative;
+
+  min-height: min(720px, 82dvh);
+
+  padding:
+    clamp(64px, 7vw, 96px)
+    clamp(40px, 6vw, 84px)
+    clamp(44px, 5vw, 72px);
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.82fr)
+    minmax(360px, 1fr);
+
+  align-items: center;
+
+  gap: clamp(55px, 8vw, 120px);
+
+  overflow: hidden;
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 12% 15%,
+      rgba(168, 221, 245, 0.085),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 82%,
+      rgba(79, 168, 204, 0.04),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(14, 17, 21, 0.98),
+      rgba(6, 7, 9, 0.98)
+    );
+}
+
+.contact-modal__panel::before {
+  content: "MESSAGE";
+
+  position: absolute;
+  z-index: -1;
+
+  left: -2%;
+  bottom: -3%;
+
+  color: rgba(255, 255, 255, 0.012);
+
+  font-family: var(--font-display);
+  font-size: clamp(7rem, 15vw, 13rem);
+  font-weight: 600;
+  line-height: 0.72;
+  letter-spacing: -0.09em;
+
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+
+/* =========================================================
+   MODAL CLOSE BUTTON
+   ========================================================= */
+
+.contact-modal__close {
+  position: absolute;
+  z-index: 5;
+
+  top: 24px;
+  right: 24px;
+
+  width: 46px;
+  height: 46px;
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  appearance: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  color: var(--text-soft);
+
+  cursor: pointer;
+
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.45s var(--ease-out);
+}
+
+.contact-modal__close svg {
+  width: 18px;
+  height: 18px;
+
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.contact-modal__close:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 5px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact-modal__close:hover {
+    color: var(--accent-soft);
+
+    border-color: rgba(168, 221, 245, 0.32);
+
+    background: rgba(168, 221, 245, 0.055);
+
+    transform: rotate(90deg);
+  }
+}
+
+
+/* =========================================================
+   MODAL HEADER
+   ========================================================= */
+
+.contact-modal__header {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+.contact-modal__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: var(--accent);
+
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  line-height: 1.4;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.contact-modal__eyebrow::before {
+  content: "";
+
+  width: 25px;
+  height: 1px;
+
+  background: currentColor;
+
+  opacity: 0.65;
+}
+
+.contact-modal__title {
+  margin-top: clamp(28px, 4vw, 46px);
+
+  color: var(--text);
+
+  font-family: var(--font-display);
+  font-size: clamp(3.7rem, 6.3vw, 6.3rem);
+  font-weight: 500;
+  line-height: 0.86;
+  letter-spacing: -0.075em;
+}
+
+.contact-modal__description {
+  max-width: 430px;
+
+  margin-top: clamp(36px, 5vw, 58px);
+
+  color: var(--muted);
+
+  font-family: var(--font-body);
+  font-size: clamp(0.94rem, 1vw, 1.05rem);
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   CONTACT FORM
+   ========================================================= */
+
+.contact-form {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+
+  display: grid;
+  gap: 24px;
+}
+
+.contact-form__field {
+  display: grid;
+  gap: 11px;
+}
+
+.contact-form__field label {
+  color: var(--dim);
+
+  font-family: var(--font-mono);
+  font-size: 0.57rem;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.contact-form__field input,
+.contact-form__field textarea {
+  width: 100%;
+
+  appearance: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text);
+
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+
+  outline: none;
+
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.contact-form__field input {
+  min-height: 54px;
+  padding: 0 18px;
+}
+
+.contact-form__field textarea {
+  min-height: 150px;
+
+  padding: 16px 18px;
+
+  resize: vertical;
+}
+
+.contact-form__field input::placeholder,
+.contact-form__field textarea::placeholder {
+  color: rgba(151, 155, 164, 0.58);
+
+  opacity: 1;
+}
+
+.contact-form__field input:focus,
+.contact-form__field textarea:focus {
+  border-color: rgba(168, 221, 245, 0.52);
+
+  background: rgba(168, 221, 245, 0.035);
+
+  box-shadow:
+    0 0 0 3px rgba(168, 221, 245, 0.045);
+}
+
+.contact-form__field input:user-invalid,
+.contact-form__field textarea:user-invalid {
+  border-color: rgba(255, 126, 126, 0.5);
+}
+
+
+/* =========================================================
+   FORM BOTTOM
+   ========================================================= */
+
+.contact-form__bottom {
+  min-height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+.contact-form__status {
+  flex: 1;
+
+  margin: 0;
+
+  color: var(--muted);
+
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+}
+
+.contact-form__status:empty {
+  display: none;
+}
+
+.contact-form__status[data-state="success"] {
+  color: var(--accent);
+}
+
+.contact-form__status[data-state="error"] {
+  color: #ff9898;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.contact-form__submit {
+  min-width: 190px;
+  min-height: 54px;
+
+  padding: 0 22px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  appearance: none;
+
+  border: 1px solid rgba(168, 221, 245, 0.24);
+  border-radius: 10px;
+
+  background: rgba(168, 221, 245, 0.035);
+
+  color: var(--text);
+
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    color 0.35s ease,
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.contact-form__submit span:last-child {
+  color: var(--accent);
+
+  font-size: 1rem;
+
+  transition:
+    transform 0.45s var(--ease-out);
+}
+
+.contact-form__submit:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.contact-form.is-submitting .contact-form__submit {
+  opacity: 0.58;
+
+  cursor: wait;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact-form__submit:hover {
+    color: var(--accent-soft);
+
+    border-color: rgba(168, 221, 245, 0.48);
+
+    background: rgba(168, 221, 245, 0.075);
+  }
+
+  .contact-form__submit:hover span:last-child {
+    transform: translate(3px, -3px);
+  }
+}
+
+
+/* =========================================================
+   MODAL SCROLL LOCK
+   ========================================================= */
+
+html.contact-modal-open,
+body.contact-modal-open {
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .contact-footer {
+    width: 100%;
+
+    align-items: flex-start;
+
+    gap: 38px;
+  }
+
+  .contact-links {
+    width: 100%;
+  }
+
+  .contact-note {
+    width: min(100%, 620px);
+    max-width: 620px;
+
+    font-size: 1.02rem;
+    line-height: 1.7;
+
+    text-align: left;
+  }
+
+  .contact-modal {
+    width: min(760px, calc(100% - 32px));
+    max-height: calc(100dvh - 32px);
+  }
+
+  .contact-modal__panel {
+    min-height: auto;
+
+    padding:
+      74px
+      clamp(28px, 6vw, 52px)
+      clamp(34px, 6vw, 52px);
+
+    grid-template-columns: 1fr;
+
+    gap: 52px;
+  }
+
+  .contact-modal__header {
+    max-width: 620px;
+  }
+
+  .contact-modal__title {
+    font-size: clamp(3.7rem, 10vw, 6rem);
+  }
+
+  .contact-modal__description {
+    margin-top: 32px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .contact-footer {
+    gap: 34px;
+  }
+
+  .contact-links {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+  }
+
+  .contact-links .contact-social {
+    min-width: 0;
+    min-height: 92px;
+
+    padding: 12px 6px;
+
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 11px;
+
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.012);
+
+    font-size: 0.7rem;
+    text-align: center;
+  }
+
+  .contact-social__icon {
+    width: 42px;
+    height: 42px;
+
+    flex-basis: 42px;
+  }
+
+  .contact-social__icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .contact-note {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .contact-modal {
+    width: calc(100% - 20px);
+    max-height: calc(100dvh - 20px);
+
+    border-radius: 16px;
+  }
+
+  .contact-modal__panel {
+    padding:
+      72px
+      20px
+      24px;
+
+    gap: 42px;
+  }
+
+  .contact-modal__close {
+    top: 16px;
+    right: 16px;
+
+    width: 42px;
+    height: 42px;
+  }
+
+  .contact-modal__title {
+    font-size: clamp(3rem, 15vw, 4.7rem);
+    line-height: 0.88;
+  }
+
+  .contact-modal__description {
+    margin-top: 28px;
+
+    font-size: 0.94rem;
+  }
+
+  .contact-form {
+    gap: 20px;
+  }
+
+  .contact-form__field input,
+  .contact-form__field textarea {
+    font-size: 16px;
+  }
+
+  .contact-form__bottom {
+    align-items: stretch;
+    flex-direction: column;
+
+    gap: 16px;
+  }
+
+  .contact-form__submit {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+  .contact-links {
+    gap: 8px;
+  }
+
+  .contact-links .contact-social {
+    min-height: 88px;
+
+    padding-inline: 4px;
+
+    font-size: 0.65rem;
+    letter-spacing: 0.045em;
+  }
+
+  .contact-social__icon {
+    width: 40px;
+    height: 40px;
+
+    flex-basis: 40px;
+  }
+
+  .contact-note {
+    font-size: 0.98rem;
+  }
+
+  .contact-modal {
+    width: calc(100% - 12px);
+    max-height: calc(100dvh - 12px);
+
+    border-radius: 14px;
+  }
+
+  .contact-modal__panel {
+    padding:
+      68px
+      16px
+      20px;
+
+    gap: 38px;
+  }
+
+  .contact-modal__title {
+    font-size: clamp(2.75rem, 14vw, 3.8rem);
+  }
+
+  .contact-form__field input {
+    padding-inline: 15px;
+  }
+
+  .contact-form__field textarea {
+    padding: 15px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-social,
+  .contact-social__icon,
+  .contact-modal,
+  .contact-modal::backdrop,
+  .contact-modal__close,
+  .contact-form__field input,
+  .contact-form__field textarea,
+  .contact-form__submit,
+  .contact-form__submit span {
+    transition: none !important;
+  }
+
+  .contact-social__icon,
+  .contact-modal,
+  .contact-modal.is-visible,
+  .contact-modal.is-closing,
+  .contact-modal__close,
+  .contact-form__submit span {
+    transform: none !important;
+  }
+}
+
+/* =========================================================
+   CONTACT MODAL — COMPACT FINAL
+   ========================================================= */
+
+.contact-modal {
+  width: min(840px, calc(100% - 48px));
+  max-height: min(78dvh, 640px);
+
+  border-radius: 18px;
+}
+
+.contact-modal__panel {
+  min-height: auto;
+
+  padding:
+    48px
+    40px
+    40px;
+
+  grid-template-columns:
+    minmax(0, 0.72fr)
+    minmax(350px, 1fr);
+
+  gap: 40px;
+}
+
+.contact-modal__close {
+  top: 16px;
+  right: 16px;
+
+  width: 40px;
+  height: 40px;
+}
+
+.contact-modal__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.contact-modal__title {
+  margin-top: 25px;
+
+  font-size: clamp(2.7rem, 3.4vw, 3.15rem);
+  line-height: 0.9;
+}
+
+.contact-modal__description {
+  margin-top: 26px;
+
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.contact-form {
+  gap: 16px;
+}
+
+.contact-form__field {
+  gap: 8px;
+}
+
+.contact-form__field input {
+  min-height: 46px;
+
+  padding-inline: 15px;
+}
+
+.contact-form__field textarea {
+  height: 112px;
+  min-height: 112px;
+
+  padding: 13px 15px;
+}
+
+.contact-form__bottom {
+  min-height: 48px;
+
+  gap: 16px;
+}
+
+.contact-form__submit {
+  min-width: 165px;
+  min-height: 48px;
+
+  padding-inline: 18px;
+}
+
+
+/* =========================================================
+   COMPACT TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .contact-modal {
+    width: min(620px, calc(100% - 28px));
+    max-height: calc(100dvh - 28px);
+  }
+
+  .contact-modal__panel {
+    padding:
+      64px
+      32px
+      32px;
+
+    grid-template-columns: 1fr;
+
+    gap: 32px;
+  }
+
+  .contact-modal__header {
+    max-width: 520px;
+  }
+
+  .contact-modal__title {
+    font-size: clamp(3rem, 8vw, 3.8rem);
+  }
+
+  .contact-modal__description {
+    max-width: 500px;
+
+    margin-top: 24px;
+  }
+
+  .contact-form__field textarea {
+    height: 120px;
+    min-height: 120px;
+  }
+}
+
+
+/* =========================================================
+   COMPACT MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .contact-modal {
+    width: calc(100% - 16px);
+    max-height: calc(100dvh - 16px);
+
+    border-radius: 14px;
+  }
+
+  .contact-modal__panel {
+    padding:
+      60px
+      18px
+      22px;
+
+    gap: 28px;
+  }
+
+  .contact-modal__close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .contact-modal__title {
+    font-size: clamp(2.7rem, 13vw, 3.5rem);
+  }
+
+  .contact-modal__description {
+    margin-top: 20px;
+
+    font-size: 0.9rem;
+  }
+
+  .contact-form {
+    gap: 16px;
+  }
+
+  .contact-form__field textarea {
+    height: 110px;
+    min-height: 110px;
+  }
+}
+
+
+/* =========================================================
+   COMPACT SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+  .contact-modal__panel {
+    padding:
+      56px
+      15px
+      18px;
+
+    gap: 24px;
+  }
+
+  .contact-modal__title {
+    font-size: 2.65rem;
+  }
+}
