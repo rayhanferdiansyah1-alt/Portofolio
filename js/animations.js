@@ -150,6 +150,7 @@
       el.closest(".project") ||
       el.matches(".about-stats .stat") ||
       el.matches(".capability") ||
+      el.matches(".certification-card") ||
       el.matches(".education-card") ||
       el.matches(".contact-cta"),
     );
@@ -765,6 +766,48 @@
   }
 
   /* =========================================================
+   CERTIFICATIONS
+   3 CARDS — 1 SCROLLTRIGGER
+   ========================================================= */
+
+  const certificationCards = gsap.utils.toArray(".certification-card");
+
+  if (certificationCards.length) {
+    gsap.fromTo(
+      certificationCards,
+
+      {
+        opacity: 0,
+
+        y: projectMobile ? 20 : 30,
+      },
+
+      {
+        opacity: 1,
+        y: 0,
+
+        duration: projectMobile ? 0.72 : 0.9,
+
+        stagger: projectMobile ? 0.07 : 0.11,
+
+        ease: "power3.out",
+
+        onComplete: () => {
+          clearRevealProps(certificationCards);
+        },
+
+        scrollTrigger: {
+          trigger: ".certifications-grid",
+
+          start: projectMobile ? "top 90%" : "top 84%",
+
+          once: true,
+        },
+      },
+    );
+  }
+
+  /* =========================================================
      EDUCATION
      ========================================================= */
 
@@ -889,7 +932,7 @@
      ========================================================= */
 
   const transitionSections = gsap.utils.toArray(
-    ".about, .projects, .skills, .education, .contact",
+    ".about, .projects, .skills, .certifications, .education, .contact",
   );
 
   transitionSections.forEach((section, index) => {
