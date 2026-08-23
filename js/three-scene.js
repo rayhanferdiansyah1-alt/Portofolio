@@ -634,6 +634,8 @@
 
     const skillsSection = document.querySelector(".skills");
 
+    const certificationsSection = document.querySelector(".certifications");
+
     const educationSection = document.querySelector(".education");
 
     const contactSection = document.querySelector(".contact");
@@ -784,6 +786,54 @@
         rotZ: 0.58,
       },
       {
+        id: "certifications-entry",
+        element: certificationsSection,
+
+        anchorRatio: 0.08,
+
+        x: -0.08,
+        y: 0.015,
+
+        scale: 1.04,
+        opacity: 0.68,
+
+        rotX: 0.4,
+        rotY: 4.08,
+        rotZ: 0.36,
+      },
+      {
+        id: "certifications-focus",
+        element: certificationsSection,
+
+        anchorRatio: 0.4,
+
+        x: 0,
+        y: 0,
+
+        scale: 1.3,
+        opacity: 0.7,
+
+        rotX: 0.22,
+        rotY: 4.14,
+        rotZ: -0.26,
+      },
+      {
+        id: "certifications-exit",
+        element: certificationsSection,
+
+        anchorRatio: 0.78,
+
+        x: 0.12,
+        y: 0.03,
+
+        scale: 1.02,
+        opacity: 0.7,
+
+        rotX: 0.34,
+        rotY: 4.19,
+        rotZ: 0.14,
+      },
+      {
         id: "education-entry",
         element: educationSection,
         anchorRatio: 0.08,
@@ -932,6 +982,29 @@
         scale: 0.96,
         opacity: 0.72,
       },
+      "certifications-entry": {
+        x: -0.06,
+        y: 0.02,
+
+        scale: 0.9,
+        opacity: 0.66,
+      },
+
+      "certifications-focus": {
+        x: 0,
+        y: 0,
+
+        scale: 1.05,
+        opacity: 0.64,
+      },
+
+      "certifications-exit": {
+        x: 0.09,
+        y: 0.03,
+
+        scale: 0.9,
+        opacity: 0.68,
+      },
       "education-entry": {
         x: 0.12,
         y: 0,
@@ -1043,6 +1116,29 @@
         scale: 0.82,
         opacity: 0.68,
       },
+      "certifications-entry": {
+        x: -0.12,
+        y: 0.02,
+
+        scale: 0.76,
+        opacity: 0.62,
+      },
+
+      "certifications-focus": {
+        x: 0.03,
+        y: 0,
+
+        scale: 0.9,
+        opacity: 0.58,
+      },
+
+      "certifications-exit": {
+        x: 0.14,
+        y: 0.04,
+
+        scale: 0.76,
+        opacity: 0.64,
+      },
       "education-entry": {
         x: 0.18,
         y: 0,
@@ -1153,6 +1249,29 @@
         y: 0.04,
         scale: 0.72,
         opacity: 0.64,
+      },
+      "certifications-entry": {
+        x: -0.14,
+        y: 0.02,
+
+        scale: 0.68,
+        opacity: 0.58,
+      },
+
+      "certifications-focus": {
+        x: 0.05,
+        y: 0,
+
+        scale: 0.82,
+        opacity: 0.54,
+      },
+
+      "certifications-exit": {
+        x: 0.16,
+        y: 0.04,
+
+        scale: 0.68,
+        opacity: 0.6,
       },
       "education-entry": {
         x: 0.2,
