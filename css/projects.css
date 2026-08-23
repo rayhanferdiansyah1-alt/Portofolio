@@ -23,31 +23,6 @@
     var(--bg);
 }
 
-.projects::before {
-  content: "WORK";
-
-  position: absolute;
-
-  top: 2%;
-  right: -2vw;
-
-  color: rgba(255, 255, 255, 0.012);
-
-  font-family: var(--font-display);
-
-  font-size: clamp(11rem, 25vw, 30rem);
-
-  font-weight: 600;
-
-  line-height: 0.7;
-
-  letter-spacing: -0.1em;
-
-  pointer-events: none;
-
-  user-select: none;
-}
-
 .projects > .shell {
   position: relative;
 
@@ -855,11 +830,7 @@
     padding-top: 120px;
   }
 
-  .projects::before {
-    right: -8vw;
-
-    font-size: clamp(10rem, 30vw, 17rem);
-  }
+  
 
   .projects-intro {
     grid-template-columns: 1fr;
@@ -951,14 +922,6 @@
 @media (min-width: 431px) and (max-width: 700px) {
   .projects {
     padding-top: 105px;
-  }
-
-  .projects::before {
-    top: 1%;
-
-    right: -15vw;
-
-    font-size: clamp(8rem, 37vw, 14rem);
   }
 
   .projects-intro {
@@ -1139,14 +1102,6 @@
 @media (max-width: 430px) {
   .projects {
     padding-top: 90px;
-  }
-
-  .projects::before {
-    top: 1%;
-
-    right: -18vw;
-
-    font-size: clamp(7rem, 40vw, 11rem);
   }
 
   .projects-intro {
@@ -1685,4 +1640,58 @@ body[data-dna-scene="project-04"]
       none !important;
   }
 
+}
+
+
+/* =========================================================
+   PROJECTS WATERMARK — FINAL RESPONSIVE
+   ========================================================= */
+
+.projects::before {
+  content: "WORK";
+
+  position: absolute;
+  z-index: 0;
+
+  top: clamp(72px, 7vw, 120px);
+  right: clamp(24px, 3vw, 64px);
+
+  color: rgba(255, 255, 255, 0.012);
+
+  font-family: var(--font-display);
+  font-size: clamp(10rem, 19vw, 22rem);
+  font-weight: 600;
+  line-height: 0.78;
+  letter-spacing: -0.08em;
+
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* TABLET */
+@media (min-width: 701px) and (max-width: 1024px) {
+  .projects::before {
+    top: clamp(68px, 8vw, 96px);
+    right: clamp(20px, 4vw, 44px);
+
+    font-size: clamp(8rem, 18vw, 12rem);
+    letter-spacing: -0.075em;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+  .projects::before {
+    top: clamp(58px, 14vw, 84px);
+
+    left: 50%;
+    right: auto;
+
+    transform: translateX(-50%);
+
+    font-size: clamp(5.5rem, 22vw, 8rem);
+    line-height: 0.82;
+    letter-spacing: -0.06em;
+  }
 }
