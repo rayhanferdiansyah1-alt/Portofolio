@@ -33,32 +33,56 @@
 }
 
 /* =========================================================
-   GIANT BACKGROUND TYPOGRAPHY
+   ABOUT WATERMARK — FINAL RESPONSIVE
    ========================================================= */
 
 .about::before {
   content: "PROFILE";
 
   position: absolute;
+  z-index: 0;
 
-  right: -2vw;
-  top: 7%;
+  top: clamp(72px, 7vw, 116px);
+  right: clamp(24px, 3vw, 64px);
 
   color: rgba(255, 255, 255, 0.014);
 
   font-family: var(--font-display);
-
-  font-size: clamp(9rem, 21vw, 23rem);
-
+  font-size: clamp(10rem, 18vw, 21rem);
   font-weight: 600;
+  line-height: 0.78;
+  letter-spacing: -0.08em;
 
-  line-height: 0.76;
-
-  letter-spacing: -0.095em;
-
+  white-space: nowrap;
   pointer-events: none;
-
   user-select: none;
+}
+
+/* TABLET */
+@media (min-width: 701px) and (max-width: 1024px) {
+  .about::before {
+    top: clamp(72px, 8vw, 92px);
+    right: clamp(20px, 4vw, 40px);
+
+    font-size: clamp(8rem, 19vw, 12rem);
+    letter-spacing: -0.075em;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+  .about::before {
+    top: clamp(64px, 16vw, 90px);
+
+    left: 50%;
+    right: auto;
+
+    transform: translateX(-50%);
+
+    font-size: clamp(5.25rem, 22vw, 8rem);
+    line-height: 0.82;
+    letter-spacing: -0.06em;
+  }
 }
 
 /* =========================================================
@@ -476,14 +500,6 @@
     padding: 105px 0 95px;
   }
 
-  .about::before {
-    top: 6%;
-
-    right: -7vw;
-
-    font-size: clamp(8rem, 32vw, 11rem);
-  }
-
   .about::after {
     display: none;
   }
@@ -630,7 +646,6 @@
    DNA5 — ABOUT CINEMATIC INTEGRATION
    ========================================================= */
 
-
 /*
 |--------------------------------------------------------------------------
 | ABOUT AMBIENT LINE
@@ -640,97 +655,56 @@
 |--------------------------------------------------------------------------
 */
 
-body.dna-experience
-.about::after {
+body.dna-experience .about::after {
   opacity: 0.28;
 
   transition:
-    height
-    0.9s
-    var(--ease-out),
-
-    opacity
-    0.75s
-    ease,
-
-    background
-    0.75s
-    ease;
+    height 0.9s var(--ease-out),
+    opacity 0.75s ease,
+    background 0.75s ease;
 }
-
 
 /* =========================================================
    DNA ENTERS ABOUT
    ========================================================= */
 
-body.dna-about-entry
-.about::after {
+body.dna-about-entry .about::after {
   height: 48%;
 
   opacity: 0.5;
 
-  background:
-    linear-gradient(
-      to bottom,
+  background: linear-gradient(
+    to bottom,
 
-      transparent,
-
-      rgba(
-        168,
-        221,
-        245,
-        0.16
-      ),
-
-      transparent
-    );
+    transparent,
+    rgba(168, 221, 245, 0.16),
+    transparent
+  );
 }
-
 
 /* =========================================================
    ABOUT HERO MOMENT
    ========================================================= */
 
-body.dna-about-focus
-.about::after {
+body.dna-about-focus .about::after {
   height: 61%;
 
   opacity: 0.92;
 
-  background:
-    linear-gradient(
-      to bottom,
+  background: linear-gradient(
+    to bottom,
 
-      transparent 0%,
+    transparent 0%,
 
-      rgba(
-        168,
-        221,
-        245,
-        0.08
-      )
-      18%,
+    rgba(168, 221, 245, 0.08) 18%,
 
-      rgba(
-        168,
-        221,
-        245,
-        0.34
-      )
-      48%,
+    rgba(168, 221, 245, 0.34) 48%,
 
-      rgba(
-        168,
-        221,
-        245,
-        0.11
-      )
-      70%,
+    rgba(168, 221, 245, 0.11) 70%,
 
-      transparent 100%
-    );
+    transparent 100%
+  );
 }
-
 
 /*
 |--------------------------------------------------------------------------
@@ -739,20 +713,13 @@ body.dna-about-focus
 |--------------------------------------------------------------------------
 */
 
-body.dna-experience
-.about::before {
-  transition:
-    opacity
-    0.8s
-    ease;
+body.dna-experience .about::before {
+  transition: opacity 0.8s ease;
 }
 
-
-body.dna-about-active
-.about::before {
-  opacity: 1.45;
+body.dna-about-active .about::before {
+  opacity: 1;
 }
-
 
 /* =========================================================
    HEADING REACTION
@@ -766,118 +733,45 @@ body.dna-about-active
 |--------------------------------------------------------------------------
 */
 
-body.dna-experience
-.about-heading h2 span {
+body.dna-experience .about-heading h2 span {
   transition:
-    color
-    0.7s
-    ease,
-
-    text-shadow
-    0.7s
-    ease;
+    color 0.7s ease,
+    text-shadow 0.7s ease;
 }
 
+body.dna-about-focus .about-heading h2 span {
+  color: rgba(217, 242, 255, 0.58);
 
-body.dna-about-focus
-.about-heading h2 span {
-  color:
-    rgba(
-      217,
-      242,
-      255,
-      0.58
-    );
-
-  text-shadow:
-    0
-    0
-    40px
-    rgba(
-      168,
-      221,
-      245,
-      0.055
-    );
+  text-shadow: 0 0 40px rgba(168, 221, 245, 0.055);
 }
-
 
 /* =========================================================
    COPY MICRO ACCENT
    ========================================================= */
 
-body.dna-experience
-.about-copy {
-  transition:
-    border-color
-    0.7s
-    ease;
+body.dna-experience .about-copy {
+  transition: border-color 0.7s ease;
 }
-
 
 /* =========================================================
    EXIT
    ========================================================= */
 
-body.dna-about-exit
-.about::after {
+body.dna-about-exit .about::after {
   height: 44%;
 
   opacity: 0.34;
 }
 
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 700px) {
-
-  body.dna-about-focus
-  .about::after {
-    height: 48%;
-
-    opacity: 0.5;
-  }
-
-
-  body.dna-about-focus
-  .about-heading h2 span {
-    color:
-      rgba(
-        217,
-        242,
-        255,
-        0.46
-      );
-
-    text-shadow:
-      none;
-  }
-
-}
-
-
 /* =========================================================
    REDUCED MOTION
    ========================================================= */
 
-@media
-(prefers-reduced-motion: reduce) {
-
-  body.dna-experience
-  .about::before,
-
-  body.dna-experience
-  .about::after,
-
-  body.dna-experience
-  .about-heading h2 span,
-
-  body.dna-experience
-  .about-copy {
-    transition:
-      none !important;
+@media (prefers-reduced-motion: reduce) {
+  body.dna-experience .about::before,
+  body.dna-experience .about::after,
+  body.dna-experience .about-heading h2 span,
+  body.dna-experience .about-copy {
+    transition: none !important;
   }
-
 }
