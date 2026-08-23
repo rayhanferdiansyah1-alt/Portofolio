@@ -2653,3 +2653,199 @@ body.contact-modal-open {
     transform: none !important;
   }
 }
+
+/* =========================================================
+   CONTACT MODAL — COMPACT FINAL
+   ========================================================= */
+
+.contact-modal {
+  width: min(840px, calc(100% - 48px));
+  max-height: min(78dvh, 640px);
+
+  border-radius: 18px;
+}
+
+.contact-modal__panel {
+  min-height: auto;
+
+  padding:
+    48px
+    40px
+    40px;
+
+  grid-template-columns:
+    minmax(0, 0.72fr)
+    minmax(350px, 1fr);
+
+  gap: 40px;
+}
+
+.contact-modal__close {
+  top: 16px;
+  right: 16px;
+
+  width: 40px;
+  height: 40px;
+}
+
+.contact-modal__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.contact-modal__title {
+  margin-top: 25px;
+
+  font-size: clamp(2.7rem, 3.4vw, 3.15rem);
+  line-height: 0.9;
+}
+
+.contact-modal__description {
+  margin-top: 26px;
+
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.contact-form {
+  gap: 16px;
+}
+
+.contact-form__field {
+  gap: 8px;
+}
+
+.contact-form__field input {
+  min-height: 46px;
+
+  padding-inline: 15px;
+}
+
+.contact-form__field textarea {
+  height: 112px;
+  min-height: 112px;
+
+  padding: 13px 15px;
+}
+
+.contact-form__bottom {
+  min-height: 48px;
+
+  gap: 16px;
+}
+
+.contact-form__submit {
+  min-width: 165px;
+  min-height: 48px;
+
+  padding-inline: 18px;
+}
+
+
+/* =========================================================
+   COMPACT TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .contact-modal {
+    width: min(620px, calc(100% - 28px));
+    max-height: calc(100dvh - 28px);
+  }
+
+  .contact-modal__panel {
+    padding:
+      64px
+      32px
+      32px;
+
+    grid-template-columns: 1fr;
+
+    gap: 32px;
+  }
+
+  .contact-modal__header {
+    max-width: 520px;
+  }
+
+  .contact-modal__title {
+    font-size: clamp(3rem, 8vw, 3.8rem);
+  }
+
+  .contact-modal__description {
+    max-width: 500px;
+
+    margin-top: 24px;
+  }
+
+  .contact-form__field textarea {
+    height: 120px;
+    min-height: 120px;
+  }
+}
+
+
+/* =========================================================
+   COMPACT MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .contact-modal {
+    width: calc(100% - 16px);
+    max-height: calc(100dvh - 16px);
+
+    border-radius: 14px;
+  }
+
+  .contact-modal__panel {
+    padding:
+      60px
+      18px
+      22px;
+
+    gap: 28px;
+  }
+
+  .contact-modal__close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .contact-modal__title {
+    font-size: clamp(2.7rem, 13vw, 3.5rem);
+  }
+
+  .contact-modal__description {
+    margin-top: 20px;
+
+    font-size: 0.9rem;
+  }
+
+  .contact-form {
+    gap: 16px;
+  }
+
+  .contact-form__field textarea {
+    height: 110px;
+    min-height: 110px;
+  }
+}
+
+
+/* =========================================================
+   COMPACT SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+  .contact-modal__panel {
+    padding:
+      56px
+      15px
+      18px;
+
+    gap: 24px;
+  }
+
+  .contact-modal__title {
+    font-size: 2.65rem;
+  }
+}
