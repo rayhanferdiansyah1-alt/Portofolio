@@ -69,9 +69,6 @@
 
   let previousProgressFrame = performance.now();
 
-  /*
-   * PRE3 mulai menampilkan loader.
-   */
   preloader.hidden = false;
 
   preloader.removeAttribute("aria-hidden");
@@ -79,10 +76,6 @@
   root.classList.add("is-preloading");
 
   document.body.setAttribute("aria-busy", "true");
-
-  /* =========================================================
-     PROGRESS RENDERER
-     ========================================================= */
 
   const renderProgress = () => {
     const roundedProgress = Math.min(100, Math.round(currentProgress));
@@ -105,10 +98,6 @@
   const setTarget = (nextTarget) => {
     targetProgress = Math.max(targetProgress, Math.min(nextTarget, 100));
   };
-
-  /* =========================================================
-     LOADING STATE
-     ========================================================= */
 
   const synchronizeProgress = () => {
     let milestone = 8;
@@ -137,10 +126,6 @@
       setTarget(100);
     }
   };
-
-  /* =========================================================
-     READY HANDLERS
-     ========================================================= */
 
   const markDomReady = () => {
     state.dom = true;
@@ -175,14 +160,6 @@
 
     synchronizeProgress();
   };
-
-  /* =========================================================
-     FINISH
-     ========================================================= */
-
-  /* =========================================================
-   PRE6 — EXIT CONTROLLER
-   ========================================================= */
 
   const clearLoadingController = () => {
     if (animationFrame !== null) {
@@ -305,14 +282,6 @@
     }, completionHoldDuration);
   };
 
-  /* =========================================================
-     ANIMATION LOOP
-     ========================================================= */
-
-  /* =========================================================
-   PRE7 — FRAME-STABLE PROGRESS LOOP
-   ========================================================= */
-
   const updateProgress = (timestamp) => {
     if (finished || exitStarted) {
       return;
@@ -320,10 +289,6 @@
 
     const frameElapsed = timestamp - previousProgressFrame;
 
-    /*
-     * Progress ring cukup diperbarui sekitar 30 FPS.
-     * Three.js dan GSAP tetap mendapatkan frame lebih banyak.
-     */
     if (!reducedMotion && frameElapsed < 30) {
       animationFrame = requestAnimationFrame(updateProgress);
 
@@ -365,10 +330,6 @@
     animationFrame = requestAnimationFrame(updateProgress);
   };
 
-  /* =========================================================
-     BROWSER EVENTS
-     ========================================================= */
-
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", markDomReady, {
       once: true,
@@ -390,11 +351,6 @@
   } else {
     markFontsReady();
   }
-
-  /*
-   * PRE4 akan mengirim salah satu event ini
-   * setelah DNA WebGL atau fallback siap.
-   */
   window.addEventListener("rfm:dna-ready", markDnaReady, {
     once: true,
   });
@@ -403,18 +359,8 @@
     once: true,
   });
 
-  /*
-   * Fallback sementara sampai PRE4 dipasang.
-   */
-  /*
-   * Safety fallback jika file Three.js
-   * sama sekali tidak memberikan sinyal.
-   */
   dnaFallbackTimer = window.setTimeout(markDnaReady, 3600);
 
-  /*
-   * Pengaman agar loader tidak pernah macet.
-   */
   maximumWaitTimer = window.setTimeout(() => {
     state.dom = true;
 
@@ -426,10 +372,6 @@
 
     completionRequested = true;
 
-    /*
-     * Kondisi darurat tidak perlu
-     * menunggu progress terlalu lama.
-     */
     currentProgress = Math.max(currentProgress, 99.8);
 
     setTarget(100);
@@ -440,19 +382,11 @@
 
   animationFrame = requestAnimationFrame(updateProgress);
 
-  /* =========================================================
-   PRE7 — BACK/FORWARD CACHE SAFETY
-   ========================================================= */
-
   window.addEventListener("pageshow", (event) => {
     if (!event.persisted) {
       return;
     }
-
-    /*
-     * Saat halaman dipulihkan dari cache browser,
-     * preloader tidak perlu diputar ulang.
-     */
+    
     if (!finished) {
       finalizePreloader();
 

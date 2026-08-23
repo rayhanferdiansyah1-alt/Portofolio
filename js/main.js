@@ -34,11 +34,6 @@
       "(min-width: 901px)"
     );
 
-
-  /* =========================================================
-     CURRENT YEAR
-     ========================================================= */
-
   if (year) {
 
     year.textContent =
@@ -117,22 +112,10 @@
 
   );
 
-
-  /* =========================================================
-     MOBILE NAVIGATION
-     ========================================================= */
-
   if (
     mobileToggle &&
     mobileNav
   ) {
-
-    /*
-     * HTML saat ini memakai div.
-     *
-     * Role ini memberi semantic navigation
-     * tanpa membutuhkan perubahan struktur HTML.
-     */
 
     mobileNav.setAttribute(
       "role",
@@ -144,12 +127,6 @@
       "aria-label",
       "Navigasi mobile"
     );
-
-
-    /*
-     * Closed state tidak boleh dapat
-     * difokuskan screen reader / keyboard.
-     */
 
     mobileNav.hidden =
       true;
@@ -177,11 +154,6 @@
         );
 
       };
-
-
-    /* =======================================================
-       OPEN MENU
-       ======================================================= */
 
     const openMenu =
       () => {
@@ -216,12 +188,6 @@
           "menu-open"
         );
 
-
-        /*
-         * Setelah menu terbuka,
-         * fokus pindah ke link pertama.
-         */
-
         requestAnimationFrame(
           () => {
 
@@ -232,11 +198,6 @@
         );
 
       };
-
-
-    /* =======================================================
-       CLOSE MENU
-       ======================================================= */
 
     const closeMenu =
       ({
@@ -285,11 +246,6 @@
 
       };
 
-
-    /* =======================================================
-       TOGGLE
-       ======================================================= */
-
     mobileToggle.addEventListener(
 
       "click",
@@ -317,11 +273,6 @@
 
     );
 
-
-    /* =======================================================
-       NAV LINKS
-       ======================================================= */
-
     navLinks.forEach(
       (link) => {
 
@@ -340,12 +291,6 @@
       }
     );
 
-
-    /* =======================================================
-       KEYBOARD
-       ESCAPE + FOCUS TRAP
-       ======================================================= */
-
     document.addEventListener(
 
       "keydown",
@@ -357,11 +302,6 @@
         ) {
           return;
         }
-
-
-        /*
-         * ESC closes menu.
-         */
 
         if (
           event.key ===
@@ -380,14 +320,6 @@
           return;
 
         }
-
-
-        /*
-         * Trap Tab inside:
-         *
-         * toggle +
-         * navigation links
-         */
 
         if (
           event.key !==
@@ -468,11 +400,6 @@
 
     );
 
-
-    /* =======================================================
-       DESKTOP RESIZE
-       ======================================================= */
-
     const handleDesktopChange =
       (event) => {
 
@@ -505,20 +432,10 @@
   }
 
 
-  /* =========================================================
-     MAGNETIC INTERACTION
-     ========================================================= */
-
   const finePointer =
     window.matchMedia(
       "(pointer: fine)"
     ).matches;
-
-
-  /*
-   * Jangan aktifkan magnetic movement
-   * untuk user reduced-motion.
-   */
 
   if (
     finePointer &&

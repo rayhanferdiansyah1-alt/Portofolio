@@ -11,11 +11,6 @@
       const root = document.documentElement;
 
       root.classList.add("is-preloading");
-
-      /*
-       * Safety timeout:
-       * website tetap terbuka apabila controller preloader gagal.
-       */
       window.__rfmPreloaderSafety =
         window.setTimeout(
           () => {
@@ -41,17 +36,12 @@
     })();
   </script>
 
-
-  <!-- ======================================================
-       PRIMARY SEO
-       ====================================================== -->
-
   <title>
     Rayhan Ferdisnyah Mardani — Junior Web Developer
   </title>
 
   <meta name="description"
-    content="Portfolio Rayhan Ferdisnyah Mardani, Junior Web Developer yang berfokus pada Laravel, PHP, MySQL, pengembangan aplikasi web, sistem informasi, dan database.">
+    content="Portfolio Rayhan Ferdisnyah Mardani, Junior Web Developer yang berfokus pada Laravel, PHP, MySQL, pengembangan aplikasi web, dan database.">
 
   <meta name="author" content="Rayhan Ferdisnyah Mardani">
 
@@ -61,28 +51,12 @@
 
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
-
-  <!-- ======================================================
-       BROWSER / UI
-       ====================================================== -->
-
   <meta name="theme-color" content="#050506">
 
   <meta name="color-scheme" content="dark">
 
-
-  <!-- ======================================================
-       FAVICON
-       Tidak membutuhkan file tambahan
-       ====================================================== -->
-
   <link rel="icon"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0%200%20100%20100'%3E%3Crect width='100' height='100' rx='22' fill='%23050506'/%3E%3Ctext x='50' y='64' text-anchor='middle' font-size='46' font-family='Arial,sans-serif' font-weight='700' fill='%23a8ddf5'%3ER%3C/text%3E%3C/svg%3E">
-
-
-  <!-- ======================================================
-       OPEN GRAPH
-       ====================================================== -->
 
   <meta property="og:type" content="website">
 
@@ -95,11 +69,6 @@
   <meta property="og:description"
     content="Portfolio Junior Web Developer dengan fokus pada Laravel, PHP, MySQL, aplikasi web, sistem informasi, dan database.">
 
-
-  <!-- ======================================================
-       SOCIAL META
-       ====================================================== -->
-
   <meta name="twitter:card" content="summary">
 
   <meta name="twitter:title" content="Rayhan Ferdisnyah Mardani — Junior Web Developer">
@@ -108,51 +77,15 @@
     content="Portfolio Junior Web Developer dengan fokus pada Laravel, PHP, MySQL, aplikasi web, sistem informasi, dan database.">
 
 
-  <!-- ======================================================
-       PUBLISH-TIME SEO
-
-       Jangan isi dengan URL palsu.
-
-       Setelah website memiliki domain final,
-       baru tambahkan:
-
-       <link rel="canonical" href="https://domain-kamu.com/">
-
-       <meta
-         property="og:url"
-         content="https://domain-kamu.com/"
-       >
-
-       <meta
-         property="og:image"
-         content="https://domain-kamu.com/assets/images/og-cover.jpg"
-       >
-       ====================================================== -->
-
-
-  <!-- ======================================================
-       CONNECTION HINTS
-       ====================================================== -->
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
-
-  <!-- ======================================================
-       GOOGLE FONTS
-       ====================================================== -->
-
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
     rel="stylesheet">
-
-
-  <!-- ======================================================
-       STYLES
-       ====================================================== -->
 
   <link rel="stylesheet" href="css/variables.css">
 
@@ -168,6 +101,8 @@
 
   <link rel="stylesheet" href="css/skills.css">
 
+  <link rel="stylesheet" href="css/certifications.css">
+
   <link rel="stylesheet" href="css/education.css">
 
   <link rel="stylesheet" href="css/contact.css">
@@ -177,11 +112,6 @@
   <link rel="stylesheet" href="css/responsive.css">
 
   <link rel="stylesheet" href="css/preloader.css">
-
-
-  <!-- ======================================================
-       STRUCTURED DATA
-       ====================================================== -->
 
   <script type="application/ld+json">
   {
@@ -212,9 +142,6 @@
 </head>
 
 <body id="top">
-  <!-- ======================================================
-     PRE1 — RFM DNA PRELOADER STRUCTURE
-     ====================================================== -->
 
   <div class="site-preloader" id="sitePreloader" role="status" aria-live="polite"
     aria-label="Memuat portfolio Rayhan Ferdisnyah Mardani" hidden>
@@ -270,6 +197,7 @@
         <a href="#about">About</a>
         <a href="#projects">Work</a>
         <a href="#skills">Capabilities</a>
+        <a href="#certifications">Certificates</a>
         <a href="#education">Education</a>
       </nav>
 
@@ -285,6 +213,7 @@
       <a href="#about">About</a>
       <a href="#projects">Work</a>
       <a href="#skills">Capabilities</a>
+      <a href="#certifications">Certificates</a>
       <a href="#education">Education</a>
       <a href="#contact">Contact ↗</a>
     </div>
@@ -412,10 +341,6 @@
 
       <div class="shell">
 
-        <!-- =====================================================
-         PROJECT INTRO
-         ===================================================== -->
-
         <div class="projects-intro">
 
           <div class="projects-intro-main">
@@ -451,17 +376,7 @@
 
         </div>
 
-
-        <!-- =====================================================
-         PROJECT LIST
-         ===================================================== -->
-
         <div class="project-list">
-
-
-          <!-- ===================================================
-           PROJECT 01
-           =================================================== -->
 
           <article class="project project-featured">
 
@@ -574,12 +489,6 @@
 
           </article>
 
-
-
-          <!-- ===================================================
-           PROJECT 02
-           =================================================== -->
-
           <article class="project">
 
             <div class="project-meta reveal">
@@ -689,12 +598,6 @@
             </div>
 
           </article>
-
-
-
-          <!-- ===================================================
-           PROJECT 03
-           =================================================== -->
 
           <article class="project">
 
@@ -806,12 +709,6 @@
             </div>
 
           </article>
-
-
-
-          <!-- ===================================================
-           PROJECT 04
-           =================================================== -->
 
           <article class="project">
 
@@ -967,9 +864,146 @@
       </div>
     </section>
 
+    <section class="certifications" id="certifications" aria-labelledby="certificationsTitle">
+      <div class="shell">
+
+        <div class="section-index reveal">
+          04 / CERTIFICATIONS
+        </div>
+
+        <div class="certifications-header">
+
+          <div class="certifications-heading-group">
+            <p class="eyebrow reveal">CREDENTIALS</p>
+
+            <h2 class="certifications-heading reveal-text" id="certificationsTitle">
+              Learning,<br>
+              validated.
+            </h2>
+          </div>
+
+          <p class="certifications-intro reveal">
+            Sertifikasi yang mendukung kemampuan teknis,
+            proses belajar, dan pengembangan aplikasi web.
+          </p>
+
+        </div>
+
+        <div class="certifications-grid">
+
+          <!-- CERTIFICATE 01 -->
+          <article class="certification-card reveal">
+
+            <div class="certification-card__top">
+              <span class="certification-card__index">01</span>
+              <span class="certification-card__year">YEAR</span>
+            </div>
+
+            <div class="certification-card__body">
+              <span class="certification-card__issuer">
+                NAMA PENERBIT
+              </span>
+
+              <h3 class="certification-card__title">
+                NAMA SERTIFIKASI PERTAMA
+              </h3>
+            </div>
+
+            <div class="certification-card__footer">
+
+              <div class="certification-card__credential">
+                <span>CREDENTIAL ID</span>
+                <strong>ISI CREDENTIAL ID</strong>
+              </div>
+
+              <a class="certification-card__link" href="URL_CREDENTIAL_01" target="_blank" rel="noopener noreferrer"
+                aria-label="Lihat sertifikasi pertama">
+                VIEW CREDENTIAL
+                <span aria-hidden="true">↗</span>
+              </a>
+
+            </div>
+
+          </article>
+
+          <!-- CERTIFICATE 02 -->
+          <article class="certification-card reveal">
+
+            <div class="certification-card__top">
+              <span class="certification-card__index">02</span>
+              <span class="certification-card__year">YEAR</span>
+            </div>
+
+            <div class="certification-card__body">
+              <span class="certification-card__issuer">
+                NAMA PENERBIT
+              </span>
+
+              <h3 class="certification-card__title">
+                NAMA SERTIFIKASI KEDUA
+              </h3>
+            </div>
+
+            <div class="certification-card__footer">
+
+              <div class="certification-card__credential">
+                <span>CREDENTIAL ID</span>
+                <strong>ISI CREDENTIAL ID</strong>
+              </div>
+
+              <a class="certification-card__link" href="URL_CREDENTIAL_02" target="_blank" rel="noopener noreferrer"
+                aria-label="Lihat sertifikasi kedua">
+                VIEW CREDENTIAL
+                <span aria-hidden="true">↗</span>
+              </a>
+
+            </div>
+
+          </article>
+
+          <!-- CERTIFICATE 03 -->
+          <article class="certification-card reveal">
+
+            <div class="certification-card__top">
+              <span class="certification-card__index">03</span>
+              <span class="certification-card__year">YEAR</span>
+            </div>
+
+            <div class="certification-card__body">
+              <span class="certification-card__issuer">
+                NAMA PENERBIT
+              </span>
+
+              <h3 class="certification-card__title">
+                NAMA SERTIFIKASI KETIGA
+              </h3>
+            </div>
+
+            <div class="certification-card__footer">
+
+              <div class="certification-card__credential">
+                <span>CREDENTIAL ID</span>
+                <strong>ISI CREDENTIAL ID</strong>
+              </div>
+
+              <a class="certification-card__link" href="URL_CREDENTIAL_03" target="_blank" rel="noopener noreferrer"
+                aria-label="Lihat sertifikasi ketiga">
+                VIEW CREDENTIAL
+                <span aria-hidden="true">↗</span>
+              </a>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
     <section class="education" id="education">
       <div class="shell">
-        <div class="section-index reveal">04 / EDUCATION</div>
+        <div class="section-index reveal">05 / EDUCATION</div>
         <div class="education-layout">
           <div class="education-heading reveal">
             <p class="eyebrow">EDUCATION</p>
@@ -992,7 +1026,7 @@
 
     <section class="contact" id="contact">
       <div class="shell">
-        <div class="contact-topline reveal"><span>05 / CONTACT</span><span>AVAILABLE FOR OPPORTUNITIES</span></div>
+        <div class="contact-topline reveal"><span>06 / CONTACT</span><span>AVAILABLE FOR OPPORTUNITIES</span></div>
         <div class="contact-main">
           <p class="eyebrow reveal">LET'S TALK</p>
           <h2 class="contact-heading reveal-text">Have a project,<br>opportunity,<br>or idea?</h2>
@@ -1002,9 +1036,9 @@
 
         <div class="contact-footer">
           <div class="contact-links reveal">
-            <a href="mailto:rayhan.mardani@email.com">Email</a>
-            <a href="https://github.com/username" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://instagram.com/username" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="mailto:rayhanferdiansyah41@email.com">Email</a>
+            <a href="https://github.com/rayhanferdiansyah1-alt" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://instagram.com/ryhnfrd25" target="_blank" rel="noopener noreferrer">Instagram</a>
           </div>
           <p class="contact-note reveal">
             Terbuka untuk peluang kerja, kolaborasi,

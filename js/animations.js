@@ -7,10 +7,6 @@
 
   const revealSelector = ".reveal, .reveal-text";
 
-  /* =========================================================
-     PROJECT IMAGE WARM-UP
-     ========================================================= */
-
   const projectImages = Array.from(
     document.querySelectorAll(".project-shot img"),
   );
@@ -57,10 +53,6 @@
     projectImages.forEach(warmProjectImage);
   }
 
-  /* =========================================================
-     REDUCED MOTION
-     ========================================================= */
-
   const revealAllImmediately = () => {
     document.querySelectorAll(revealSelector).forEach((el) => {
       el.classList.add("is-visible");
@@ -73,15 +65,7 @@
     return;
   }
 
-  /* =========================================================
-     GSAP CHECK
-     ========================================================= */
-
   const hasGSAP = Boolean(window.gsap && window.ScrollTrigger);
-
-  /* =========================================================
-     FALLBACK TANPA GSAP
-     ========================================================= */
 
   if (!hasGSAP) {
     const observer = new IntersectionObserver(
@@ -110,11 +94,6 @@
 
     return;
   }
-
-  /* =========================================================
-     GSAP MODE
-     ========================================================= */
-
   root.classList.add("has-gsap");
 
   gsap.registerPlugin(ScrollTrigger);
@@ -128,10 +107,6 @@
 
     ignoreMobileResize: true,
   });
-
-  /* =========================================================
-     HELPERS
-     ========================================================= */
 
   const waitForPreloader = root.classList.contains("is-preloading");
 
@@ -150,18 +125,11 @@
       el.closest(".project") ||
       el.matches(".about-stats .stat") ||
       el.matches(".capability") ||
+      el.matches(".certification-card") ||
       el.matches(".education-card") ||
       el.matches(".contact-cta"),
     );
   };
-
-  /* =========================================================
-     HERO
-     ========================================================= */
-
-  /* =========================================================
-   PRE5 — HERO PRELOADER SYNC
-   ========================================================= */
 
   if (waitForPreloader) {
     gsap.set(".hero-topline", {
@@ -310,10 +278,6 @@
       "-=0.55",
     );
 
-  /* =========================================================
-   PRE5 — START HERO AFTER PRELOADER
-   ========================================================= */
-
   let heroTimelineStarted = !waitForPreloader;
 
   let heroStartSafetyTimer = null;
@@ -341,24 +305,12 @@
       once: true,
     });
 
-    /*
-     * Menangani kemungkinan event selesai
-     * sebelum listener ini dipasang.
-     */
     if (!root.classList.contains("is-preloading")) {
       requestAnimationFrame(startHeroTimeline);
     } else {
-      /*
-       * Safety agar Hero tidak pernah
-       * tertahan permanen.
-       */
       heroStartSafetyTimer = window.setTimeout(startHeroTimeline, 6200);
     }
   }
-
-  /* =========================================================
-     GLOBAL REVEAL
-     ========================================================= */
 
   document.querySelectorAll(".reveal").forEach((el) => {
     if (el.closest(".hero") || componentOwnedReveal(el)) {
@@ -398,10 +350,6 @@
     );
   });
 
-  /* =========================================================
-     LARGE TEXT REVEAL
-     ========================================================= */
-
   document.querySelectorAll(".reveal-text").forEach((el) => {
     if (el.closest(".hero") || el.matches(".contact-heading")) {
       return;
@@ -439,11 +387,6 @@
       },
     );
   });
-
-  /* =========================================================
-     ABOUT STATS
-     3 ITEMS — 1 TRIGGER
-     ========================================================= */
 
   const aboutStats = gsap.utils.toArray(".about-stats .stat");
 
@@ -483,10 +426,6 @@
     );
   }
 
-  /* =========================================================
-     PROJECTS
-     ========================================================= */
-
   const projectItems = gsap.utils.toArray(".project");
 
   const setProjectFocus = (activeProject) => {
@@ -517,10 +456,6 @@
     const footer = project.querySelector(".project-footer");
 
     const entranceTargets = [meta, copy, footer].filter(Boolean);
-
-    /* =======================================================
-         PROJECT ENTRANCE
-         ======================================================= */
 
     const projectTimeline = gsap.timeline({
       scrollTrigger: {
@@ -638,14 +573,6 @@
       }
     });
 
-    /* =======================================================
-         PROJECT DEPTH
-         SATU ScrollTrigger menangani:
-         - visual parallax
-         - image pan
-         - overlay depth
-         ======================================================= */
-
     if (visual || media || overlay) {
       const setVisualY = visual ? gsap.quickSetter(visual, "yPercent") : null;
 
@@ -692,10 +619,6 @@
       });
     }
 
-    /* =======================================================
-         PROJECT FOCUS
-         ======================================================= */
-
     ScrollTrigger.create({
       trigger: project,
 
@@ -720,11 +643,6 @@
       },
     });
   });
-
-  /* =========================================================
-     CAPABILITIES
-     5 ITEMS — 1 TRIGGER
-     ========================================================= */
 
   const capabilityItems = gsap.utils.toArray(".capability");
 
@@ -764,9 +682,42 @@
     );
   }
 
-  /* =========================================================
-     EDUCATION
-     ========================================================= */
+  const certificationCards = gsap.utils.toArray(".certification-card");
+
+  if (certificationCards.length) {
+    gsap.fromTo(
+      certificationCards,
+
+      {
+        opacity: 0,
+
+        y: projectMobile ? 20 : 30,
+      },
+
+      {
+        opacity: 1,
+        y: 0,
+
+        duration: projectMobile ? 0.72 : 0.9,
+
+        stagger: projectMobile ? 0.07 : 0.11,
+
+        ease: "power3.out",
+
+        onComplete: () => {
+          clearRevealProps(certificationCards);
+        },
+
+        scrollTrigger: {
+          trigger: ".certifications-grid",
+
+          start: projectMobile ? "top 90%" : "top 84%",
+
+          once: true,
+        },
+      },
+    );
+  }
 
   const educationCard = document.querySelector(".education-card");
 
@@ -803,11 +754,6 @@
       },
     );
   }
-
-  /* =========================================================
-     CONTACT
-     1 ScrollTrigger
-     ========================================================= */
 
   const contact = document.querySelector(".contact");
 
@@ -883,13 +829,8 @@
     }
   }
 
-  /* =========================================================
-     C5 SECTION BRIDGE
-     ONE-TIME — NO SCRUB
-     ========================================================= */
-
   const transitionSections = gsap.utils.toArray(
-    ".about, .projects, .skills, .education, .contact",
+    ".about, .projects, .skills, .certifications, .education, .contact",
   );
 
   transitionSections.forEach((section, index) => {
@@ -921,11 +862,6 @@
       index % 2 === 0 ? "38%" : "62%",
     );
 
-    /*
-     * Tidak mengalokasikan compositor layer
-     * sebelum animation diperlukan.
-     */
-
     line.style.willChange = "auto";
 
     glow.style.willChange = "auto";
@@ -935,10 +871,6 @@
     bridge.append(line, glow, point);
 
     section.prepend(bridge);
-
-    /* =====================================================
-         BRIDGE TIMELINE
-         ===================================================== */
 
     const bridgeTimeline = gsap.timeline({
       paused: true,
@@ -1087,10 +1019,6 @@
     });
   });
 
-  /* =========================================================
-     ACTIVE NAVIGATION
-     ========================================================= */
-
   const navLinks = document.querySelectorAll(
     '.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]',
   );
@@ -1124,10 +1052,6 @@
       },
     });
   });
-
-  /* =========================================================
-     FINAL REFRESH
-     ========================================================= */
 
   window.addEventListener(
     "load",
