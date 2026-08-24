@@ -1,8 +1,3 @@
-/* =========================================================
-   RFM PORTFOLIO
-   PRE2 — PRELOADER VISUAL
-   ========================================================= */
-
 .site-preloader {
   --preloader-accent: #a8ddf5;
   --preloader-offset: 100;
@@ -85,10 +80,6 @@
   pointer-events: none;
 }
 
-/* =========================================================
-   INNER
-   ========================================================= */
-
 .site-preloader__inner {
   position: relative;
   z-index: 2;
@@ -103,10 +94,6 @@
 
   gap: 28px;
 }
-
-/* =========================================================
-   PROGRESS METER
-   ========================================================= */
 
 .site-preloader__meter {
   position: relative;
@@ -136,10 +123,6 @@
 
   pointer-events: none;
 }
-
-/* =========================================================
-   SVG RING
-   ========================================================= */
 
 .site-preloader__ring {
   position: absolute;
@@ -180,10 +163,6 @@
     stroke-dashoffset 0.18s linear;
 }
 
-/* =========================================================
-   RFM MONOGRAM
-   ========================================================= */
-
 .site-preloader__monogram {
   position: relative;
   z-index: 2;
@@ -211,10 +190,6 @@
 .site-preloader__monogram > span {
   color: var(--preloader-accent);
 }
-
-/* =========================================================
-   LOADING INFORMATION
-   ========================================================= */
 
 .site-preloader__copy {
   width: 100%;
@@ -258,10 +233,6 @@
   text-align: right;
 }
 
-/* =========================================================
-   MONOGRAM MOTION
-   ========================================================= */
-
 @keyframes preloader-monogram-pulse {
   0%,
   100% {
@@ -272,10 +243,6 @@
     opacity: 1;
   }
 }
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 
 @media (max-width: 700px) {
   .site-preloader__inner {
@@ -307,10 +274,6 @@
   }
 }
 
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
 @media (prefers-reduced-motion: reduce) {
   .site-preloader__monogram {
     animation: none;
@@ -320,10 +283,6 @@
     transition: none;
   }
 }
-
-/* =========================================================
-   PRE3 — PRELOADER ACTIVE STATE
-   ========================================================= */
 
 html.is-preloading {
   overflow: hidden;
@@ -351,10 +310,6 @@ html.is-preloading
 
   user-select: none;
 }
-
-/* =========================================================
-   PRE6 — PRELOADER EXIT ANIMATION
-   ========================================================= */
 
 .site-preloader {
   opacity: 1;
@@ -495,10 +450,6 @@ html.is-preloading
     transition: none !important;
   }
 }
-
-/* =========================================================
-   PRE7 — FINAL RESPONSIVE AUDIT
-   ========================================================= */
 
 .site-preloader {
   box-sizing: border-box;
