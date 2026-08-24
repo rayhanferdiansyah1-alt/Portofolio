@@ -2,53 +2,52 @@
 <html lang="id">
 
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>
-    Sistem Penggajian dan Lembur — Rayhan Ferdiansyah Mardani
-  </title>
+    <title>
+        Sistem Penggajian dan Lembur — Rayhan Ferdiansyah Mardani
+    </title>
 
-  <meta name="description"
-    content="Studi kasus Sistem Penggajian dan Lembur yang menghubungkan data pegawai, absensi, shift, lembur, dan slip gaji.">
+    <meta name="description"
+        content="Studi kasus Sistem Penggajian dan Lembur yang menghubungkan data pegawai, absensi, shift, lembur, dan slip gaji.">
 
-  <meta name="author" content="Rayhan Ferdiansyah Mardani">
+    <meta name="author" content="Rayhan Ferdiansyah Mardani">
 
-  <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow">
 
-  <meta name="theme-color" content="#050506">
+    <meta name="theme-color" content="#050506">
 
-  <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="dark">
 
-  <meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 
-  <meta property="og:locale" content="id_ID">
+    <meta property="og:locale" content="id_ID">
 
-  <meta property="og:title"
-    content="Sistem Penggajian dan Lembur — Case Study">
+    <meta property="og:title" content="Sistem Penggajian dan Lembur — Case Study">
 
-  <meta property="og:description"
-    content="Dokumentasi perancangan sistem penghitungan gaji, shift kerja, lembur, rekap bulanan, dan slip gaji.">
+    <meta property="og:description"
+        content="Dokumentasi perancangan sistem penghitungan gaji, shift kerja, lembur, rekap bulanan, dan slip gaji.">
 
-  <link rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0%200%20100%20100'%3E%3Crect width='100' height='100' rx='22' fill='%23050506'/%3E%3Ctext x='50' y='64' text-anchor='middle' font-size='46' font-family='Arial,sans-serif' font-weight='700' fill='%23a8ddf5'%3ER%3C/text%3E%3C/svg%3E">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0%200%20100%20100'%3E%3Crect width='100' height='100' rx='22' fill='%23050506'/%3E%3Ctext x='50' y='64' text-anchor='middle' font-size='46' font-family='Arial,sans-serif' font-weight='700' fill='%23a8ddf5'%3ER%3C/text%3E%3C/svg%3E">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
-    rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/variables.css">
 
-  <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/base.css">
 
-  <link rel="stylesheet" href="../css/project-detail.css">
+    <link rel="stylesheet" href="../css/project-detail.css">
 
-  <script type="application/ld+json">
+    <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -74,565 +73,663 @@
 
 <body class="case-page" data-project="04">
 
-  <a class="skip-link" href="#caseMain">
-    Lewati ke konten utama
-  </a>
+    <a class="skip-link" href="#caseMain">
+        Lewati ke konten utama
+    </a>
 
-  <div class="page-noise" aria-hidden="true"></div>
+    <div class="page-noise" aria-hidden="true"></div>
 
-  <div class="case-ambient case-ambient--one" aria-hidden="true"></div>
+    <div class="case-ambient case-ambient--one" aria-hidden="true"></div>
 
-  <div class="case-ambient case-ambient--two" aria-hidden="true"></div>
+    <div class="case-ambient case-ambient--two" aria-hidden="true"></div>
 
-  <header class="case-header">
+    <header class="case-header">
 
-    <div class="case-shell case-header__inner">
+        <div class="case-shell case-header__inner">
 
-      <a class="case-brand"
-        href="../index.html#top"
-        aria-label="Kembali ke halaman utama">
-        RFM<span>.</span>
-      </a>
+            <a class="case-brand" href="../index.html#top" aria-label="Kembali ke halaman utama">
+                RFM<span>.</span>
+            </a>
 
-      <span class="case-header__index">
-        CASE STUDY / 04
-      </span>
+            <span class="case-header__index">
+                CASE STUDY / 04
+            </span>
 
-      <a class="case-header__back"
-        href="../index.html#projects">
-        Back to work
-        <span aria-hidden="true">↙</span>
-      </a>
-
-    </div>
-
-  </header>
-
-  <main id="caseMain">
-
-    <section class="case-hero">
-
-      <div class="case-shell">
-
-        <div class="case-hero__top" data-reveal>
-
-          <span>
-            PAYROLL SYSTEM
-          </span>
-
-          <span>
-            2025
-          </span>
+            <a class="case-header__back" href="../index.html#projects">
+                Back to work
+                <span aria-hidden="true">↙</span>
+            </a>
 
         </div>
 
-        <div class="case-hero__layout">
+    </header>
 
-          <div class="case-hero__content">
+    <main id="caseMain">
 
-            <p class="case-eyebrow" data-reveal>
-              PROJECT / 04
-            </p>
+        <section class="case-hero">
 
-            <h1 class="case-title" data-reveal>
-              Sistem Penggajian
-              <span>&amp; Lembur</span>
-            </h1>
+            <div class="case-shell">
 
-            <p class="case-lead" data-reveal>
-              Sistem penghitungan gaji yang menghubungkan data
-              pegawai, absensi, jadwal shift, durasi kerja,
-              lembur, rekap bulanan, dan pembuatan slip gaji.
-            </p>
+                <div class="case-hero__top" data-reveal>
 
-          </div>
+                    <span>
+                        PAYROLL SYSTEM
+                    </span>
 
-          <dl class="case-meta" data-reveal>
+                    <span>
+                        2025
+                    </span>
 
-            <div>
-              <dt>Role</dt>
-              <dd>System Analyst &amp; Web Developer</dd>
+                </div>
+
+                <div class="case-hero__layout">
+
+                    <div class="case-hero__content">
+
+                        <p class="case-eyebrow" data-reveal>
+                            PROJECT / 04
+                        </p>
+
+                        <h1 class="case-title" data-reveal>
+                            Sistem Penggajian
+                            <span>&amp; Lembur</span>
+                        </h1>
+
+                        <p class="case-lead" data-reveal>
+                            Sistem penghitungan gaji yang menghubungkan data
+                            pegawai, absensi, jadwal shift, durasi kerja,
+                            lembur, rekap bulanan, dan pembuatan slip gaji.
+                        </p>
+
+                    </div>
+
+                    <dl class="case-meta" data-reveal>
+
+                        <div>
+                            <dt>Role</dt>
+                            <dd>System Analyst &amp; Web Developer</dd>
+                        </div>
+
+                        <div>
+                            <dt>Platform</dt>
+                            <dd>Payroll Management System</dd>
+                        </div>
+
+                        <div>
+                            <dt>Technology</dt>
+                            <dd>Laravel / PHP / MySQL</dd>
+                        </div>
+
+                        <div>
+                            <dt>Source</dt>
+                            <dd>Available upon request</dd>
+                        </div>
+
+                    </dl>
+
+                </div>
+
+                <section class="case-gallery" aria-labelledby="projectDocumentationTitle">
+
+                    <div class="case-gallery__heading">
+
+                        <div>
+                            <p class="case-eyebrow" data-reveal>
+                                PROJECT DOCUMENTATION
+                            </p>
+
+                            <h2 id="projectDocumentationTitle" data-reveal>
+                                Hasil utama sistem.
+                            </h2>
+                        </div>
+
+                        <span class="case-gallery__count" data-reveal>
+                            06 / SCREENS
+                        </span>
+
+                    </div>
+
+                    <div class="case-gallery__grid" data-gallery>
+
+                        <a class="case-gallery__card"
+                            href="../assets/images/project-details/penggajian-lembur/01-dashboard.webp"
+                            data-gallery-item data-gallery-title="Dashboard" aria-label="Perbesar screenshot Dashboard"
+                            data-reveal>
+
+                            <span class="case-gallery__media">
+                                <img src="../assets/images/project-details/penggajian-lembur/01-dashboard.webp"
+                                    alt="Dashboard Sistem Penggajian dan Lembur" width="1600" height="1000"
+                                    loading="lazy" decoding="async">
+                            </span>
+
+                            <span class="case-gallery__meta">
+                                <span>01</span>
+                                <strong>Dashboard</strong>
+                                <span aria-hidden="true">↗</span>
+                            </span>
+
+                        </a>
+
+                        <a class="case-gallery__card"
+                            href="../assets/images/project-details/penggajian-lembur/02-data-gaji.webp"
+                            data-gallery-item data-gallery-title="Data Gaji" aria-label="Perbesar screenshot Data Gaji"
+                            data-reveal>
+
+                            <span class="case-gallery__media">
+                                <img src="../assets/images/project-details/penggajian-lembur/02-data-gaji.webp"
+                                    alt="Halaman Data Gaji Pegawai" width="1600" height="1000" loading="lazy"
+                                    decoding="async">
+                            </span>
+
+                            <span class="case-gallery__meta">
+                                <span>02</span>
+                                <strong>Data Gaji</strong>
+                                <span aria-hidden="true">↗</span>
+                            </span>
+
+                        </a>
+
+                        <a class="case-gallery__card"
+                            href="../assets/images/project-details/penggajian-lembur/03-jadwal-shift.webp"
+                            data-gallery-item data-gallery-title="Jadwal Shift"
+                            aria-label="Perbesar screenshot Jadwal Shift" data-reveal>
+
+                            <span class="case-gallery__media">
+                                <img src="../assets/images/project-details/penggajian-lembur/03-jadwal-shift.webp"
+                                    alt="Halaman Jadwal Shift Pegawai" width="1600" height="1000" loading="lazy"
+                                    decoding="async">
+                            </span>
+
+                            <span class="case-gallery__meta">
+                                <span>03</span>
+                                <strong>Jadwal Shift</strong>
+                                <span aria-hidden="true">↗</span>
+                            </span>
+
+                        </a>
+
+                        <a class="case-gallery__card"
+                            href="../assets/images/project-details/penggajian-lembur/04-perhitungan-lembur.webp"
+                            data-gallery-item data-gallery-title="Perhitungan Lembur"
+                            aria-label="Perbesar screenshot Perhitungan Lembur" data-reveal>
+
+                            <span class="case-gallery__media">
+                                <img src="../assets/images/project-details/penggajian-lembur/04-perhitungan-lembur.webp"
+                                    alt="Halaman Perhitungan Lembur Pegawai" width="1600" height="1000" loading="lazy"
+                                    decoding="async">
+                            </span>
+
+                            <span class="case-gallery__meta">
+                                <span>04</span>
+                                <strong>Perhitungan Lembur</strong>
+                                <span aria-hidden="true">↗</span>
+                            </span>
+
+                        </a>
+
+                        <a class="case-gallery__card"
+                            href="../assets/images/project-details/penggajian-lembur/05-rekap-bulanan.webp"
+                            data-gallery-item data-gallery-title="Rekap Bulanan"
+                            aria-label="Perbesar screenshot Rekap Bulanan" data-reveal>
+
+                            <span class="case-gallery__media">
+                                <img src="../assets/images/project-details/penggajian-lembur/05-rekap-bulanan.webp"
+                                    alt="Halaman Rekap Penggajian Bulanan" width="1600" height="1000" loading="lazy"
+                                    decoding="async">
+                            </span>
+
+                            <span class="case-gallery__meta">
+                                <span>05</span>
+                                <strong>Rekap Bulanan</strong>
+                                <span aria-hidden="true">↗</span>
+                            </span>
+
+                        </a>
+
+                        <a class="case-gallery__card"
+                            href="../assets/images/project-details/penggajian-lembur/06-slip-gaji.webp"
+                            data-gallery-item data-gallery-title="Slip Gaji" aria-label="Perbesar screenshot Slip Gaji"
+                            data-reveal>
+
+                            <span class="case-gallery__media">
+                                <img src="../assets/images/project-details/penggajian-lembur/06-slip-gaji.webp"
+                                    alt="Halaman Slip Gaji Pegawai" width="1600" height="1000" loading="lazy"
+                                    decoding="async">
+                            </span>
+
+                            <span class="case-gallery__meta">
+                                <span>06</span>
+                                <strong>Slip Gaji</strong>
+                                <span aria-hidden="true">↗</span>
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </section>
+
             </div>
 
-            <div>
-              <dt>Platform</dt>
-              <dd>Payroll Management System</dd>
-            </div>
+        </section>
 
-            <div>
-              <dt>Technology</dt>
-              <dd>Laravel / PHP / MySQL</dd>
-            </div>
+        <section class="case-section">
 
-            <div>
-              <dt>Source</dt>
-              <dd>Available upon request</dd>
-            </div>
+            <div class="case-shell case-grid">
 
-          </dl>
+                <div class="case-section__label" data-reveal>
+                    01 / OVERVIEW
+                </div>
 
-        </div>
+                <div class="case-section__content">
 
-        <figure class="case-cover" data-reveal>
+                    <p class="case-eyebrow" data-reveal>
+                        PROJECT OVERVIEW
+                    </p>
 
-          <div class="case-browser">
+                    <h2 data-reveal>
+                        Mengubah data kehadiran menjadi informasi penggajian.
+                    </h2>
 
-            <div class="case-browser__bar">
+                    <div class="case-copy" data-reveal>
 
-              <div class="case-browser__controls" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
+                        <p>
+                            Penghitungan gaji membutuhkan data yang berasal
+                            dari beberapa proses, seperti kehadiran, jadwal
+                            shift, durasi kerja, cuti, dan lembur pegawai.
+                        </p>
 
-              <span>
-                PROJECT / 04
-              </span>
+                        <p>
+                            Sistem ini difokuskan pada penyusunan aturan
+                            penghitungan yang konsisten sehingga data kerja
+                            pegawai dapat diringkas menjadi informasi gaji
+                            dan slip bulanan.
+                        </p>
 
-            </div>
+                    </div>
 
-            <div class="case-browser__media">
-
-              <img
-                src="../assets/images/projects/project-04.png"
-                alt="Tampilan Sistem Penggajian dan Lembur"
-                width="736"
-                height="460"
-                decoding="async">
+                </div>
 
             </div>
 
-          </div>
+        </section>
 
-          <figcaption>
-            Management preview — Sistem Penggajian dan Lembur
-          </figcaption>
+        <section class="case-section">
 
-        </figure>
+            <div class="case-shell case-grid">
 
-      </div>
+                <div class="case-section__label" data-reveal>
+                    02 / PROBLEM
+                </div>
 
-    </section>
+                <div class="case-section__content">
 
-    <section class="case-section">
+                    <p class="case-eyebrow" data-reveal>
+                        THE CHALLENGE
+                    </p>
 
-      <div class="case-shell case-grid">
+                    <h2 data-reveal>
+                        Menjaga perhitungan tetap akurat pada berbagai kondisi kerja.
+                    </h2>
 
-        <div class="case-section__label" data-reveal>
-          01 / OVERVIEW
-        </div>
+                    <ul class="case-list">
 
-        <div class="case-section__content">
+                        <li data-reveal>
+                            <span>01</span>
 
-          <p class="case-eyebrow" data-reveal>
-            PROJECT OVERVIEW
-          </p>
+                            <div>
+                                <h3>Data dari beberapa sumber</h3>
 
-          <h2 data-reveal>
-            Mengubah data kehadiran menjadi informasi penggajian.
-          </h2>
+                                <p>
+                                    Informasi gaji harus menggunakan data pegawai,
+                                    absensi, cuti, shift, dan lembur yang saling terhubung.
+                                </p>
+                            </div>
+                        </li>
 
-          <div class="case-copy" data-reveal>
+                        <li data-reveal>
+                            <span>02</span>
 
-            <p>
-              Penghitungan gaji membutuhkan data yang berasal
-              dari beberapa proses, seperti kehadiran, jadwal
-              shift, durasi kerja, cuti, dan lembur pegawai.
-            </p>
+                            <div>
+                                <h3>Shift melewati pergantian hari</h3>
 
-            <p>
-              Sistem ini difokuskan pada penyusunan aturan
-              penghitungan yang konsisten sehingga data kerja
-              pegawai dapat diringkas menjadi informasi gaji
-              dan slip bulanan.
-            </p>
+                                <p>
+                                    Jadwal malam harus dihitung dengan benar ketika
+                                    jam keluar berada pada tanggal berikutnya.
+                                </p>
+                            </div>
+                        </li>
 
-          </div>
+                        <li data-reveal>
+                            <span>03</span>
 
-        </div>
+                            <div>
+                                <h3>Transparansi hasil</h3>
 
-      </div>
+                                <p>
+                                    Setiap komponen penghitungan perlu disajikan
+                                    secara jelas dalam rekap dan slip gaji.
+                                </p>
+                            </div>
+                        </li>
 
-    </section>
+                    </ul>
 
-    <section class="case-section">
+                </div>
 
-      <div class="case-shell case-grid">
+            </div>
 
-        <div class="case-section__label" data-reveal>
-          02 / PROBLEM
-        </div>
+        </section>
 
-        <div class="case-section__content">
+        <section class="case-section">
 
-          <p class="case-eyebrow" data-reveal>
-            THE CHALLENGE
-          </p>
+            <div class="case-shell case-grid">
 
-          <h2 data-reveal>
-            Menjaga perhitungan tetap akurat pada berbagai kondisi kerja.
-          </h2>
+                <div class="case-section__label" data-reveal>
+                    03 / SOLUTION
+                </div>
 
-          <ul class="case-list">
+                <div class="case-section__content">
 
-            <li data-reveal>
-              <span>01</span>
+                    <p class="case-eyebrow" data-reveal>
+                        THE SOLUTION
+                    </p>
 
-              <div>
-                <h3>Data dari beberapa sumber</h3>
+                    <h2 data-reveal>
+                        Perhitungan berbasis aturan dengan riwayat data terpusat.
+                    </h2>
 
-                <p>
-                  Informasi gaji harus menggunakan data pegawai,
-                  absensi, cuti, shift, dan lembur yang saling terhubung.
+                    <div class="case-copy" data-reveal>
+
+                        <p>
+                            Sistem membaca jadwal shift dan waktu kehadiran untuk
+                            menghitung durasi kerja. Waktu kerja yang melewati
+                            batas shift diproses berdasarkan aturan lembur yang
+                            telah ditentukan.
+                        </p>
+
+                        <p>
+                            Hasil perhitungan kemudian dirangkum berdasarkan
+                            periode penggajian sehingga admin dapat melihat
+                            rincian sebelum membuat slip gaji.
+                        </p>
+
+                    </div>
+
+                    <div class="case-rule-grid" data-reveal>
+
+                        <article>
+                            <span>SHIFT 01</span>
+                            <strong>07:00 — 19:00</strong>
+                            <p>Jadwal kerja siang.</p>
+                        </article>
+
+                        <article>
+                            <span>SHIFT 02</span>
+                            <strong>19:00 — 07:00</strong>
+                            <p>Jadwal kerja malam yang melewati pergantian hari.</p>
+                        </article>
+
+                        <article>
+                            <span>OVERTIME</span>
+                            <strong>Rule based</strong>
+                            <p>
+                                Dihitung setelah melewati batas shift dan
+                                memenuhi durasi minimum.
+                            </p>
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="case-section">
+
+            <div class="case-shell case-grid">
+
+                <div class="case-section__label" data-reveal>
+                    04 / FEATURES
+                </div>
+
+                <div class="case-section__content">
+
+                    <p class="case-eyebrow" data-reveal>
+                        CORE FEATURES
+                    </p>
+
+                    <h2 data-reveal>
+                        Fitur utama pengelolaan payroll.
+                    </h2>
+
+                    <div class="case-feature-grid">
+
+                        <article class="case-feature" data-reveal>
+                            <span>01</span>
+                            <h3>Data gaji pegawai</h3>
+                            <p>
+                                Menyimpan informasi gaji dasar yang terhubung
+                                dengan data pegawai.
+                            </p>
+                        </article>
+
+                        <article class="case-feature" data-reveal>
+                            <span>02</span>
+                            <h3>Jadwal shift</h3>
+                            <p>
+                                Mengelola pembagian shift siang dan malam
+                                untuk setiap pegawai.
+                            </p>
+                        </article>
+
+                        <article class="case-feature" data-reveal>
+                            <span>03</span>
+                            <h3>Durasi kerja</h3>
+                            <p>
+                                Menghitung waktu kerja berdasarkan jam masuk,
+                                jam keluar, dan jadwal shift.
+                            </p>
+                        </article>
+
+                        <article class="case-feature" data-reveal>
+                            <span>04</span>
+                            <h3>Perhitungan lembur</h3>
+                            <p>
+                                Menghitung durasi kerja tambahan berdasarkan
+                                aturan lembur yang ditentukan.
+                            </p>
+                        </article>
+
+                        <article class="case-feature" data-reveal>
+                            <span>05</span>
+                            <h3>Rekap bulanan</h3>
+                            <p>
+                                Menampilkan ringkasan kehadiran, cuti,
+                                durasi kerja, dan lembur per periode.
+                            </p>
+                        </article>
+
+                        <article class="case-feature" data-reveal>
+                            <span>06</span>
+                            <h3>Slip gaji</h3>
+                            <p>
+                                Menyusun rincian penggajian yang dapat
+                                ditampilkan dan dicetak.
+                            </p>
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="case-section">
+
+            <div class="case-shell case-grid">
+
+                <div class="case-section__label" data-reveal>
+                    05 / PROCESS
+                </div>
+
+                <div class="case-section__content">
+
+                    <p class="case-eyebrow" data-reveal>
+                        DEVELOPMENT PROCESS
+                    </p>
+
+                    <h2 data-reveal>
+                        Menerjemahkan aturan kerja menjadi logika sistem.
+                    </h2>
+
+                    <ol class="case-process">
+
+                        <li data-reveal>
+                            <span>01</span>
+                            <h3>Business rule analysis</h3>
+                            <p>
+                                Mengidentifikasi aturan shift, durasi kerja,
+                                lembur, cuti, dan komponen penggajian.
+                            </p>
+                        </li>
+
+                        <li data-reveal>
+                            <span>02</span>
+                            <h3>Calculation design</h3>
+                            <p>
+                                Menyusun alur penghitungan untuk shift siang,
+                                shift malam, dan waktu kerja tambahan.
+                            </p>
+                        </li>
+
+                        <li data-reveal>
+                            <span>03</span>
+                            <h3>Module implementation</h3>
+                            <p>
+                                Mengembangkan modul pegawai, absensi,
+                                lembur, rekap, dan slip gaji.
+                            </p>
+                        </li>
+
+                        <li data-reveal>
+                            <span>04</span>
+                            <h3>Edge-case testing</h3>
+                            <p>
+                                Menguji pergantian tanggal, data kosong,
+                                durasi minimum, dan hasil rekap bulanan.
+                            </p>
+                        </li>
+
+                    </ol>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="case-section">
+
+            <div class="case-shell case-grid">
+
+                <div class="case-section__label" data-reveal>
+                    06 / STACK
+                </div>
+
+                <div class="case-section__content">
+
+                    <p class="case-eyebrow" data-reveal>
+                        TECHNOLOGY
+                    </p>
+
+                    <h2 data-reveal>
+                        Teknologi yang digunakan.
+                    </h2>
+
+                    <ul class="case-stack" data-reveal>
+                        <li>Laravel</li>
+                        <li>PHP</li>
+                        <li>MySQL</li>
+                        <li>Blade</li>
+                        <li>HTML</li>
+                        <li>CSS</li>
+                        <li>JavaScript</li>
+                        <li>PDF</li>
+                        <li>Excel</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="case-closing">
+
+            <div class="case-shell">
+
+                <p class="case-eyebrow" data-reveal>
+                    EXPLORE FROM THE START
                 </p>
-              </div>
-            </li>
 
-            <li data-reveal>
-              <span>02</span>
+                <a class="case-next" href="sistem-absensi-pegawai-klinik.html" data-reveal>
 
-              <div>
-                <h3>Shift melewati pergantian hari</h3>
+                    <span>
+                        Project 01
+                    </span>
 
-                <p>
-                  Jadwal malam harus dihitung dengan benar ketika
-                  jam keluar berada pada tanggal berikutnya.
-                </p>
-              </div>
-            </li>
+                    <strong>
+                        Sistem Absensi Pegawai Klinik
+                    </strong>
 
-            <li data-reveal>
-              <span>03</span>
+                    <span aria-hidden="true">
+                        ↗
+                    </span>
 
-              <div>
-                <h3>Transparansi hasil</h3>
+                </a>
 
-                <p>
-                  Setiap komponen penghitungan perlu disajikan
-                  secara jelas dalam rekap dan slip gaji.
-                </p>
-              </div>
-            </li>
+                <div class="case-closing__bottom" data-reveal>
 
-          </ul>
+                    <p>
+                        Source code tersedia untuk kebutuhan evaluasi
+                        atau diskusi lebih lanjut.
+                    </p>
 
-        </div>
+                    <a href="../index.html#contact">
+                        Contact Rayhan
+                        <span aria-hidden="true">↗</span>
+                    </a>
 
-      </div>
+                </div>
 
-    </section>
+            </div>
 
-    <section class="case-section">
+        </section>
 
-      <div class="case-shell case-grid">
+    </main>
 
-        <div class="case-section__label" data-reveal>
-          03 / SOLUTION
-        </div>
+    <footer class="case-footer">
 
-        <div class="case-section__content">
+        <div class="case-shell case-footer__inner">
 
-          <p class="case-eyebrow" data-reveal>
-            THE SOLUTION
-          </p>
+            <span>
+                © 2026 Rayhan Ferdiansyah Mardani
+            </span>
 
-          <h2 data-reveal>
-            Perhitungan berbasis aturan dengan riwayat data terpusat.
-          </h2>
-
-          <div class="case-copy" data-reveal>
-
-            <p>
-              Sistem membaca jadwal shift dan waktu kehadiran untuk
-              menghitung durasi kerja. Waktu kerja yang melewati
-              batas shift diproses berdasarkan aturan lembur yang
-              telah ditentukan.
-            </p>
-
-            <p>
-              Hasil perhitungan kemudian dirangkum berdasarkan
-              periode penggajian sehingga admin dapat melihat
-              rincian sebelum membuat slip gaji.
-            </p>
-
-          </div>
-
-          <div class="case-rule-grid" data-reveal>
-
-            <article>
-              <span>SHIFT 01</span>
-              <strong>07:00 — 19:00</strong>
-              <p>Jadwal kerja siang.</p>
-            </article>
-
-            <article>
-              <span>SHIFT 02</span>
-              <strong>19:00 — 07:00</strong>
-              <p>Jadwal kerja malam yang melewati pergantian hari.</p>
-            </article>
-
-            <article>
-              <span>OVERTIME</span>
-              <strong>Rule based</strong>
-              <p>
-                Dihitung setelah melewati batas shift dan
-                memenuhi durasi minimum.
-              </p>
-            </article>
-
-          </div>
+            <a href="../index.html#projects">
+                Selected Work
+            </a>
 
         </div>
 
-      </div>
+    </footer>
 
-    </section>
-
-    <section class="case-section">
-
-      <div class="case-shell case-grid">
-
-        <div class="case-section__label" data-reveal>
-          04 / FEATURES
-        </div>
-
-        <div class="case-section__content">
-
-          <p class="case-eyebrow" data-reveal>
-            CORE FEATURES
-          </p>
-
-          <h2 data-reveal>
-            Fitur utama pengelolaan payroll.
-          </h2>
-
-          <div class="case-feature-grid">
-
-            <article class="case-feature" data-reveal>
-              <span>01</span>
-              <h3>Data gaji pegawai</h3>
-              <p>
-                Menyimpan informasi gaji dasar yang terhubung
-                dengan data pegawai.
-              </p>
-            </article>
-
-            <article class="case-feature" data-reveal>
-              <span>02</span>
-              <h3>Jadwal shift</h3>
-              <p>
-                Mengelola pembagian shift siang dan malam
-                untuk setiap pegawai.
-              </p>
-            </article>
-
-            <article class="case-feature" data-reveal>
-              <span>03</span>
-              <h3>Durasi kerja</h3>
-              <p>
-                Menghitung waktu kerja berdasarkan jam masuk,
-                jam keluar, dan jadwal shift.
-              </p>
-            </article>
-
-            <article class="case-feature" data-reveal>
-              <span>04</span>
-              <h3>Perhitungan lembur</h3>
-              <p>
-                Menghitung durasi kerja tambahan berdasarkan
-                aturan lembur yang ditentukan.
-              </p>
-            </article>
-
-            <article class="case-feature" data-reveal>
-              <span>05</span>
-              <h3>Rekap bulanan</h3>
-              <p>
-                Menampilkan ringkasan kehadiran, cuti,
-                durasi kerja, dan lembur per periode.
-              </p>
-            </article>
-
-            <article class="case-feature" data-reveal>
-              <span>06</span>
-              <h3>Slip gaji</h3>
-              <p>
-                Menyusun rincian penggajian yang dapat
-                ditampilkan dan dicetak.
-              </p>
-            </article>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="case-section">
-
-      <div class="case-shell case-grid">
-
-        <div class="case-section__label" data-reveal>
-          05 / PROCESS
-        </div>
-
-        <div class="case-section__content">
-
-          <p class="case-eyebrow" data-reveal>
-            DEVELOPMENT PROCESS
-          </p>
-
-          <h2 data-reveal>
-            Menerjemahkan aturan kerja menjadi logika sistem.
-          </h2>
-
-          <ol class="case-process">
-
-            <li data-reveal>
-              <span>01</span>
-              <h3>Business rule analysis</h3>
-              <p>
-                Mengidentifikasi aturan shift, durasi kerja,
-                lembur, cuti, dan komponen penggajian.
-              </p>
-            </li>
-
-            <li data-reveal>
-              <span>02</span>
-              <h3>Calculation design</h3>
-              <p>
-                Menyusun alur penghitungan untuk shift siang,
-                shift malam, dan waktu kerja tambahan.
-              </p>
-            </li>
-
-            <li data-reveal>
-              <span>03</span>
-              <h3>Module implementation</h3>
-              <p>
-                Mengembangkan modul pegawai, absensi,
-                lembur, rekap, dan slip gaji.
-              </p>
-            </li>
-
-            <li data-reveal>
-              <span>04</span>
-              <h3>Edge-case testing</h3>
-              <p>
-                Menguji pergantian tanggal, data kosong,
-                durasi minimum, dan hasil rekap bulanan.
-              </p>
-            </li>
-
-          </ol>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="case-section">
-
-      <div class="case-shell case-grid">
-
-        <div class="case-section__label" data-reveal>
-          06 / STACK
-        </div>
-
-        <div class="case-section__content">
-
-          <p class="case-eyebrow" data-reveal>
-            TECHNOLOGY
-          </p>
-
-          <h2 data-reveal>
-            Teknologi yang digunakan.
-          </h2>
-
-          <ul class="case-stack" data-reveal>
-            <li>Laravel</li>
-            <li>PHP</li>
-            <li>MySQL</li>
-            <li>Blade</li>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-            <li>PDF</li>
-            <li>Excel</li>
-          </ul>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="case-closing">
-
-      <div class="case-shell">
-
-        <p class="case-eyebrow" data-reveal>
-          EXPLORE FROM THE START
-        </p>
-
-        <a class="case-next"
-          href="sistem-absensi-pegawai-klinik.html"
-          data-reveal>
-
-          <span>
-            Project 01
-          </span>
-
-          <strong>
-            Sistem Absensi Pegawai Klinik
-          </strong>
-
-          <span aria-hidden="true">
-            ↗
-          </span>
-
-        </a>
-
-        <div class="case-closing__bottom" data-reveal>
-
-          <p>
-            Source code tersedia untuk kebutuhan evaluasi
-            atau diskusi lebih lanjut.
-          </p>
-
-          <a href="../index.html#contact">
-            Contact Rayhan
-            <span aria-hidden="true">↗</span>
-          </a>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <footer class="case-footer">
-
-    <div class="case-shell case-footer__inner">
-
-      <span>
-        © 2026 Rayhan Ferdiansyah Mardani
-      </span>
-
-      <a href="../index.html#projects">
-        Selected Work
-      </a>
-
-    </div>
-
-  </footer>
-
-  <script src="../js/project-detail.js" defer></script>
+    <script src="../js/project-detail.js" defer></script>
 
 </body>
 
