@@ -632,6 +632,16 @@
       document.querySelectorAll(".projects .project"),
     );
 
+    const projectCarousel = document.querySelector("[data-project-carousel]");
+
+    const initialActiveProject = projectCards.findIndex((project) => {
+      return project.classList.contains("is-active");
+    });
+
+    let activeCarouselProjectId = `project-${String(
+      Math.max(initialActiveProject, 0) + 1,
+    ).padStart(2, "0")}`;
+
     const skillsSection = document.querySelector(".skills");
 
     const certificationsSection = document.querySelector(".certifications");
@@ -639,6 +649,80 @@
     const educationSection = document.querySelector(".education");
 
     const contactSection = document.querySelector(".contact");
+
+    const PROJECT_SCENE_DEFINITIONS = {
+      "project-01": {
+        id: "project-01",
+
+        element: projectsSection,
+
+        anchorRatio: 0.46,
+
+        x: 0.25,
+        y: -0.025,
+
+        scale: 1.12,
+        opacity: 0.78,
+
+        rotX: 0.18,
+        rotY: 1.14,
+        rotZ: -0.52,
+      },
+
+      "project-02": {
+        id: "project-02",
+
+        element: projectsSection,
+
+        anchorRatio: 0.46,
+
+        x: -0.26,
+        y: 0.015,
+
+        scale: 1.18,
+        opacity: 0.74,
+
+        rotX: 0.42,
+        rotY: 1.64,
+        rotZ: 0.58,
+      },
+
+      "project-03": {
+        id: "project-03",
+
+        element: projectsSection,
+
+        anchorRatio: 0.46,
+
+        x: 0.27,
+        y: 0.02,
+
+        scale: 1.27,
+        opacity: 0.8,
+
+        rotX: 0.24,
+        rotY: 2.2,
+        rotZ: -0.78,
+      },
+
+      "project-04": {
+        id: "project-04",
+
+        element: projectsSection,
+
+        anchorRatio: 0.46,
+
+        x: -0.23,
+        y: 0.035,
+
+        scale: 1.16,
+        opacity: 0.74,
+
+        rotX: 0.48,
+        rotY: 2.74,
+        rotZ: 0.46,
+      },
+    };
 
     const SCENE_DEFINITIONS = [
       {
@@ -702,52 +786,21 @@
         rotZ: 0.2,
       },
       {
-        id: "project-01",
-        element: projectCards[0],
-        anchorRatio: 0.3,
+        id: "projects-focus",
+
+        element: projectsSection,
+
+        anchorRatio: 0.46,
+
         x: 0.25,
         y: -0.025,
+
         scale: 1.12,
         opacity: 0.78,
+
         rotX: 0.18,
         rotY: 1.14,
         rotZ: -0.52,
-      },
-      {
-        id: "project-02",
-        element: projectCards[1],
-        anchorRatio: 0.3,
-        x: -0.26,
-        y: 0.015,
-        scale: 1.18,
-        opacity: 0.74,
-        rotX: 0.42,
-        rotY: 1.64,
-        rotZ: 0.58,
-      },
-      {
-        id: "project-03",
-        element: projectCards[2],
-        anchorRatio: 0.3,
-        x: 0.27,
-        y: 0.02,
-        scale: 1.27,
-        opacity: 0.8,
-        rotX: 0.24,
-        rotY: 2.2,
-        rotZ: -0.78,
-      },
-      {
-        id: "project-04",
-        element: projectCards[3],
-        anchorRatio: 0.31,
-        x: -0.23,
-        y: 0.035,
-        scale: 1.16,
-        opacity: 0.74,
-        rotX: 0.48,
-        rotY: 2.74,
-        rotZ: 0.46,
       },
       {
         id: "skills-entry",
@@ -1336,6 +1389,27 @@
         : sceneItem;
     };
 
+    const resolveActiveProjectScene = (sceneItem) => {
+      if (sceneItem.id !== "projects-focus") {
+        return sceneItem;
+      }
+
+      const projectScene =
+        PROJECT_SCENE_DEFINITIONS[activeCarouselProjectId] ||
+        PROJECT_SCENE_DEFINITIONS["project-01"];
+
+      const resolvedProjectScene = resolveSceneDefinition(projectScene);
+
+      return {
+        ...sceneItem,
+        ...resolvedProjectScene,
+
+        anchor: sceneItem.anchor,
+
+        element: sceneItem.element,
+      };
+    };
+
     const sceneMetrics = [];
 
     const firstScene = resolveSceneDefinition(SCENE_DEFINITIONS[0]);
@@ -1483,6 +1557,10 @@
       }
 
       targetScene.x = mix(from.x, to.x, t);
+
+      from = resolveActiveProjectScene(from);
+
+      to = resolveActiveProjectScene(to);
 
       targetScene.y = mix(from.y, to.y, t);
 
@@ -1896,6 +1974,59 @@
       raf = requestAnimationFrame(animate);
     }
 
+    let carouselSceneFrame = null;
+
+    const renderReducedMotionCarouselScene = () => {
+      carouselSceneFrame = null;
+
+      updateTargetScene();
+
+      Object.assign(currentScene, targetScene);
+
+      applySceneToObjects(performance.now(), 0);
+
+      renderer.render(scene, camera);
+    };
+
+    const handleCarouselProjectChange = (event) => {
+      const nextProjectId = event.detail?.projectId;
+
+      if (
+        typeof nextProjectId !== "string" ||
+        !Object.prototype.hasOwnProperty.call(
+          PROJECT_SCENE_DEFINITIONS,
+          nextProjectId,
+        )
+      ) {
+        return;
+      }
+
+      activeCarouselProjectId = nextProjectId;
+
+      scrollDirty = true;
+
+      if (reducedMotion) {
+        if (carouselSceneFrame !== null) {
+          cancelAnimationFrame(carouselSceneFrame);
+        }
+
+        carouselSceneFrame = requestAnimationFrame(
+          renderReducedMotionCarouselScene,
+        );
+
+        return;
+      }
+
+      start();
+    };
+
+    if (projectCarousel) {
+      window.addEventListener(
+        "rfm:project-change",
+        handleCarouselProjectChange,
+      );
+    }
+
     const fallback = host.querySelectorAll(
       ".hero-orbit-core, .hero-orbit-ring",
     );
@@ -1958,12 +2089,21 @@
         cancelAnimationFrame(resizeRaf);
       }
 
+      if (carouselSceneFrame !== null) {
+        cancelAnimationFrame(carouselSceneFrame);
+      }
+
       resizeObserver?.disconnect();
       mainObserver.disconnect();
 
       window.removeEventListener("resize", scheduleResize);
 
       window.removeEventListener("scroll", onScroll);
+
+      window.removeEventListener(
+        "rfm:project-change",
+        handleCarouselProjectChange,
+      );
 
       window.removeEventListener("pointermove", onPointerMove);
 
