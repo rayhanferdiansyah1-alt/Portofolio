@@ -5,6 +5,8 @@
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
+  const projectMobile = window.matchMedia("(max-width: 700px)").matches;
+
   const revealSelector = ".reveal, .reveal-text";
 
   const projectImages = Array.from(
@@ -123,6 +125,7 @@
   const componentOwnedReveal = (el) => {
     return Boolean(
       el.closest(".project") ||
+      el.closest("[data-project-carousel]") ||
       el.matches(".about-stats .stat") ||
       el.matches(".capability") ||
       el.matches(".certification-card") ||
@@ -426,40 +429,112 @@
     );
   }
 
-  const projectItems = gsap.utils.toArray(".project");
+  const projectsCarousel = document.querySelector("[data-project-carousel]");
 
-  const setProjectFocus = (activeProject) => {
-    projectItems.forEach((item) => {
-      item.classList.toggle(
-        "is-focus",
+  if (projectsCarousel) {
+    const carouselViewport = projectsCarousel.querySelector(
+      "[data-carousel-viewport]",
+    );
 
-        item === activeProject,
-      );
-    });
-  };
+    const carouselControls = projectsCarousel.querySelector(
+      ".projects-carousel__controls",
+    );
 
-  const clearProjectFocus = (project) => {
-    project.classList.remove("is-focus");
-  };
+    const carouselHint = projectsCarousel.querySelector(
+      ".projects-carousel__hint",
+    );
 
-  projectItems.forEach((project) => {
-    const meta = project.querySelector(".project-meta");
+    const animateActiveProject = (slide) => {
+      if (!(slide instanceof HTMLElement)) {
+        return;
+      }
 
-    const copy = project.querySelector(".project-copy");
+      const frame = slide.querySelector(".browser-frame");
 
-    const visual = project.querySelector(".project-visual");
+      const details = [
+        slide.querySelector(".project-meta"),
 
-    const media = project.querySelector(".project-shot-media");
+        slide.querySelector(".project-copy"),
 
-    const overlay = project.querySelector(".project-shot-overlay");
+        slide.querySelector(".project-footer"),
+      ].filter(Boolean);
 
-    const footer = project.querySelector(".project-footer");
+      const animationTargets = [frame, ...details].filter(Boolean);
 
-    const entranceTargets = [meta, copy, footer].filter(Boolean);
+      if (animationTargets.length) {
+        gsap.killTweensOf(animationTargets);
+      }
 
-    const projectTimeline = gsap.timeline({
+      if (frame) {
+        gsap.fromTo(
+          frame,
+
+          {
+            opacity: 0.7,
+            scale: 0.975,
+          },
+
+          {
+            opacity: 1,
+            scale: 1,
+
+            duration: 0.72,
+
+            ease: "power3.out",
+
+            overwrite: "auto",
+
+            onComplete: () => {
+              gsap.set(
+                frame,
+
+                {
+                  clearProps: "opacity,transform",
+                },
+              );
+            },
+          },
+        );
+      }
+
+      if (details.length) {
+        gsap.fromTo(
+          details,
+
+          {
+            opacity: 0,
+            y: 18,
+          },
+
+          {
+            opacity: 1,
+            y: 0,
+
+            duration: 0.68,
+
+            stagger: 0.07,
+
+            ease: "power3.out",
+
+            overwrite: "auto",
+
+            onComplete: () => {
+              clearRevealProps(details);
+            },
+          },
+        );
+      }
+    };
+
+    const entranceTargets = [
+      carouselViewport,
+      carouselControls,
+      carouselHint,
+    ].filter(Boolean);
+
+    const carouselTimeline = gsap.timeline({
       scrollTrigger: {
-        trigger: project,
+        trigger: projectsCarousel,
 
         start: "top 82%",
 
@@ -467,14 +542,16 @@
       },
     });
 
-    if (meta) {
-      projectTimeline.fromTo(
-        meta,
+    if (carouselViewport) {
+      carouselTimeline.fromTo(
+        carouselViewport,
 
         {
           opacity: 0,
 
-          y: 18,
+          y: projectMobile ? 30 : 48,
+
+          scale: projectMobile ? 0.985 : 0.97,
         },
 
         {
@@ -482,73 +559,29 @@
 
           y: 0,
 
-          duration: 0.75,
+          scale: 1,
 
-          ease: "power3.out",
-        },
-      );
-    }
-
-    if (copy) {
-      projectTimeline.fromTo(
-        copy,
-
-        {
-          opacity: 0,
-
-          y: 42,
-        },
-
-        {
-          opacity: 1,
-
-          y: 0,
-
-          duration: 1,
-
-          ease: "power3.out",
-        },
-
-        "-=0.42",
-      );
-    }
-
-    if (visual) {
-      projectTimeline.fromTo(
-        visual,
-
-        {
-          opacity: 0,
-        },
-
-        {
-          opacity: 1,
-
-          duration: 1.15,
+          duration: projectMobile ? 0.85 : 1.05,
 
           ease: "power4.out",
         },
-
-        "-=0.58",
       );
     }
 
-    if (footer) {
-      projectTimeline.fromTo(
-        footer,
+    if (carouselControls) {
+      carouselTimeline.fromTo(
+        carouselControls,
 
         {
           opacity: 0,
-
           y: 16,
         },
 
         {
           opacity: 1,
-
           y: 0,
 
-          duration: 0.75,
+          duration: 0.65,
 
           ease: "power3.out",
         },
@@ -557,92 +590,46 @@
       );
     }
 
-    projectTimeline.call(() => {
-      if (entranceTargets.length) {
-        clearRevealProps(entranceTargets);
-      }
+    if (carouselHint) {
+      carouselTimeline.fromTo(
+        carouselHint,
 
-      if (visual) {
-        gsap.set(
-          visual,
-
-          {
-            clearProps: "opacity",
-          },
-        );
-      }
-    });
-
-    if (visual || media || overlay) {
-      const setVisualY = visual ? gsap.quickSetter(visual, "yPercent") : null;
-
-      const setOverlayY = overlay ? gsap.quickSetter(overlay, "y", "px") : null;
-
-      const setMediaY = media ? gsap.quickSetter(media, "yPercent") : null;
-
-      const visualStart = projectMobile ? 1.2 : 3.2;
-
-      const visualEnd = -visualStart;
-
-      const mediaStart = projectMobile ? -2.4 : -4.2;
-
-      const mediaEnd = -mediaStart;
-
-      const overlayStart = projectMobile ? 5 : 13;
-
-      const overlayEnd = projectMobile ? -3 : -9;
-
-      ScrollTrigger.create({
-        trigger: project,
-
-        start: "top bottom",
-
-        end: "bottom top",
-
-        invalidateOnRefresh: true,
-
-        onUpdate: (self) => {
-          const progress = self.progress;
-
-          if (setVisualY) {
-            setVisualY(visualStart + (visualEnd - visualStart) * progress);
-          }
-
-          if (setMediaY) {
-            setMediaY(mediaStart + (mediaEnd - mediaStart) * progress);
-          }
-
-          if (setOverlayY) {
-            setOverlayY(overlayStart + (overlayEnd - overlayStart) * progress);
-          }
+        {
+          opacity: 0,
         },
-      });
+
+        {
+          opacity: 1,
+
+          duration: 0.5,
+        },
+
+        "-=0.34",
+      );
     }
 
-    ScrollTrigger.create({
-      trigger: project,
-
-      start: "top 58%",
-
-      end: "bottom 42%",
-
-      onEnter: () => {
-        setProjectFocus(project);
-      },
-
-      onEnterBack: () => {
-        setProjectFocus(project);
-      },
-
-      onLeave: () => {
-        clearProjectFocus(project);
-      },
-
-      onLeaveBack: () => {
-        clearProjectFocus(project);
-      },
+    carouselTimeline.call(() => {
+      clearRevealProps(entranceTargets);
     });
-  });
+
+    const handleProjectChange = (event) => {
+      animateActiveProject(event.detail?.slide);
+    };
+
+    window.addEventListener("rfm:project-change", handleProjectChange);
+
+    window.addEventListener(
+      "pagehide",
+
+      () => {
+        window.removeEventListener("rfm:project-change", handleProjectChange);
+      },
+
+      {
+        once: true,
+      },
+    );
+  }
 
   const capabilityItems = gsap.utils.toArray(".capability");
 

@@ -376,9 +376,14 @@
 
         </div>
 
-        <div class="project-list">
+        <div class="projects-carousel" data-project-carousel aria-label="Selected work" aria-roledescription="carousel">
 
-          <article class="project project-featured">
+          <div class="projects-carousel__viewport" data-carousel-viewport>
+
+            <div class="project-list projects-carousel__track" data-carousel-track>
+
+          <article class="project project-featured projects-carousel__slide is-active" data-carousel-slide
+            data-project-index="0" role="group" aria-roledescription="slide" aria-label="1 dari 4">
 
             <div class="project-meta reveal">
 
@@ -488,7 +493,8 @@
 
           </article>
 
-          <article class="project">
+          <article class="project projects-carousel__slide" data-carousel-slide data-project-index="1" role="group"
+            aria-roledescription="slide" aria-label="2 dari 4" aria-hidden="true">
 
             <div class="project-meta reveal">
 
@@ -597,7 +603,8 @@
 
           </article>
 
-          <article class="project">
+          <article class="project projects-carousel__slide" data-carousel-slide data-project-index="2" role="group"
+            aria-roledescription="slide" aria-label="3 dari 4" aria-hidden="true">
 
             <div class="project-meta reveal">
 
@@ -707,7 +714,8 @@
 
           </article>
 
-          <article class="project">
+          <article class="project projects-carousel__slide" data-carousel-slide data-project-index="3" role="group"
+            aria-roledescription="slide" aria-label="4 dari 4" aria-hidden="true">
 
             <div class="project-meta reveal">
 
@@ -815,6 +823,40 @@
             </div>
 
           </article>
+
+            </div>
+
+          </div>
+
+          <div class="projects-carousel__controls reveal" aria-label="Navigasi proyek">
+
+            <button class="projects-carousel__button projects-carousel__button--previous" type="button"
+              data-carousel-previous aria-label="Tampilkan proyek sebelumnya" disabled>
+              <span aria-hidden="true">←</span>
+              <span>PREVIOUS</span>
+            </button>
+
+            <div class="projects-carousel__status" aria-hidden="true">
+              <span data-carousel-current>01</span>
+              <span>/</span>
+              <span data-carousel-total>04</span>
+            </div>
+
+            <button class="projects-carousel__button projects-carousel__button--next" type="button"
+              data-carousel-next aria-label="Tampilkan proyek berikutnya" disabled>
+              <span>NEXT</span>
+              <span aria-hidden="true">→</span>
+            </button>
+
+          </div>
+
+          <p class="projects-carousel__hint reveal" aria-hidden="true">
+            DRAG / SWIPE TO EXPLORE
+          </p>
+
+          <p class="sr-only" data-carousel-live aria-live="polite" aria-atomic="true">
+            Proyek 1 dari 4: Sistem Absensi Pegawai Klinik
+          </p>
 
         </div>
 
@@ -1185,6 +1227,7 @@
   <script src="js/smooth-scroll.js"></script>
   <script src="js/animations.js"></script>
   <script src="js/contact-form.js"></script>
+  <script src="js/projects-carousel.js"></script>
   <script src="js/main.js"></script>
   <script src="js/three-scene.js"></script>
   <script src="js/project-detail.js" defer></script>
